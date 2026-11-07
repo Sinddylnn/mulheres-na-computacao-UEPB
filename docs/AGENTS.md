@@ -24,7 +24,7 @@ Este repositório contém o site institucional do projeto de extensão Mulheres 
 - Use `js/core/paths.js` para recursos carregados pelo JavaScript.
 - Edite navegação e rodapé somente em `header.html` e `footer.html`; não duplique esse conteúdo nas páginas. Mantenha os pontos de montagem com `data-include` e preserve os identificadores usados em `js/features/navigation.js`. Os caminhos dos fragmentos são relativos à raiz do projeto.
 - Preserve os temas claro e escuro e valide os dois após mudanças visuais.
-- Mantenha a interface responsiva e navegável por teclado.
+- Mantenha a interface responsiva e navegável por teclado. Em toda mudança de interface, siga a seção **Responsividade no celular** de `docs/FRONTEND.md`, mesmo quando o pedido não mencionar celular.
 - Use HTML semântico, rótulos de formulário, textos alternativos e estados de foco visíveis.
 - Não invente nomes, cargos, e-mails, métricas ou outros dados institucionais. Use marcadores claros quando o dado depender da equipe do MNC.
 - Não inclua credenciais, tokens ou endpoints privados no repositório.
@@ -53,7 +53,7 @@ Após uma alteração, verifique pelo menos:
 - o carregamento do cabeçalho e do rodapé;
 - os links e caminhos de imagens;
 - os temas claro e escuro;
-- uma largura de desktop e uma largura de celular;
+- a matriz de larguras e os cenários aplicáveis definidos em **Responsividade no celular**, em `docs/FRONTEND.md`;
 - o console do navegador, sem novos erros.
 
 Execute também os testes locais:
@@ -71,6 +71,8 @@ python tools/converter_fotos.py
 
 ## Escopo das mudanças
 
+- Mantenha este arquivo de instruções em `docs/AGENTS.md`; não crie nem mova `AGENTS.md` para a raiz do repositório.
+- Centralize todos os arquivos `.md` e a documentação de desenvolvimento e manutenção em `docs/`. A única exceção é o `README.md` da raiz, que apresenta o projeto e aponta para os documentos. Ao criar um documento, adicione seu link na seção de documentação do README; não duplique instruções em outras pastas. Os PDFs de publicações disponibilizados no site continuam em `pdfs/`.
 - Faça alterações pequenas e focadas no pedido atual.
 - Preserve conteúdo institucional existente, salvo quando a atualização for solicitada.
 - Não reformule toda a identidade visual para corrigir um problema localizado.

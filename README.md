@@ -25,6 +25,7 @@ Acesse <http://127.0.0.1:8000>. Para encerrar o servidor, use `Ctrl+C`. Sirva o 
 - `data/timeline.json`, `imagens/galeria/` e `imagens/miniaturas/`: dados e fotos da galeria.
 - `imagens/logos/`: símbolo do MNC, borboleta e ícone das abas do navegador.
 - `pdfs/`: publicações para download.
+- `docs/`: documentação do projeto, diretrizes para agentes e padrões do frontend.
 
 Para alterar o menu ou o rodapé, edite apenas `header.html` ou `footer.html`. Para adicionar uma página, crie seu HTML em `paginas/`, use os pontos de montagem `data-include` como nas outras páginas e registre o arquivo em `tools/build_site.py`. Consulte [os padrões do frontend](docs/FRONTEND.md) para botões, formulários, temas e acessibilidade.
 
@@ -174,7 +175,12 @@ A página [Quero participar](paginas/quero-participar.html) tem um formulário d
 
 ## Documentação e contato
 
-As [diretrizes do projeto](docs/AGENTS.md) e os [padrões do frontend](docs/FRONTEND.md) orientam novas alterações.
+Toda a documentação de desenvolvimento e manutenção do projeto deve ficar em `docs/`, incluindo arquivos `.md`, guias, instruções para agentes e novos documentos. O único Markdown mantido na raiz é este `README.md`, que serve como apresentação e ponto de entrada para a documentação. Não crie cópias de `AGENTS.md` ou de outros documentos fora de `docs/`.
+
+- [Diretrizes do projeto](docs/AGENTS.md): arquitetura, regras de implementação e verificações para agentes e colaboradores.
+- [Padrões do frontend](docs/FRONTEND.md): componentes, acessibilidade e requisitos de responsividade no celular, incluindo as larguras e os cenários que devem ser conferidos em alterações visuais.
+
+Ao criar um novo documento, salve-o em `docs/` e acrescente seu link nesta seção.
 
 - E-mail: [mnc.uepb@gmail.com](mailto:mnc.uepb@gmail.com)
 - Instagram: [@mnc.uepb](https://www.instagram.com/mnc.uepb/)
