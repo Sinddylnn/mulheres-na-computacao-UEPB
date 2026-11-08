@@ -62,19 +62,19 @@ imagens/fotos_originais/
 └── escolas/
     ├── 2024/
     │   └── escola-2024-01.jpg
-    └── 2025-08-29/
-        ├── escola-2025-08-29-01.jpg
-        └── escola-2025-08-29-02.jpg
+    └── 2025/
+        ├── escola-2025-01.jpg
+        └── escola-2025-02.jpg
 ```
 
 - **Formatos de entrada:** `.jpg`, `.jpeg` e `.png`. Não basta trocar a extensão de um arquivo HEIC ou WebP para JPG; exporte a foto no formato aceito.
-- **Pastas:** use `encontros` ou `escolas`, depois uma data no formato `AAAA-MM-DD`. Em escolas, também é permitido usar somente o ano, como `2024`.
-- **Sem pastas extras dentro da data:** o conversor lê apenas as fotos diretamente em `<categoria>/<data-ou-ano>/`. Para registrar uma visita, use `escolas/2025-08-29/`, sem uma pasta `2025/` antes da data.
+- **Pastas:** em `encontros`, use uma data no formato `AAAA-MM-DD`. Em `escolas`, organize por ano: `escolas/2024/` e `escolas/2025/`.
+- **Sem subpastas por visita:** coloque as fotos diretamente na pasta do ano em escolas. A galeria e as miniaturas seguem a mesma organização: `escolas/<ano>/`.
 - **Nomes:** prefira letras minúsculas, números e hífens, como nos exemplos. Esse padrão é uma convenção; nomes antigos com espaços e parênteses também funcionam. O conversor mantém o nome e troca a extensão para `.webp`.
 - **Numeração:** use nomes diferentes para cada foto da mesma pasta. Não coloque `foto-01.jpg` e `foto-01.png` juntas: ambas gerariam `foto-01.webp` e uma seria ignorada.
 - **Tamanho e proporção:** não é preciso recortar. O conversor preserva a proporção, corrige a orientação da câmera e gera miniaturas de até 640 × 640 pixels.
 
-As fotos de escolas aparecem agrupadas por ano na página, mesmo quando os arquivos estão separados por datas. As de encontros aparecem na linha do tempo.
+As fotos de escolas são cadastradas e apresentadas por ano, sem datas exatas de visitas. As de encontros aparecem na linha do tempo por data.
 
 **Copiar fotos diretamente para `imagens/galeria/` não as cadastra automaticamente.** A página carrega a lista de `data/timeline.json`; por isso, a imagem, a miniatura e seu cadastro precisam estar sincronizados. O conversor faz essa sincronização a partir dos originais.
 

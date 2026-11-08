@@ -34,6 +34,7 @@ Este repositório contém o site institucional do projeto de extensão Mulheres 
 - Prefira atualizar a galeria por meio de `tools/converter_fotos.py`.
 - Não edite `data/timeline.json` manualmente quando o script puder gerar a mudança.
 - Preserve a estrutura `imagens/galeria/<categoria>/<data-ou-ano>/`.
+- Em escolas, use `escolas/<ano>/`, com um evento por ano na timeline e sem subpastas por data de visita. Siga essa organização também nos originais e nas miniaturas.
 - Preserve a estrutura equivalente em `imagens/miniaturas/` e os metadados de dimensões da timeline.
 - Trate `escola` e `escolas` como categorias com apresentação em acordeão.
 - Não remova fotos nem arquivos gerados sem confirmar que não são mais utilizados.

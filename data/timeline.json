@@ -109,235 +109,133 @@
   },
   {
     "categoria": "escolas",
-    "data": "2026",
-    "caminho_relativo": "escolas/2026",
-    "fotos": [
-      "2026 (1).webp",
-      "2026 (2).webp",
-      "2026 (3).webp",
-      "2026 (4).webp",
-      "2026 (5).webp"
-    ],
-    "metadados": {
-      "2026 (1).webp": {
-        "largura": 3031,
-        "altura": 2547,
-        "miniatura": "escolas/2026/2026 (1).webp"
-      },
-      "2026 (2).webp": {
-        "largura": 4096,
-        "altura": 3072,
-        "miniatura": "escolas/2026/2026 (2).webp"
-      },
-      "2026 (3).webp": {
-        "largura": 4096,
-        "altura": 3072,
-        "miniatura": "escolas/2026/2026 (3).webp"
-      },
-      "2026 (4).webp": {
-        "largura": 3072,
-        "altura": 3812,
-        "miniatura": "escolas/2026/2026 (4).webp"
-      },
-      "2026 (5).webp": {
-        "largura": 3072,
-        "altura": 3792,
-        "miniatura": "escolas/2026/2026 (5).webp"
-      }
-    }
-  },
-  {
-    "categoria": "escolas",
-    "data": "2025-10-14",
-    "caminho_relativo": "escolas/2025/2025-10-14",
+    "data": "2025",
+    "caminho_relativo": "escolas/2025",
     "fotos": [
       "escola(14-10-2025) (1).jpg",
       "escola(14-10-2025) (2).jpg",
       "escola(14-10-2025) (3).jpg",
       "escola(14-10-2025) (4).jpg",
-      "escola(14-10-2025) (5).jpg"
+      "escola(14-10-2025) (5).jpg",
+      "escola(12-09-2025) (1).jpg",
+      "escola(12-09-2025) (2).jpg",
+      "escola(12-09-2025) (3).jpg",
+      "escola(05-09-2025) (1).jpg",
+      "escola(29-08-2025) (1).jpg",
+      "escola(29-08-2025) (2).jpg",
+      "escola(08-08-2025) (1).jpg"
     ],
     "metadados": {
       "escola(14-10-2025) (1).jpg": {
         "largura": 3072,
         "altura": 4096,
-        "miniatura": "escolas/2025/2025-10-14/escola(14-10-2025) (1)-miniatura.jpg"
+        "miniatura": "escolas/2025/escola(14-10-2025) (1)-miniatura.jpg"
       },
       "escola(14-10-2025) (2).jpg": {
         "largura": 3072,
         "altura": 4096,
-        "miniatura": "escolas/2025/2025-10-14/escola(14-10-2025) (2)-miniatura.jpg"
+        "miniatura": "escolas/2025/escola(14-10-2025) (2)-miniatura.jpg"
       },
       "escola(14-10-2025) (3).jpg": {
         "largura": 4096,
         "altura": 3072,
-        "miniatura": "escolas/2025/2025-10-14/escola(14-10-2025) (3)-miniatura.jpg"
+        "miniatura": "escolas/2025/escola(14-10-2025) (3)-miniatura.jpg"
       },
       "escola(14-10-2025) (4).jpg": {
         "largura": 3072,
         "altura": 4096,
-        "miniatura": "escolas/2025/2025-10-14/escola(14-10-2025) (4)-miniatura.jpg"
+        "miniatura": "escolas/2025/escola(14-10-2025) (4)-miniatura.jpg"
       },
       "escola(14-10-2025) (5).jpg": {
         "largura": 4096,
         "altura": 3072,
-        "miniatura": "escolas/2025/2025-10-14/escola(14-10-2025) (5)-miniatura.jpg"
-      }
-    }
-  },
-  {
-    "categoria": "escolas",
-    "data": "2025-09-12",
-    "caminho_relativo": "escolas/2025/2025-09-12",
-    "fotos": [
-      "escola(12-09-2025) (1).jpg",
-      "escola(12-09-2025) (2).jpg",
-      "escola(12-09-2025) (3).jpg"
-    ],
-    "metadados": {
+        "miniatura": "escolas/2025/escola(14-10-2025) (5)-miniatura.jpg"
+      },
       "escola(12-09-2025) (1).jpg": {
         "largura": 3072,
         "altura": 4096,
-        "miniatura": "escolas/2025/2025-09-12/escola(12-09-2025) (1)-miniatura.jpg"
+        "miniatura": "escolas/2025/escola(12-09-2025) (1)-miniatura.jpg"
       },
       "escola(12-09-2025) (2).jpg": {
         "largura": 3072,
         "altura": 4096,
-        "miniatura": "escolas/2025/2025-09-12/escola(12-09-2025) (2)-miniatura.jpg"
+        "miniatura": "escolas/2025/escola(12-09-2025) (2)-miniatura.jpg"
       },
       "escola(12-09-2025) (3).jpg": {
         "largura": 3072,
         "altura": 4096,
-        "miniatura": "escolas/2025/2025-09-12/escola(12-09-2025) (3)-miniatura.jpg"
-      }
-    }
-  },
-  {
-    "categoria": "escolas",
-    "data": "2025-09-05",
-    "caminho_relativo": "escolas/2025/2025-09-05",
-    "fotos": [
-      "escola(05-09-2025) (1).jpg"
-    ],
-    "metadados": {
+        "miniatura": "escolas/2025/escola(12-09-2025) (3)-miniatura.jpg"
+      },
       "escola(05-09-2025) (1).jpg": {
         "largura": 3072,
         "altura": 4096,
-        "miniatura": "escolas/2025/2025-09-05/escola(05-09-2025) (1)-miniatura.jpg"
-      }
-    }
-  },
-  {
-    "categoria": "escolas",
-    "data": "2025-08-29",
-    "caminho_relativo": "escolas/2025/2025-08-29",
-    "fotos": [
-      "escola(29-08-2025) (1).jpg",
-      "escola(29-08-2025) (2).jpg"
-    ],
-    "metadados": {
+        "miniatura": "escolas/2025/escola(05-09-2025) (1)-miniatura.jpg"
+      },
       "escola(29-08-2025) (1).jpg": {
         "largura": 4096,
         "altura": 3072,
-        "miniatura": "escolas/2025/2025-08-29/escola(29-08-2025) (1)-miniatura.jpg"
+        "miniatura": "escolas/2025/escola(29-08-2025) (1)-miniatura.jpg"
       },
       "escola(29-08-2025) (2).jpg": {
         "largura": 3072,
         "altura": 4096,
-        "miniatura": "escolas/2025/2025-08-29/escola(29-08-2025) (2)-miniatura.jpg"
-      }
-    }
-  },
-  {
-    "categoria": "escolas",
-    "data": "2025-08-08",
-    "caminho_relativo": "escolas/2025/2025-08-08",
-    "fotos": [
-      "escola(08-08-2025) (1).jpg"
-    ],
-    "metadados": {
+        "miniatura": "escolas/2025/escola(29-08-2025) (2)-miniatura.jpg"
+      },
       "escola(08-08-2025) (1).jpg": {
         "largura": 3072,
         "altura": 4096,
-        "miniatura": "escolas/2025/2025-08-08/escola(08-08-2025) (1)-miniatura.jpg"
+        "miniatura": "escolas/2025/escola(08-08-2025) (1)-miniatura.jpg"
       }
     }
   },
   {
     "categoria": "escolas",
-    "data": "2024-11-12",
-    "caminho_relativo": "escolas/2024/2024-11-12",
+    "data": "2024",
+    "caminho_relativo": "escolas/2024",
     "fotos": [
       "escola(12-11-2024) (1).jpg",
-      "escola(12-11-2024) (2).jpg"
+      "escola(12-11-2024) (2).jpg",
+      "escola(11-09-2024) (1).jpg",
+      "escola(27-08-2024) (1).jpg",
+      "escola(27-08-2024) (2).jpg",
+      "escola(27-08-2024) (3).jpg",
+      "escola(20-08-2024) (1).jpg"
     ],
     "metadados": {
       "escola(12-11-2024) (1).jpg": {
         "largura": 3072,
         "altura": 4096,
-        "miniatura": "escolas/2024/2024-11-12/escola(12-11-2024) (1)-miniatura.jpg"
+        "miniatura": "escolas/2024/escola(12-11-2024) (1)-miniatura.jpg"
       },
       "escola(12-11-2024) (2).jpg": {
         "largura": 3072,
         "altura": 4096,
-        "miniatura": "escolas/2024/2024-11-12/escola(12-11-2024) (2)-miniatura.jpg"
-      }
-    }
-  },
-  {
-    "categoria": "escolas",
-    "data": "2024-09-11",
-    "caminho_relativo": "escolas/2024/2024-09-11",
-    "fotos": [
-      "escola(11-09-2024) (1).jpg"
-    ],
-    "metadados": {
+        "miniatura": "escolas/2024/escola(12-11-2024) (2)-miniatura.jpg"
+      },
       "escola(11-09-2024) (1).jpg": {
         "largura": 2268,
         "altura": 4032,
-        "miniatura": "escolas/2024/2024-09-11/escola(11-09-2024) (1)-miniatura.jpg"
-      }
-    }
-  },
-  {
-    "categoria": "escolas",
-    "data": "2024-08-27",
-    "caminho_relativo": "escolas/2024/2024-08-27",
-    "fotos": [
-      "escola(27-08-2024) (1).jpg",
-      "escola(27-08-2024) (2).jpg",
-      "escola(27-08-2024) (3).jpg"
-    ],
-    "metadados": {
+        "miniatura": "escolas/2024/escola(11-09-2024) (1)-miniatura.jpg"
+      },
       "escola(27-08-2024) (1).jpg": {
         "largura": 3072,
         "altura": 4096,
-        "miniatura": "escolas/2024/2024-08-27/escola(27-08-2024) (1)-miniatura.jpg"
+        "miniatura": "escolas/2024/escola(27-08-2024) (1)-miniatura.jpg"
       },
       "escola(27-08-2024) (2).jpg": {
         "largura": 3072,
         "altura": 4096,
-        "miniatura": "escolas/2024/2024-08-27/escola(27-08-2024) (2)-miniatura.jpg"
+        "miniatura": "escolas/2024/escola(27-08-2024) (2)-miniatura.jpg"
       },
       "escola(27-08-2024) (3).jpg": {
         "largura": 3072,
         "altura": 4096,
-        "miniatura": "escolas/2024/2024-08-27/escola(27-08-2024) (3)-miniatura.jpg"
-      }
-    }
-  },
-  {
-    "categoria": "escolas",
-    "data": "2024-08-20",
-    "caminho_relativo": "escolas/2024/2024-08-20",
-    "fotos": [
-      "escola(20-08-2024) (1).jpg"
-    ],
-    "metadados": {
+        "miniatura": "escolas/2024/escola(27-08-2024) (3)-miniatura.jpg"
+      },
       "escola(20-08-2024) (1).jpg": {
         "largura": 3072,
         "altura": 4096,
-        "miniatura": "escolas/2024/2024-08-20/escola(20-08-2024) (1)-miniatura.jpg"
+        "miniatura": "escolas/2024/escola(20-08-2024) (1)-miniatura.jpg"
       }
     }
   }
