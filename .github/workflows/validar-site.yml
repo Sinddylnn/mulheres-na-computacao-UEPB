@@ -26,6 +26,15 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Instalar dependências do importador e dos testes
+        run: npm ci
+
       - name: Validar páginas na raiz
         run: python tools/validar_site.py
 

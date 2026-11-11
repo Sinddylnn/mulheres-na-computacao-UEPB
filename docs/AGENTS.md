@@ -12,7 +12,7 @@ Este repositório contém o site institucional do projeto de extensão Mulheres 
 - Cada página mantém seu documento HTML, estilos, scripts e conteúdo. Cabeçalho e rodapé são carregados dos arquivos compartilhados `header.html` e `footer.html` por `js/core/includes.js`, antes da inicialização dos controles. Não há build para desenvolvimento.
 - `js/main.js` é o ponto de entrada e delega a inicialização a `js/core/bootstrap.js`.
 - A galeria é gerada a partir de `data/timeline.json`.
-- `tools/converter_fotos.py` converte fotos para WebP, gera miniaturas e atualiza a timeline.
+- `tools/fotos/` contém o importador local com prévia, conversão WebP e cadastro incremental. O conversor Python antigo está desativado.
 - `tools/build_site.py` copia os arquivos públicos para `_site` somente para publicação; `tools/validar_site.py` verifica a raiz por padrão ou a pasta passada como argumento.
 
 ## Regras de implementação
@@ -31,14 +31,14 @@ Este repositório contém o site institucional do projeto de extensão Mulheres 
 
 ## Galeria
 
-- Prefira atualizar a galeria por meio de `tools/converter_fotos.py`.
-- Não edite `data/timeline.json` manualmente quando o script puder gerar a mudança.
+- Atualize a galeria pelo importador local: `npm ci` e `npm run fotos`. Consulte `docs/FOTOS.md`.
+- Cada importação exige prévia e confirmação, acrescenta somente o lote escolhido e preserva o cadastro existente. Não reconstrua a timeline a partir das pastas de originais.
 - Preserve a estrutura `imagens/galeria/<categoria>/<data-ou-ano>/`.
 - Em escolas, use `escolas/<ano>/`, com um evento por ano na timeline e sem subpastas por data de visita. Siga essa organização também nos originais e nas miniaturas.
 - Preserve a estrutura equivalente em `imagens/miniaturas/` e os metadados de dimensões da timeline.
 - Trate `escola` e `escolas` como categorias com apresentação em acordeão.
 - Não remova fotos nem arquivos gerados sem confirmar que não são mais utilizados.
-- Use `--limpar-orfaos` somente quando a remoção dos arquivos sem original for desejada.
+- Não adicione limpeza automática nem substituição de fotos ao fluxo de importação. Exclusões exigem revisão separada.
 
 ## Execução e verificação
 
@@ -63,11 +63,12 @@ Execute também os testes locais:
 node --test
 ```
 
-O GitHub Actions executa o validador Python e processa fotos originais com Pillow. Se precisar reproduzir o processamento das fotos localmente, instale Pillow e execute:
+O GitHub Actions executa o validador Python, mas não processa fotos nem altera o acervo. Para testar o importador e sua dependência Sharp, execute:
 
 ```bash
-python -m pip install Pillow
-python tools/converter_fotos.py
+npm ci
+npm test
+npm run fotos
 ```
 
 ## Escopo das mudanças

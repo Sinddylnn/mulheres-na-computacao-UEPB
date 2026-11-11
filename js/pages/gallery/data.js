@@ -1,7 +1,7 @@
 import { projectHref } from '../../core/paths.js';
 
 export async function loadTimeline() {
-  const response = await fetch(projectHref('data/timeline.json'));
+  const response = await fetch(projectHref('data/timeline.json'), { cache: 'no-store' });
   if (!response.ok) throw new Error(`Erro HTTP ${response.status} ao carregar a timeline`);
 
   const timeline = await response.json();

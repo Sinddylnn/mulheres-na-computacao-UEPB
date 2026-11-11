@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adicionar fotos | MNC</title>
+  <link rel="icon" href="/site/imagens/logos/favicon.png">
+  <link rel="stylesheet" href="/base.css">
+  <link rel="stylesheet" href="/site/css/layout.css">
+  <link rel="stylesheet" href="/components.css">
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  <header class="tool-header">
+    <a class="brand" href="/" aria-label="MNC, adicionar fotos"><span class="brand-mark">MNC</span><span>Acervo de fotos</span></a>
+    <button type="button" id="theme" class="btn btn--secondary" aria-pressed="false">Tema escuro</button>
+  </header>
+  <main id="conteudo" tabindex="-1">
+    <div class="intro">
+      <span class="overline">Ferramenta local</span>
+      <h1>Novas memórias<br>para a galeria.</h1>
+      <p>Escolha as fotos, confira a prévia e adicione ao site.<br class="desktop-break"> O acervo existente permanece preservado.</p>
+    </div>
+    <ol class="steps" aria-label="Etapas da importação">
+      <li><span>1</span> Selecionar</li><li><span>2</span> Conferir</li><li><span>3</span> Adicionar</li>
+    </ol>
+    <section class="panel" aria-labelledby="selection-title">
+      <h2 id="selection-title">Escolha as fotos</h2>
+      <form id="import-form">
+        <fieldset id="fields">
+          <legend class="sr-only">Fotos e destino</legend>
+          <div class="field-grid">
+            <div class="form-field"><label for="category">Categoria</label><select class="form-control" name="category" id="category"><option value="escolas">Escolas</option><option value="encontros">Encontros</option></select></div>
+            <div class="form-field"><label for="year">Ano</label><input class="form-control" type="number" name="year" id="year" min="1900" max="2100" placeholder="Ex.: 2025" required></div>
+          </div>
+          <div class="form-field" id="date-field" hidden><label for="date">Data do encontro <span class="optional">(opcional)</span></label><input class="form-control" type="date" name="date" id="date"><p class="form-note">Deixe em branco para organizar somente pelo ano.</p></div>
+          <div class="upload-box form-field">
+            <label for="photos">Selecione as fotos no computador</label>
+            <p class="form-note" id="file-help">JPG, PNG ou WebP · Até 20 fotos, 15 MB por foto e 60 MB por lote.</p>
+            <input class="form-control" type="file" name="photos" id="photos" accept="image/jpeg,image/png,image/webp" multiple required aria-describedby="file-help file-summary">
+            <p id="file-summary" class="form-note">Nenhuma foto selecionada.</p>
+          </div>
+          <div class="actions"><button class="btn btn--primary" id="preview-button" type="submit" disabled>Gerar prévia</button><p class="form-note">A prévia ainda não altera o site.</p></div>
+        </fieldset>
+      </form>
+      <p class="form-status" id="status" role="status" aria-live="polite"></p>
+    </section>
+    <section class="panel" id="preview" aria-labelledby="preview-title" hidden>
+      <div class="section-heading"><div><span class="overline">Confira antes de adicionar</span><h2 id="preview-title">Sua seleção pronta</h2></div><p id="destination"></p></div>
+      <p id="totals" class="summary"></p>
+      <div class="photo-grid" id="photo-grid"></div>
+      <div class="confirm-bar"><p>Estas fotos serão acrescentadas à galeria. Os originais ficam guardados no computador.</p><div class="actions"><button class="btn btn--primary" id="confirm" type="button">Adicionar à galeria</button><button class="btn btn--secondary" id="cancel" type="button">Cancelar prévia</button></div></div>
+    </section>
+    <section class="panel success" id="success" aria-labelledby="success-title" hidden tabindex="-1">
+      <span class="overline">Concluído</span><h2 id="success-title">Memórias adicionadas.</h2><p id="success-message"></p>
+      <div class="actions"><a class="btn btn--primary" href="/site/paginas/galeria.html" target="_blank" rel="noopener">Conferir a galeria</a><button class="btn btn--secondary" id="new-batch" type="button">Adicionar mais fotos</button></div>
+      <p class="form-note">A atualização está no seu computador. Publique as alterações para atualizar o site online.</p>
+    </section>
+    <footer class="tool-footer"><span>Mulheres na Computação · UEPB</span><span>WebP otimizado · Originais preservados</span></footer>
+  </main>
+  <template id="photo-template"><article class="photo-card"><img alt="" loading="lazy"><div class="photo-copy"><h3></h3><p class="dimensions"></p><p class="sizes"></p></div></article></template>
+</body>
+</html>

@@ -49,111 +49,34 @@ Antes de publicar, confira também o tema claro e escuro, o menu, o formulário 
 
 ## Atualizar fotos
 
-### Onde colocar as fotos
-
-Para usar o conversor, coloque as fotos em **`imagens/fotos_originais/`**, seguindo esta estrutura:
-
-```text
-imagens/fotos_originais/
-├── encontros/
-│   └── 2026-03-11/
-│       ├── encontro-2026-03-11-01.jpg
-│       └── encontro-2026-03-11-02.jpg
-└── escolas/
-    ├── 2024/
-    │   └── escola-2024-01.jpg
-    └── 2025/
-        ├── escola-2025-01.jpg
-        └── escola-2025-02.jpg
-```
-
-- **Formatos de entrada:** `.jpg`, `.jpeg` e `.png`. Não basta trocar a extensão de um arquivo HEIC ou WebP para JPG; exporte a foto no formato aceito.
-- **Pastas:** em `encontros`, use uma data no formato `AAAA-MM-DD`. Em `escolas`, organize por ano: `escolas/2024/` e `escolas/2025/`.
-- **Sem subpastas por visita:** coloque as fotos diretamente na pasta do ano em escolas. A galeria e as miniaturas seguem a mesma organização: `escolas/<ano>/`.
-- **Nomes:** prefira letras minúsculas, números e hífens, como nos exemplos. Esse padrão é uma convenção; nomes antigos com espaços e parênteses também funcionam. O conversor mantém o nome e troca a extensão para `.webp`.
-- **Numeração:** use nomes diferentes para cada foto da mesma pasta. Não coloque `foto-01.jpg` e `foto-01.png` juntas: ambas gerariam `foto-01.webp` e uma seria ignorada.
-- **Tamanho e proporção:** não é preciso recortar. O conversor preserva a proporção, corrige a orientação da câmera e gera miniaturas de até 640 × 640 pixels.
-
-As fotos de escolas são cadastradas e apresentadas por ano, sem datas exatas de visitas. As de encontros aparecem na linha do tempo por data.
-
-**Copiar fotos diretamente para `imagens/galeria/` não as cadastra automaticamente.** A página carrega a lista de `data/timeline.json`; por isso, a imagem, a miniatura e seu cadastro precisam estar sincronizados. O conversor faz essa sincronização a partir dos originais.
-
-### Opção 1: processar no computador
-
-Este fluxo mantém os originais locais, como previsto no `.gitignore` atual. É necessário ter Python com Pillow:
+Use o importador local com prévia. Requer **Node.js 22 ou superior**. Na primeira utilização, na raiz do projeto:
 
 ```bash
-python -m pip install Pillow
-python tools/converter_fotos.py
+npm ci
+npm run fotos
 ```
 
-Execute na raiz do projeto, depois de organizar as fotos. O script gera:
+Abra <http://127.0.0.1:8001>. Selecione a categoria, o ano e as fotos; clique em **Gerar prévia**. Confira as imagens e os tamanhos, depois clique em **Adicionar à galeria**. O botão **Conferir a galeria** abre o site local na própria ferramenta.
 
-| Arquivo ou pasta | Conteúdo |
-| --- | --- |
-| `imagens/galeria/<categoria>/<data-ou-ano>/` | Fotos em WebP para abrir em tamanho maior |
-| `imagens/miniaturas/<categoria>/<data-ou-ano>/` | Versões menores para carregar a grade |
-| `data/timeline.json` | Lista de eventos, nomes, dimensões e caminhos das miniaturas |
+- Aceita JPG, PNG e WebP estático: até 20 fotos por lote, 15 MB por foto e 60 MB no total.
+- Fotos em WebP com até 1600 px no lado maior, qualidade 80; miniaturas com até 480 px, qualidade 72. Não recorta nem amplia imagens pequenas e corrige a orientação.
+- Escolas são organizadas por ano; encontros podem usar somente o ano ou uma data opcional.
+- Acrescenta somente o lote confirmado ao cadastro existente. Não reconstrói o acervo, não apaga nem substitui fotos.
+- Originais ficam preservados localmente em `imagens/fotos_originais/`, fora do Git e da publicação.
+- Cada lote guarda o cadastro anterior em `.mnc-fotos-backups/`, também fora do Git e da publicação.
+- A ferramenta não oferece exclusão ou substituição. Essas ações exigem revisão separada.
 
-**Antes de executar, tenha a coleção completa de originais.** O script recria toda a timeline com o que encontrar nessa pasta; ele não acrescenta somente as fotos novas ao JSON existente. Se houver apenas os originais de um evento, os outros eventos deixarão de aparecer. Em um clone novo, peça à responsável pelo acervo os originais completos antes de converter.
+O conversor Python e o workflow antigo foram desativados. Arquivos soltos nas pastas de originais não entram no site automaticamente. Você não precisa reunir o acervo completo para importar fotos novas.
 
-Confira a galeria pelo servidor local e envie os três resultados juntos:
+Após conferir, envie apenas os arquivos da galeria, as miniaturas e o cadastro:
 
 ```bash
 git add imagens/galeria imagens/miniaturas data/timeline.json
-git commit -m "Atualiza fotos da galeria"
+git commit -m "Adiciona fotos à galeria"
 git push
 ```
 
-Use a branch de trabalho da equipe e abra um pull request para `main`, quando aplicável. Depois da integração em `main`, o workflow de publicação valida e publica o site.
-
-### Opção 2: processar pelo GitHub Actions
-
-O workflow [Otimizar Imagens para WebP](.github/workflows/otimizar-imagens.yml) executa o mesmo conversor no GitHub. Ele é acionado por um **push que altere `imagens/fotos_originais/`** ou manualmente em **Actions → Otimizar Imagens para WebP → Run workflow**.
-
-**Na configuração atual, os originais são ignorados pelo Git.** Um `git add .` não os envia; portanto, só copiar as fotos para a pasta no computador e fazer push não dispara essa automação.
-
-Se a equipe optar por armazenar os originais no repositório, a responsável pelo acervo deve primeiro enviar a coleção completa. Para incluir explicitamente essa pasta ignorada:
-
-```bash
-git add -f imagens/fotos_originais
-git commit -m "Atualiza acervo de fotos originais"
-git push
-```
-
-Os originais passam a ficar disponíveis para quem tem acesso ao repositório, mas continuam excluídos do pacote do site. Não execute o workflow com um acervo parcial: a mesma regra de recriação da timeline também vale no GitHub. A execução manual não envia arquivos que só existem no computador.
-
-O processamento funciona assim:
-
-1. O GitHub baixa os arquivos da branch selecionada e instala Python e Pillow.
-2. O conversor lê os originais, gera fotos WebP, miniaturas e a timeline.
-3. Se houver alterações, o workflow faz um commit com a mensagem `Automático: Fotos otimizadas para WebP` e envia os arquivos gerados para a mesma branch. A branch precisa permitir esse push.
-4. Confira a execução em **Actions**. Se estiver em uma branch de trabalho, atualize sua cópia com `git pull` antes de continuar editando e inclua o commit gerado no pull request.
-5. Depois que os arquivos gerados estiverem em `main`, confirme a publicação. Se o bot fez o commit diretamente em `main`, execute **Actions → Publicar site → Run workflow → main** após o processamento.
-
-Esse último passo é necessário porque um push feito pelo `GITHUB_TOKEN` do workflow não dispara outro workflow de push, conforme a [documentação do GitHub](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow). A publicação disparada pelo envio inicial dos originais pode usar uma versão anterior à conversão.
-
-### Excluir ou substituir fotos
-
-Para excluir uma foto do fluxo do conversor, remova seu **original** e execute a conversão com o acervo completo. Apagar somente a versão da galeria permite que o original a gere novamente. A nova timeline deixa de listar fotos sem original, mas, por padrão, os arquivos WebP antigos permanecem no disco.
-
-Se também quiser remover os WebPs sem original correspondente, confira primeiro se o acervo está completo e execute:
-
-```bash
-python tools/converter_fotos.py --limpar-orfaos
-```
-
-Essa opção apaga WebPs da galeria e das miniaturas que não correspondem a originais processados. Ela não limpa os JPGs cadastrados anteriormente de forma manual. Revise as exclusões antes do commit.
-
-Para substituir uma imagem, troque seu original mantendo o mesmo nome e execute o conversor. O script verifica a data de modificação para decidir o que precisa gerar novamente.
-
-### Se alguma foto não aparecer
-
-- Confira se o original está no formato aceito e diretamente na pasta de data ou ano.
-- Confira os avisos do conversor: datas inválidas, nomes duplicados e arquivos ilegíveis são ignorados.
-- Verifique se a foto está listada em `data/timeline.json` e se a imagem e a miniatura existem nos caminhos indicados, com as mesmas letras maiúsculas e minúsculas.
-- Se alterou apenas a pasta local de originais, processe no computador ou envie os originais explicitamente antes de esperar o Actions.
-- Confira em **Actions** se o processamento e a publicação terminaram. Depois, recarregue a galeria com `Ctrl+F5`.
+A importação atualiza o computador; a publicação continua pelo fluxo da branch `main`. Veja o [guia do importador](docs/FOTOS.md) para limites, cópias de segurança e recuperação de erros.
 
 ## Atualizar a equipe
 
@@ -179,6 +102,7 @@ Toda a documentação de desenvolvimento e manutenção do projeto deve ficar em
 
 - [Diretrizes do projeto](docs/AGENTS.md): arquitetura, regras de implementação e verificações para agentes e colaboradores.
 - [Padrões do frontend](docs/FRONTEND.md): componentes, acessibilidade e requisitos de responsividade no celular, incluindo as larguras e os cenários que devem ser conferidos em alterações visuais.
+- [Revisão técnica e melhorias — 08/11/2026](docs/REVISAO-TECNICA-2026-11-08.md): diagnóstico de dependências, caminhos, acervo, importador, testes e publicação, com prioridades e critérios de aceite.
 
 Ao criar um novo documento, salve-o em `docs/` e acrescente seu link nesta seção.
 
