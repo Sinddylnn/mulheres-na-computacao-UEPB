@@ -21,8 +21,8 @@
   <header id="main-header" data-include="header.html"></header>
   <main id="conteudo" tabindex="-1">
     <section class="page-hero">
-      <div class="page-hero-glow-l" aria-hidden="true"></div>
-      <div class="page-hero-glow-r" aria-hidden="true"></div>
+      <div class="bg-glow bg-glow--start" aria-hidden="true"></div>
+      <div class="bg-glow bg-glow--end" aria-hidden="true"></div>
       <div class="page-hero-inner">
         <span class="overline">Conexões que importam</span>
         <h1>Parcerias para <em>crescer juntxs</em></h1>
@@ -37,17 +37,17 @@
     </section>
 
     <section class="partnerships-section" aria-labelledby="parcerias-titulo">
-      <div class="section-illustration" aria-hidden="true">
+      <div class="section-illustration section-illustration--edge" aria-hidden="true">
         <img src="../imagens/logos/logo_sem_fundo.png" alt="">
       </div>
       <div class="partnerships-inner">
-        <div class="partnerships-heading reveal">
+        <div class="section-heading reveal">
           <span class="overline">Nossa rede</span>
           <h2 id="parcerias-titulo">Educação, tecnologia e colaboração</h2>
           <p>Programas, projetos e instituições fazem parte da rede do MNC.</p>
         </div>
         <div class="partnerships-grid">
-          <a class="partnership-card reveal" href="https://meninas.sbc.org.br/">
+          <article class="card partnership-card reveal">
             <span class="overline">Programa parceiro</span>
             <div class="partnership-identity">
               <div class="partnership-name">
@@ -57,8 +57,15 @@
               <img class="partnership-logo" src="../imagens/logos/meninas-digitais.png" alt="Logo do Programa Meninas Digitais" width="96" height="96" loading="lazy" decoding="async">
             </div>
             <p>Mulheres na Computação é parceiro do Programa Meninas Digitais, uma iniciativa chancelada pela Sociedade Brasileira de Computação (SBC). Essa união tem como objetivo principal incentivar, apoiar e engajar meninas e jovens mulheres a conhecerem e ingressarem na área de Tecnologia da Informação, desmistificando o setor e promovendo a igualdade de gênero.</p>
-          </a>
-          <a class="partnership-card reveal reveal-delay-1" href="https://uepb.edu.br/">
+            <nav class="partnership-links" aria-label="Links de Meninas Digitais">
+              <a href="https://meninas.sbc.org.br/" target="_blank" rel="noopener noreferrer" aria-label="Site oficial — Meninas Digitais (abre em nova aba)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></svg>
+                <span>Site oficial</span>
+                <svg class="partnership-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
+              </a>
+            </nav>
+          </article>
+          <article class="card partnership-card reveal reveal-delay-1">
             <span class="overline">Vínculo institucional</span>
             <div class="partnership-identity">
               <div class="partnership-name">
@@ -67,33 +74,90 @@
               </div>
               <img class="partnership-logo" src="../imagens/logos/uepb.jpg" alt="Logo da Universidade Estadual da Paraíba" width="96" height="96" loading="lazy" decoding="async">
             </div>
-            <p>Sediado na UEPB, o projeto de extensão Mulheres na Computação (MNC) atua ativamente para criar um ambiente acadêmico mais diverso. A iniciativa concentra seus esforços em garantir espaços de acolhimento, impulsionar a qualificação e incentivar o protagonismo feminino nas ciências da computação.</p>
-          </a>
-          <a class="partnership-card reveal reveal-delay-2" href="https://www.instagram.com/echodigital.uepb/">
+            <p>Sediado na UEPB, o projeto de extensão Mulheres na Computação (MNC) atua ativamente para criar um ambiente acadêmico mais diverso. A iniciativa junto a universidade concentra seus esforços em garantir espaços de acolhimento, impulsionar a qualificação e incentivar o protagonismo feminino nas ciências da computação.</p>
+            <nav class="partnership-links" aria-label="Links de Universidade Estadual da Paraíba">
+              <a href="https://uepb.edu.br/" target="_blank" rel="noopener noreferrer" aria-label="Site oficial — Universidade Estadual da Paraíba (abre em nova aba)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></svg>
+                <span>Site oficial</span>
+                <svg class="partnership-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
+              </a>
+            </nav>
+          </article>
+          <article class="card partnership-card reveal reveal-delay-1">
+            <span class="overline">Pesquisa e inovação</span>
+            <div class="partnership-identity">
+              <div class="partnership-name">
+                <h3>Nutes</h3>
+                <p class="partnership-affiliation">Núcleo de Tecnologias Estratégicas em Saúde — UEPB</p>
+              </div>
+              <img class="partnership-logo" src="../imagens/logos/nutes.jpg" alt="Logo do Nutes" width="96" height="96" loading="lazy" decoding="async">
+            </div>
+            <p>O Núcleo de Tecnologias Estratégicas em Saúde (Nutes) da UEPB reúne professores, pesquisadores e estudantes em uma equipe interdisciplinar dedicada à inovação em saúde. Atua em áreas como engenharia biomédica, desenvolvimento e validação de software e análise de imagens médicas. Ao conectar a universidade, empresas e instituições públicas, o núcleo transforma conhecimento científico em soluções tecnológicas e serviços que respondem às necessidades da sociedade.</p>
+            <nav class="partnership-links" aria-label="Links de Nutes">
+              <a href="https://www2.nutes.uepb.edu.br/" target="_blank" rel="noopener noreferrer" aria-label="Site oficial — Nutes (abre em nova aba)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></svg>
+                <span>Site oficial</span>
+                <svg class="partnership-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
+              </a>
+            </nav>
+          </article>
+          <article class="card partnership-card reveal">
+            <span class="overline">Centro Acadêmico</span>
+            <div class="partnership-identity">
+              <div class="partnership-name">
+                <h3>CAME</h3>
+                <p class="partnership-affiliation">Centro Acadêmico Misael Elias — UEPB</p>
+              </div>
+              <img class="partnership-logo" src="../imagens/logos/misacat.jpeg" alt="Logo do Misacat — CAME" width="96" height="96" loading="lazy" decoding="async">
+            </div>
+            <p>O Centro Acadêmico desempenha um papel fundamental na formação estudantil ao organizar caravanas para congressos e eventos de tecnologia. Essa iniciativa é especialmente importante para o fortalecimento da presença feminina na área, pois proporciona às alunas a oportunidade de vivenciar novos ambientes, conhecer profissionais e pesquisadores, expandir ativamente sua rede de contatos e ampliar seus conhecimentos técnicos e acadêmicos além da sala de aula.</p>
+            <nav class="partnership-links" aria-label="Links de UEPB@CAME">
+              <a href="https://www.instagram.com/came.uepb/" target="_blank" rel="noopener noreferrer" aria-label="Instagram — UEPB@CAME (abre em nova aba)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+                <span>Instagram</span>
+                <svg class="partnership-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
+              </a>
+            </nav>
+          </article>
+          <article class="card partnership-card reveal reveal-delay-2">
             <span class="overline">Projeto de extensão</span>
             <div class="partnership-identity">
               <div class="partnership-name">
                 <h3>Echo Digital</h3>
                 <p class="partnership-affiliation">Universidade Estadual da Paraíba — UEPB</p>
               </div>
-              <img class="partnership-logo partnership-logo--contained" src="../imagens/logos/echo.png" alt="Logo do Echo Digital" width="96" height="96" loading="lazy" decoding="async">
+              <img class="partnership-logo partnership-logo--contained" src="../imagens/logos/echo.PNG" alt="Logo do Echo Digital" width="96" height="96" loading="lazy" decoding="async">
             </div>
             <p>O Echo Digital é uma iniciativa da UEPB que conecta universidade e comunidade por meio da inclusão digital, atuando em forte parceria com o Mulheres na Computação (MNC). Nessa colaboração, as estudantes ministram oficinas de tecnologia para adolescentes, complementando as ações do Echo, que também oferece letramento digital para idosos. Essa união de esforços promove a troca de conhecimentos entre diferentes gerações, consolidando a tecnologia como uma poderosa ferramenta de educação e transformação social.</p>
-          </a>
-          <a class="partnership-card reveal" href="https://www.instagram.com/came.uepb/">
-            <span class="overline">Centro Acadêmico</span>
+            <nav class="partnership-links" aria-label="Links de Echo Digital">
+              <a href="https://www.instagram.com/echodigital.uepb/" target="_blank" rel="noopener noreferrer" aria-label="Instagram — Echo Digital (abre em nova aba)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+                <span>Instagram</span>
+                <svg class="partnership-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
+              </a>
+            </nav>
+          </article>
+          <article class="card partnership-card reveal reveal-delay-2">
+            <span class="overline">Projeto de extensão</span>
             <div class="partnership-identity">
               <div class="partnership-name">
-                <h3>UEPB@CAME</h3>
-                <p class="partnership-affiliation">Centro Acadêmico Misael Elias — UEPB</p>
+                <h3>ProgClub</h3>
+                <p class="partnership-affiliation">Universidade Estadual da Paraíba — UEPB</p>
               </div>
-              <img class="partnership-logo" src="../imagens/logos/misacat.jpeg" alt="Logo do Misacat — CAME" width="96" height="96" loading="lazy" decoding="async">
+              <img class="partnership-logo partnership-logo--contained" src="../imagens/logos/progclub.jpeg" alt="Logo do ProgClub CG — UEPB" width="112" height="112" loading="lazy" decoding="async">
             </div>
-            <p>O Centro Acadêmico desempenha um papel fundamental na formação estudantil ao organizar caravanas para congressos e eventos de tecnologia. Essa iniciativa é especialmente importante para o fortalecimento da presença feminina na área, pois proporciona às alunas a oportunidade de vivenciar novos ambientes, conhecer profissionais e pesquisadores, expandir ativamente sua rede de contatos e ampliar seus conhecimentos técnicos e acadêmicos além da sala de aula.</p>
-          </a>
+            <p>O ProgClub CG é um projeto de extensão da UEPB que promove a capacitação em programação e incentiva a participação em competições. O clube conta com meninas que encontram na programação competitiva uma oportunidade de desenvolver habilidades, compartilhar conhecimentos e enfrentar novos desafios. As competições também são disputadas por times mistos, reunindo estudantes para pensar em estratégias e construir soluções em conjunto. Essa convivência fortalece o trabalho em equipe, a troca de experiências e a presença feminina na Computação, criando espaço para aprender e crescer a cada desafio.</p>
+            <nav class="partnership-links" aria-label="Links de ProgClub">
+              <a href="https://www.instagram.com/progclub.uepb/" target="_blank" rel="noopener noreferrer" aria-label="Instagram — ProgClub (abre em nova aba)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+                <span>Instagram</span>
+                <svg class="partnership-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
+              </a>
+            </nav>
+          </article>
         </div>
 
-        <section class="partnership-call reveal" aria-labelledby="nova-parceria-titulo">
+        <section class="call-panel partnership-call reveal" aria-labelledby="nova-parceria-titulo">
           <span class="overline">Vamos conversar</span>
           <h2 id="nova-parceria-titulo">Quer construir uma parceria com o MNC?</h2>
           <p>Conte para a equipe sua ideia de colaboração. Use o formulário de contato para apresentar sua proposta e deixar um telefone para retorno.</p>

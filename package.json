@@ -1,9 +1,14 @@
 {
   "name": "mnc-site",
   "private": true,
+  "engines": { "node": ">=22" },
   "type": "module",
   "scripts": {
     "test": "node --test",
-    "start": "node tools/serve_site.js"
+    "start": "node tools/serve_site.js",
+    "fotos": "node tools/fotos/server.js"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.5"
   }
 }

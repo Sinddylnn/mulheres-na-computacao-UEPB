@@ -17,7 +17,7 @@ Acesse <http://127.0.0.1:8000>. Para encerrar o servidor, use `Ctrl+C`. Sirva o 
 ## Páginas e arquivos
 
 - `index.html`: página inicial.
-- `paginas/`: Programa, Equipe, Galeria, Publicações, Parcerias e Quero participar.
+- `paginas/`: Programa, Equipe, Galeria, Publicações, Parcerias e Quero participar, além da subpasta `area-da-equipe/` com as ferramentas internas (Enviar fotos e Cadastro da equipe), fora do menu.
 - `header.html` e `footer.html`: menu e rodapé compartilhados por todas as páginas.
 - `css/base.css`, `css/components.css` e `css/layout.css`: temas, componentes e layout comuns.
 - `css/paginas/`: estilos específicos de cada página.
@@ -25,8 +25,9 @@ Acesse <http://127.0.0.1:8000>. Para encerrar o servidor, use `Ctrl+C`. Sirva o 
 - `data/timeline.json`, `imagens/galeria/` e `imagens/miniaturas/`: dados e fotos da galeria.
 - `imagens/logos/`: símbolo do MNC, borboleta e ícone das abas do navegador.
 - `pdfs/`: publicações para download.
+- `docs/`: documentação do projeto, instruções para agentes e melhorias planejadas.
 
-Para alterar o menu ou o rodapé, edite apenas `header.html` ou `footer.html`. Para adicionar uma página, crie seu HTML em `paginas/`, use os pontos de montagem `data-include` como nas outras páginas e registre o arquivo em `tools/build_site.py`. Consulte [os padrões do frontend](docs/FRONTEND.md) para botões, formulários, temas e acessibilidade.
+Para alterar o menu ou o rodapé, edite apenas `header.html` ou `footer.html`. Para adicionar uma página, crie seu HTML em `paginas/`, use os pontos de montagem `data-include` como nas outras páginas e registre o arquivo em `tools/build_site.py`. Consulte [os padrões do frontend](.claude/skills/frontend/SKILL.md) para componentes, cores por tema, acessibilidade e responsividade.
 
 ## Testar
 
@@ -48,115 +49,64 @@ Antes de publicar, confira também o tema claro e escuro, o menu, o formulário 
 
 ## Atualizar fotos
 
-### Onde colocar as fotos
+### Pela página da equipe (recomendado)
 
-Para usar o conversor, coloque as fotos em **`imagens/fotos_originais/`**, seguindo esta estrutura:
+Abra `paginas/area-da-equipe/` no site publicado e escolha **Enviar fotos**. A página não aparece no menu nem nos buscadores e só funciona para colaboradoras do repositório. O mesmo token serve para a [página de cadastro da equipe](#pela-página-de-cadastro-recomendado).
 
-```text
-imagens/fotos_originais/
-├── encontros/
-│   └── 2026-03-11/
-│       ├── encontro-2026-03-11-01.jpg
-│       └── encontro-2026-03-11-02.jpg
-└── escolas/
-    ├── 2024/
-    │   └── escola-2024-01.jpg
-    └── 2025-08-29/
-        ├── escola-2025-08-29-01.jpg
-        └── escola-2025-08-29-02.jpg
-```
+1. Na primeira vez, peça para ser adicionada como colaboradora do repositório e crie um token do GitHub com a permissão `public_repo`. O passo a passo está na própria página, em **Como criar o seu token**.
+2. Cole o token e clique em **Entrar**.
+3. Escolha a categoria, o ano (e a data, nos encontros) e as fotos. Clique em **Preparar fotos** e confira a prévia.
+4. Clique em **Publicar no site**. O site é atualizado sozinho em alguns minutos.
 
-- **Formatos de entrada:** `.jpg`, `.jpeg` e `.png`. Não basta trocar a extensão de um arquivo HEIC ou WebP para JPG; exporte a foto no formato aceito.
-- **Pastas:** use `encontros` ou `escolas`, depois uma data no formato `AAAA-MM-DD`. Em escolas, também é permitido usar somente o ano, como `2024`.
-- **Sem pastas extras dentro da data:** o conversor lê apenas as fotos diretamente em `<categoria>/<data-ou-ano>/`. Para registrar uma visita, use `escolas/2025-08-29/`, sem uma pasta `2025/` antes da data.
-- **Nomes:** prefira letras minúsculas, números e hífens, como nos exemplos. Esse padrão é uma convenção; nomes antigos com espaços e parênteses também funcionam. O conversor mantém o nome e troca a extensão para `.webp`.
-- **Numeração:** use nomes diferentes para cada foto da mesma pasta. Não coloque `foto-01.jpg` e `foto-01.png` juntas: ambas gerariam `foto-01.webp` e uma seria ignorada.
-- **Tamanho e proporção:** não é preciso recortar. O conversor preserva a proporção, corrige a orientação da câmera e gera miniaturas de até 640 × 640 pixels.
+As fotos são convertidas para WebP no navegador, sem dados de localização. Os originais não saem do computador, e nada fica guardado depois do envio. Fotos já cadastradas no mesmo evento são recusadas. As mesmas regras de tamanho e organização do importador local valem aqui, porque as duas ferramentas usam o mesmo módulo (`js/pages/upload/model.js`).
 
-As fotos de escolas aparecem agrupadas por ano na página, mesmo quando os arquivos estão separados por datas. As de encontros aparecem na linha do tempo.
+### Pelo importador local
 
-**Copiar fotos diretamente para `imagens/galeria/` não as cadastra automaticamente.** A página carrega a lista de `data/timeline.json`; por isso, a imagem, a miniatura e seu cadastro precisam estar sincronizados. O conversor faz essa sincronização a partir dos originais.
-
-### Opção 1: processar no computador
-
-Este fluxo mantém os originais locais, como previsto no `.gitignore` atual. É necessário ter Python com Pillow:
+Use o importador local com prévia. Requer **Node.js 22 ou superior**. Na primeira utilização, na raiz do projeto:
 
 ```bash
-python -m pip install Pillow
-python tools/converter_fotos.py
+npm ci
+npm run fotos
 ```
 
-Execute na raiz do projeto, depois de organizar as fotos. O script gera:
+Abra <http://127.0.0.1:8001>. Selecione a categoria, o ano e as fotos; clique em **Gerar prévia**. Confira as imagens e os tamanhos, depois clique em **Adicionar à galeria**. O botão **Conferir a galeria** abre o site local na própria ferramenta.
 
-| Arquivo ou pasta | Conteúdo |
-| --- | --- |
-| `imagens/galeria/<categoria>/<data-ou-ano>/` | Fotos em WebP para abrir em tamanho maior |
-| `imagens/miniaturas/<categoria>/<data-ou-ano>/` | Versões menores para carregar a grade |
-| `data/timeline.json` | Lista de eventos, nomes, dimensões e caminhos das miniaturas |
+- Aceita JPG, PNG e WebP estático: até 20 fotos por lote, 15 MB por foto e 60 MB no total.
+- Fotos em WebP com até 1600 px no lado maior, qualidade 80; miniaturas com até 480 px, qualidade 72. Não recorta nem amplia imagens pequenas e corrige a orientação.
+- Escolas são organizadas por ano; encontros podem usar somente o ano ou uma data opcional.
+- Acrescenta somente o lote confirmado ao cadastro existente. Não reconstrói o acervo, não apaga nem substitui fotos.
+- Originais ficam preservados localmente em `imagens/fotos_originais/`, fora do Git e da publicação.
+- Cada lote guarda o cadastro anterior em `.mnc-fotos-backups/`, também fora do Git e da publicação.
+- A ferramenta não oferece exclusão ou substituição. Essas ações exigem revisão separada.
 
-**Antes de executar, tenha a coleção completa de originais.** O script recria toda a timeline com o que encontrar nessa pasta; ele não acrescenta somente as fotos novas ao JSON existente. Se houver apenas os originais de um evento, os outros eventos deixarão de aparecer. Em um clone novo, peça à responsável pelo acervo os originais completos antes de converter.
+O conversor Python e o workflow antigo foram desativados. Arquivos soltos nas pastas de originais não entram no site automaticamente. Você não precisa reunir o acervo completo para importar fotos novas.
 
-Confira a galeria pelo servidor local e envie os três resultados juntos:
+Após conferir, envie apenas os arquivos da galeria, as miniaturas e o cadastro:
 
 ```bash
 git add imagens/galeria imagens/miniaturas data/timeline.json
-git commit -m "Atualiza fotos da galeria"
+git commit -m "Adiciona fotos à galeria"
 git push
 ```
 
-Use a branch de trabalho da equipe e abra um pull request para `main`, quando aplicável. Depois da integração em `main`, o workflow de publicação valida e publica o site.
-
-### Opção 2: processar pelo GitHub Actions
-
-O workflow [Otimizar Imagens para WebP](.github/workflows/otimizar-imagens.yml) executa o mesmo conversor no GitHub. Ele é acionado por um **push que altere `imagens/fotos_originais/`** ou manualmente em **Actions → Otimizar Imagens para WebP → Run workflow**.
-
-**Na configuração atual, os originais são ignorados pelo Git.** Um `git add .` não os envia; portanto, só copiar as fotos para a pasta no computador e fazer push não dispara essa automação.
-
-Se a equipe optar por armazenar os originais no repositório, a responsável pelo acervo deve primeiro enviar a coleção completa. Para incluir explicitamente essa pasta ignorada:
-
-```bash
-git add -f imagens/fotos_originais
-git commit -m "Atualiza acervo de fotos originais"
-git push
-```
-
-Os originais passam a ficar disponíveis para quem tem acesso ao repositório, mas continuam excluídos do pacote do site. Não execute o workflow com um acervo parcial: a mesma regra de recriação da timeline também vale no GitHub. A execução manual não envia arquivos que só existem no computador.
-
-O processamento funciona assim:
-
-1. O GitHub baixa os arquivos da branch selecionada e instala Python e Pillow.
-2. O conversor lê os originais, gera fotos WebP, miniaturas e a timeline.
-3. Se houver alterações, o workflow faz um commit com a mensagem `Automático: Fotos otimizadas para WebP` e envia os arquivos gerados para a mesma branch. A branch precisa permitir esse push.
-4. Confira a execução em **Actions**. Se estiver em uma branch de trabalho, atualize sua cópia com `git pull` antes de continuar editando e inclua o commit gerado no pull request.
-5. Depois que os arquivos gerados estiverem em `main`, confirme a publicação. Se o bot fez o commit diretamente em `main`, execute **Actions → Publicar site → Run workflow → main** após o processamento.
-
-Esse último passo é necessário porque um push feito pelo `GITHUB_TOKEN` do workflow não dispara outro workflow de push, conforme a [documentação do GitHub](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow). A publicação disparada pelo envio inicial dos originais pode usar uma versão anterior à conversão.
-
-### Excluir ou substituir fotos
-
-Para excluir uma foto do fluxo do conversor, remova seu **original** e execute a conversão com o acervo completo. Apagar somente a versão da galeria permite que o original a gere novamente. A nova timeline deixa de listar fotos sem original, mas, por padrão, os arquivos WebP antigos permanecem no disco.
-
-Se também quiser remover os WebPs sem original correspondente, confira primeiro se o acervo está completo e execute:
-
-```bash
-python tools/converter_fotos.py --limpar-orfaos
-```
-
-Essa opção apaga WebPs da galeria e das miniaturas que não correspondem a originais processados. Ela não limpa os JPGs cadastrados anteriormente de forma manual. Revise as exclusões antes do commit.
-
-Para substituir uma imagem, troque seu original mantendo o mesmo nome e execute o conversor. O script verifica a data de modificação para decidir o que precisa gerar novamente.
-
-### Se alguma foto não aparecer
-
-- Confira se o original está no formato aceito e diretamente na pasta de data ou ano.
-- Confira os avisos do conversor: datas inválidas, nomes duplicados e arquivos ilegíveis são ignorados.
-- Verifique se a foto está listada em `data/timeline.json` e se a imagem e a miniatura existem nos caminhos indicados, com as mesmas letras maiúsculas e minúsculas.
-- Se alterou apenas a pasta local de originais, processe no computador ou envie os originais explicitamente antes de esperar o Actions.
-- Confira em **Actions** se o processamento e a publicação terminaram. Depois, recarregue a galeria com `Ctrl+F5`.
+A importação atualiza o computador; a publicação continua pelo fluxo da branch `main`. Se uma importação falhar, confira o terminal e `git diff`; o cadastro anterior fica guardado em `.mnc-fotos-backups/`.
 
 ## Atualizar a equipe
 
-As fotos dos perfis ficam em `imagens/equipe/` e os textos em [paginas/equipe.html](paginas/equipe.html). Essa parte é editada manualmente e não usa o conversor da galeria.
+As fotos dos perfis ficam em `imagens/equipe/` e os textos em [paginas/equipe.html](paginas/equipe.html).
+
+### Pela página de cadastro (recomendado)
+
+Abra `paginas/area-da-equipe/` no site publicado e escolha **Cadastrar na equipe**. Como a página de envio de fotos, ela fica fora do menu e dos buscadores e usa o mesmo token do GitHub.
+
+1. Cole o token e clique em **Entrar**.
+2. Em **Card**, mantenha **Nova integrante** ou escolha um nome para editar o card existente.
+3. Preencha nome, cargo (opcional), apresentação, redes sociais e foto. Na edição, deixe a foto em branco para manter a atual.
+4. Clique em **Ver prévia**, confira o card e clique em **Publicar no site**.
+
+A foto é convertida para WebP no navegador, com até 600 px, e ganha um nome novo, sem substituir arquivos. Os links das redes precisam ser `https://` do Instagram, LinkedIn ou GitHub. A página não exclui cards; para remover alguém, edite o HTML.
+
+### Manualmente
 
 Para cada integrante, localize seu bloco `<article class="team-member ...">`, atualize a foto e acrescente a apresentação em `<p class="member-bio">...</p>` abaixo do nome. Essa classe aplica texto justificado. Prefira uma foto com o rosto centralizado, pois o site usa um recorte circular.
 
@@ -174,7 +124,11 @@ A página [Quero participar](paginas/quero-participar.html) tem um formulário d
 
 ## Documentação e contato
 
-As [diretrizes do projeto](docs/AGENTS.md) e os [padrões do frontend](docs/FRONTEND.md) orientam novas alterações.
+Toda a documentação de desenvolvimento e manutenção do projeto deve ficar em `docs/`, incluindo arquivos `.md`, guias, instruções para agentes e novos documentos. O único Markdown mantido na raiz é este `README.md`, que serve como apresentação e ponto de entrada para a documentação. A pasta `.claude/` contém apenas o arquivo que carrega `docs/CLAUDE.md` no Claude Code e as skills do projeto.
+
+- [Instruções do projeto](docs/CLAUDE.md): comandos, arquitetura, regras gerais e verificações para agentes e colaboradores.
+- [Padrões do frontend](.claude/skills/frontend/SKILL.md): componentes CSS, tokens de cor por tema, acessibilidade, responsividade e checklist de verificação de interface.
+Ao criar um novo documento, salve-o em `docs/` e acrescente seu link nesta seção.
 
 - E-mail: [mnc.uepb@gmail.com](mailto:mnc.uepb@gmail.com)
 - Instagram: [@mnc.uepb](https://www.instagram.com/mnc.uepb/)

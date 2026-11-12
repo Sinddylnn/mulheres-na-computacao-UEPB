@@ -2,3 +2,7 @@ imagens/fotos_originais/
 .vscode/
 .venv/
 _site/
+node_modules/
+.mnc-fotos-backups/
+data/.fotos-import.lock
+data/.timeline-*.tmp

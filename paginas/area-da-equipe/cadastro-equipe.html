@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Área da equipe do MNC para cadastrar e atualizar os cards da página Equipe.">
+  <title>Cadastro da equipe | Mulheres na Computação MNC</title>
+  <link rel="icon" type="image/png" href="../../imagens/logos/favicon.png">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/paginas/equipe.css">
+  <link rel="stylesheet" href="../../css/paginas/cadastro-equipe.css">
+  <script src="../../js/core/theme-preload.js"></script>
+  <script type="module" src="../../js/main.js"></script>
+</head>
+<body data-page="team-admin">
+  <div id="circuitOverlay" aria-hidden="true">
+    <canvas id="circuitCanvas"></canvas>
+  </div>
+  <div class="global-pattern" aria-hidden="true"></div>
+  <header id="main-header" data-include="header.html"></header>
+  <main id="conteudo" tabindex="-1">
+    <section class="page-hero admin-hero">
+      <div class="bg-glow bg-glow--start" aria-hidden="true"></div>
+      <div class="bg-glow bg-glow--end" aria-hidden="true"></div>
+      <div class="page-hero-inner">
+        <a class="admin-back" href="index.html"><span aria-hidden="true">←</span> Voltar para a área da equipe</a>
+        <span class="overline">Área da equipe</span>
+        <h1>Cadastro da <em>equipe</em></h1>
+        <p>Inclua uma nova integrante ou atualize nome, cargo, apresentação, redes sociais e foto de um card existente. A mudança é publicada direto na página Equipe.</p>
+      </div>
+    </section>
+
+    <section class="admin-section" aria-label="Cadastro da equipe">
+      <div class="admin-inner">
+
+        <!-- 1. Acesso -->
+        <article class="card admin-panel" aria-labelledby="acesso-titulo">
+          <h2 id="acesso-titulo" class="card-eyebrow">1 · Acesso</h2>
+
+          <form id="login-form" novalidate>
+            <div class="form-field">
+              <label for="token">Token do GitHub</label>
+              <input class="form-control" type="password" id="token" name="token" autocomplete="off" spellcheck="false" required aria-describedby="token-help">
+            </div>
+            <p class="form-note" id="token-help">Só funciona para quem é colaboradora do repositório do site. O token é usado apenas nesta aba e enviado somente ao GitHub. É o mesmo token da página de envio de fotos.</p>
+            <label class="admin-check">
+              <input type="checkbox" id="remember" name="remember">
+              Lembrar o token até fechar esta aba
+            </label>
+            <div class="admin-actions">
+              <button class="btn btn--primary" type="submit">Entrar</button>
+            </div>
+          </form>
+
+          <div id="session" class="admin-session" hidden>
+            <p>Conectada como <strong id="login-name"></strong>.</p>
+            <button class="btn btn--secondary btn--small" type="button" id="logout">Sair</button>
+          </div>
+
+          <p class="form-status" id="login-status" role="status" aria-live="polite"></p>
+
+          <details class="admin-help">
+            <summary>Como criar o seu token</summary>
+            <ol>
+              <li>Peça a uma mantenedora para adicionar a sua conta do GitHub como colaboradora do repositório e aceite o convite recebido por e-mail.</li>
+              <li>Abra a <a id="token-link" href="https://github.com/settings/tokens/new?scopes=public_repo&amp;description=MNC%20area%20da%20equipe" target="_blank" rel="noopener noreferrer">página de criação de token do GitHub</a>. O nome e a permissão <code>public_repo</code> já vêm preenchidos.</li>
+              <li>Escolha uma validade (por exemplo, 90 dias) e clique em <strong>Generate token</strong>.</li>
+              <li>Copie o token e cole no campo acima. Guarde-o num gerenciador de senhas; o GitHub não mostra o token de novo.</li>
+            </ol>
+            <p>Nunca compartilhe o token: ele dá acesso de escrita aos seus repositórios públicos. Se ele vazar, apague-o em <strong>Settings → Developer settings → Tokens</strong>.</p>
+          </details>
+        </article>
+
+        <!-- 2. Integrante -->
+        <article class="card admin-panel" aria-labelledby="integrante-titulo">
+          <h2 id="integrante-titulo" class="card-eyebrow">2 · Integrante</h2>
+          <form id="member-form" novalidate>
+            <fieldset id="member-fields" disabled>
+              <legend class="admin-legend">Dados do card da equipe</legend>
+              <div class="form-field">
+                <label for="member-select">Card</label>
+                <select class="form-control" id="member-select" name="member" aria-describedby="member-select-help">
+                  <option value="">Nova integrante</option>
+                </select>
+                <p class="form-note" id="member-select-help">Escolha um nome para editar o card existente ou mantenha “Nova integrante” para incluir alguém.</p>
+              </div>
+              <div class="admin-fields">
+                <div class="form-field">
+                  <label for="member-name">Nome</label>
+                  <input class="form-control" type="text" id="member-name" name="name" autocomplete="off" required>
+                </div>
+                <div class="form-field">
+                  <label for="member-role">Cargo (opcional)</label>
+                  <input class="form-control" type="text" id="member-role" name="role" autocomplete="off" aria-describedby="member-role-help">
+                  <p class="form-note" id="member-role-help">Aparece abaixo do nome, como “Coordenadora”.</p>
+                </div>
+              </div>
+              <div class="form-field">
+                <label for="member-bio">Apresentação (opcional)</label>
+                <textarea class="form-control" id="member-bio" name="bio" rows="5" aria-describedby="member-bio-count"></textarea>
+                <p class="form-note" id="member-bio-count"></p>
+              </div>
+              <div class="admin-fields">
+                <div class="form-field">
+                  <label for="member-instagram">Instagram (opcional)</label>
+                  <input class="form-control" type="url" id="member-instagram" name="instagram" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://www.instagram.com/...">
+                </div>
+                <div class="form-field">
+                  <label for="member-linkedin">LinkedIn (opcional)</label>
+                  <input class="form-control" type="url" id="member-linkedin" name="linkedin" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://www.linkedin.com/in/...">
+                </div>
+                <div class="form-field">
+                  <label for="member-github">GitHub (opcional)</label>
+                  <input class="form-control" type="url" id="member-github" name="github" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://github.com/...">
+                </div>
+              </div>
+              <div class="form-field">
+                <label for="member-photo">Foto</label>
+                <input class="form-control" type="file" id="member-photo" name="photo" accept="image/jpeg,image/png,image/webp" aria-describedby="member-photo-help">
+                <p class="form-note" id="member-photo-help"></p>
+              </div>
+              <div class="admin-actions">
+                <button class="btn btn--primary" type="submit">Ver prévia</button>
+              </div>
+            </fieldset>
+          </form>
+          <p class="form-status" id="member-status" role="status" aria-live="polite"></p>
+        </article>
+
+        <!-- 3. Conferir e publicar -->
+        <article class="card admin-panel" id="preview" aria-labelledby="preview-titulo" hidden>
+          <h2 id="preview-titulo" class="card-eyebrow">3 · Conferir e publicar</h2>
+          <p id="preview-summary"></p>
+          <div class="team-preview" id="preview-card"></div>
+          <div class="admin-actions">
+            <button class="btn btn--primary" type="button" id="publish">Publicar no site</button>
+            <button class="btn btn--secondary" type="button" id="cancel">Cancelar</button>
+          </div>
+          <p class="form-status" id="publish-status" role="status" aria-live="polite"></p>
+        </article>
+
+        <!-- Concluído -->
+        <article class="call-panel admin-done" id="done" tabindex="-1" aria-labelledby="done-titulo" hidden>
+          <h2 id="done-titulo">Card <em>publicado!</em></h2>
+          <p id="done-message"></p>
+          <div class="admin-actions admin-actions--center">
+            <a class="btn btn--primary" href="../equipe.html">Ver a equipe</a>
+            <button class="btn btn--secondary" type="button" id="again">Cadastrar outra pessoa</button>
+          </div>
+        </article>
+
+      </div>
+    </section>
+  </main>
+  <footer id="main-footer" class="site-footer" data-include="footer.html"></footer>
+</body>
+</html>

@@ -1,0 +1,55 @@
+:root { --font-body: system-ui, -apple-system, 'Segoe UI', sans-serif; }
+body { overflow-x: visible; }
+.tool-header { max-width: 1120px; margin: auto; padding: 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.brand { display: flex; align-items: center; gap: 14px; color: var(--text-primary); font-size: .9rem; }
+.brand-mark { font-weight: 800; letter-spacing: -.05em; padding: 8px 12px; border-radius: var(--radius-sm); background: var(--purple-deep); color: #fff; }
+main { width: min(100% - 48px, 960px); margin: 40px auto; }
+.intro { margin-bottom: 32px; }
+h1 { font-size: clamp(2.35rem, 5vw, 4rem); letter-spacing: -.035em; margin-bottom: 20px; }
+.intro p { color: var(--text-secondary); }
+.steps { display: flex; flex-wrap: wrap; gap: 16px 32px; list-style: none; margin-bottom: 32px; color: var(--text-secondary); font-size: .9rem; }
+.steps li { display: flex; align-items: center; gap: 8px; }
+.steps span { border: 1px solid var(--border-lilac); border-radius: 50%; width: 28px; height: 28px; display: grid; place-items: center; font-weight: 700; color: var(--text-primary); }
+.panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: clamp(20px, 4vw, 36px); margin-bottom: 24px; box-shadow: var(--shadow-sm); min-width: 0; }
+h2 { font-size: 1.8rem; margin-bottom: 24px; }
+fieldset { border: 0; min-width: 0; }
+.field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.form-field { margin-bottom: 22px; min-width: 0; }
+.form-field label { font-weight: 650; }
+.form-control { width: 100%; min-width: 0; }
+.optional { color: var(--text-secondary); font-weight: 400; }
+.upload-box { padding: 24px; border: 1px dashed var(--border-lilac); border-radius: var(--radius-md); background: var(--lilac-pale); }
+.upload-box input { margin-top: 16px; }
+input::file-selector-button { padding: 10px; margin-right: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); cursor: pointer; }
+.actions { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; }
+.actions > * { min-width: 0; max-width: 100%; }
+.actions .form-note { margin: 0; }
+.section-heading { display: flex; justify-content: space-between; align-items: center; gap: 18px; flex-wrap: wrap; }
+.section-heading h2 { margin-bottom: 12px; }
+.section-heading > p { border-radius: var(--radius-pill); padding: 6px 14px; background: var(--lilac-pale); color: var(--text-primary); }
+.summary { margin: 12px 0 24px; color: var(--text-secondary); }
+.photo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 20px; }
+.photo-card { border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; min-width: 0; }
+.photo-card img { width: 100%; height: 210px; object-fit: contain; background: var(--bg-surface); }
+.photo-copy { padding: 16px; }
+.photo-copy h3 { font-family: var(--font-body); font-size: .95rem; line-height: 1.5; overflow-wrap: anywhere; }
+.photo-copy p { font-size: .85rem; color: var(--text-secondary); margin-top: 6px; }
+.confirm-bar { margin-top: 28px; border-top: 1px solid var(--border); padding-top: 24px; }
+.confirm-bar > p, .success > p { margin-bottom: 20px; color: var(--text-secondary); }
+.success { border-color: var(--border-teal); }
+.success .form-note { margin-top: 22px; margin-bottom: 0; }
+.tool-footer { display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; color: var(--text-secondary); font-size: .8rem; padding: 12px 0; }
+.form-status:empty { display: none; }
+.form-status[data-error="true"] { border-left: 3px solid var(--lilac); padding-left: 14px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@media (max-width: 560px) {
+  main { width: calc(100% - 32px); margin-top: 24px; }
+  .tool-header { padding: 16px; align-items: flex-start; }
+  .brand { gap: 8px; flex-wrap: wrap; max-width: 45%; }
+  .field-grid { grid-template-columns: 1fr; gap: 0; }
+  .upload-box { padding: 16px; }
+  .desktop-break { display: none; }
+  .steps { gap: 12px; font-size: .8rem; }
+  .steps span { width: 24px; height: 24px; }
+  .actions { align-items: stretch; flex-direction: column; }
+}

@@ -4,34 +4,9 @@
   position: relative;
 }
 
-.partnerships-section > .section-illustration {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 200px;
-  height: auto;
-  margin: 0;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-  pointer-events: none;
-}
-
 .partnerships-inner {
   max-width: var(--content-max);
   margin: 0 auto;
-}
-
-.partnerships-heading {
-  max-width: 680px;
-  margin: 0 auto 36px;
-  text-align: center;
-}
-
-.partnerships-heading h2,
-.partnership-call h2 {
-  color: var(--text-primary);
-  font-size: clamp(1.7rem, 3vw, 2.35rem);
-  margin-bottom: 14px;
 }
 
 .partnerships-section p {
@@ -53,13 +28,12 @@
 
 .partnership-card {
   --partnership-side-color: var(--lilac);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
   padding: clamp(24px, 3vw, 36px);
-  background: var(--bg-card);
-  border: 1px solid var(--border);
   border-left: 4px solid var(--partnership-side-color);
-  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
-  transition: transform .35s, border-color .3s, box-shadow .35s;
 }
 
 .partnerships-grid .partnership-card:nth-child(4n + 3),
@@ -67,26 +41,46 @@
   --partnership-side-color: var(--teal);
 }
 
-.partnership-card:is(:hover, :focus-visible) {
-  transform: translateY(-3px);
-  border-color: var(--border-teal);
+.partnership-card:is(:hover, :focus-within) {
   border-left-color: var(--partnership-side-color);
-  box-shadow: var(--shadow-md);
 }
 
-a.partnership-card {
-  display: block;
-  color: inherit;
+.partnership-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 24px;
+}
+
+.partnership-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid var(--partnership-side-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: .85rem;
+  font-weight: 600;
   text-decoration: none;
+  transition: background .25s;
 }
 
-a.partnership-card:focus-visible {
-  outline: 2px solid var(--teal);
+.partnership-links a:hover { background: var(--bg-surface); }
+
+.partnership-links a:focus-visible {
+  outline: 2px solid var(--partnership-side-color);
   outline-offset: 4px;
 }
 
-.partnerships-grid a.partnership-card:nth-child(even):focus-visible {
-  outline-color: var(--lilac);
+.partnership-links svg { width: 20px; height: 20px; flex-shrink: 0; }
+.partnership-links .partnership-link-arrow { width: 16px; height: 16px; }
+
+.partnership-card > .overline {
+  align-self: flex-start;
 }
 
 .partnership-card h3 {
@@ -129,25 +123,24 @@ a.partnership-card:focus-visible {
   background: #e9eef4;
 }
 
-.partnership-card:is(:hover, :focus-visible) .partnership-logo { border-color: var(--teal); transform: scale(1.06); }
-.partnerships-grid .partnership-card:nth-child(even):is(:hover, :focus-visible) .partnership-logo { border-color: var(--lilac); }
-
-.partnership-call {
-  margin-top: 36px;
-  padding: clamp(24px, 4vw, 44px);
-  text-align: center;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-xl);
-  background: linear-gradient(135deg, var(--teal-pale), var(--lilac-pale));
+.partnership-logo--initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  font-size: .85rem;
+  font-weight: 700;
 }
 
-.partnership-call p {
-  max-width: 680px;
-  margin: 0 auto 26px;
+.partnership-card:is(:hover, :focus-within) .partnership-logo {
+  border-color: var(--partnership-side-color);
+  transform: scale(1.06);
 }
+
+.partnership-call { margin-top: 36px; }
+.partnership-call p { margin-bottom: 26px; }
 
 @media (max-width: 760px) {
-  .partnerships-section > .section-illustration { width: 160px; }
   .partnerships-grid { grid-template-columns: 1fr; }
   .partnerships-grid .partnership-card:nth-child(odd) {
     --partnership-side-color: var(--lilac);

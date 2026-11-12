@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { readFile } from 'node:fs/promises';
 
 import {
   formatDate,
@@ -50,7 +51,24 @@ test('remove fotos duplicadas da visão geral', () => {
 test('agrupa escolas por ano em ordem decrescente', () => {
   const events = normalizeTimeline([
     rawTimeline[1],
-    { ...rawTimeline[1], data: '2026', caminho_relativo: 'escolas/2026' }
+    { ...rawTimeline[1], data: '2025', caminho_relativo: 'escolas/2025' }
   ]);
-  assert.deepEqual([...groupSchoolsByYear(events).keys()], ['2026', '2024']);
+  assert.deepEqual([...groupSchoolsByYear(events).keys()], ['2025', '2024']);
+});
+
+
+test('a galeria registra ações nas escolas somente em 2024 e 2025', async () => {
+  const timeline = JSON.parse(await readFile(new URL('../data/timeline.json', import.meta.url), 'utf8'));
+  const schools = groupSchoolsByYear(normalizeTimeline(timeline));
+  assert.deepEqual([...schools.keys()], ['2025', '2024']);
+  assert.ok([...schools.values()].every(photos => photos.length > 0));
+  const schoolEvents = timeline.filter(event => event.categoria === 'escolas');
+  assert.equal(schoolEvents.length, 2);
+  for (const event of schoolEvents) {
+    assert.match(event.data, /^\d{4}$/);
+    assert.equal(event.caminho_relativo, `escolas/${event.data}`);
+    for (const photo of event.fotos) {
+      assert.equal(event.metadados[photo].miniatura.split('/').slice(0, -1).join('/'), event.caminho_relativo);
+    }
+  }
 });
