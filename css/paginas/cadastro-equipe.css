@@ -1,0 +1,15 @@
+/* ========================================================================
+   CADASTRO DA EQUIPE (área da equipe)
+   Os painéis (.admin-*) ficam em components.css e o card vem de equipe.css;
+   aqui só a moldura da prévia.
+   ======================================================================== */
+
+#preview-summary { color:var(--text-secondary); margin-bottom:18px; }
+
+.team-preview {
+  display:grid; justify-items:center; margin-bottom:22px;
+  padding:clamp(16px, 4vw, 28px); border-radius:var(--radius-md);
+  background:var(--bg-surface); border:1px dashed var(--border);
+}
+.team-preview .team-member { width:min(100%, 280px); }
+.team-preview .team-member:is(:hover, :focus-within) { transform:none; }

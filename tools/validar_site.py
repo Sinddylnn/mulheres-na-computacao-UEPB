@@ -16,8 +16,9 @@ RAIZ = (
     if len(sys.argv) > 1
     else Path(__file__).resolve().parent.parent
 )
-ARQUIVOS_HTML = [RAIZ / "index.html", *sorted((RAIZ / "paginas").glob("*.html"))]
+ARQUIVOS_HTML = [RAIZ / "index.html", *sorted((RAIZ / "paginas").rglob("*.html"))]
 FRAGMENTOS_HTML: list[Path] = [RAIZ / "header.html", RAIZ / "footer.html"]
+EXTENSOES_FOTO = {".webp", ".jpg", ".jpeg", ".png"}
 REFERENCIAS_HTML = {
     "a": "href",
     "img": "src",
@@ -298,7 +299,12 @@ def validar_timeline(erros: list[str]) -> tuple[int, int]:
 
         for foto in fotos:
             total_fotos += 1
-            if not isinstance(foto, str) or Path(foto).name != foto or not foto.endswith(".webp"):
+            # Fotos novas são WebP; o acervo legado ainda tem JPG e PNG.
+            if (
+                not isinstance(foto, str)
+                or Path(foto).name != foto
+                or Path(foto).suffix.lower() not in EXTENSOES_FOTO
+            ):
                 erros.append(f"{contexto}: nome de foto inválido: {foto!r}")
                 continue
 
@@ -315,12 +321,20 @@ def validar_timeline(erros: list[str]) -> tuple[int, int]:
             if not isinstance(altura, int) or isinstance(altura, bool) or altura <= 0:
                 erros.append(f"{contexto}: altura inválida para '{foto}'")
 
-            esperado_foto = f"{esperado_evento}/{foto}"
-            if miniatura != esperado_foto:
+            # A miniatura fica na mesma pasta do evento; o nome pode diferir no legado.
+            arquivos = [("galeria", f"{esperado_evento}/{foto}", "imagem")]
+            if (
+                isinstance(miniatura, str)
+                and miniatura.startswith(f"{esperado_evento}/")
+                and Path(miniatura).name == miniatura[len(esperado_evento) + 1:]
+                and Path(miniatura).suffix.lower() in EXTENSOES_FOTO
+            ):
+                arquivos.append(("miniaturas", miniatura, "miniatura"))
+            else:
                 erros.append(f"{contexto}: caminho de miniatura inválido para '{foto}'")
 
-            for pasta, tipo in (("galeria", "imagem"), ("miniaturas", "miniatura")):
-                destino = RAIZ / "imagens" / pasta / esperado_foto
+            for pasta, caminho, tipo in arquivos:
+                destino = RAIZ / "imagens" / pasta / caminho
                 if not destino.is_file():
                     erros.append(f"{contexto}: {tipo} não encontrada: {relativo(destino)}")
 

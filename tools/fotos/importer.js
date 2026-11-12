@@ -3,23 +3,11 @@ import { mkdir, mkdtemp, readFile, writeFile, realpath, open, rename, unlink, rm
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import sharp from 'sharp';
+import { LIMITS, ImportError, destination, checkBatch, checkTimeline, checkDuplicate, photoStem, addPhotos, serializeTimeline }
+  from '../../js/pages/upload/model.js';
 
+export { LIMITS, ImportError };
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
-export const LIMITS = { files: 20, fileBytes: 15 * 1024 * 1024, batchBytes: 60 * 1024 * 1024 };
-export class ImportError extends Error {
-  constructor(message, status = 400) { super(message); this.status = status; }
-}
-
-function destination(category, year, date) {
-  if (!['escolas', 'encontros'].includes(category)) throw new ImportError('Selecione uma categoria válida.');
-  if (!/^\d{4}$/.test(year) || +year < 1900 || +year > 2100) throw new ImportError('Informe um ano entre 1900 e 2100.');
-  if (category === 'escolas' && date) throw new ImportError('Fotos de escolas são organizadas somente por ano.');
-  if (date && (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !date.startsWith(year + '-')
-      || Number.isNaN(Date.parse(date)) || new Date(date).toISOString().slice(0, 10) !== date)) {
-    throw new ImportError('A data do encontro deve ser válida e pertencer ao ano informado.');
-  }
-  return { category, date: date || year, folder: `${category}/${date || year}` };
-}
 
 export async function createImporter(projectRoot) {
   const root = await realpath(projectRoot);
@@ -42,11 +30,7 @@ export async function createImporter(projectRoot) {
     const bytes = await readFile(manifestPath);
     let events;
     try { events = JSON.parse(bytes); } catch { throw new ImportError('O cadastro da galeria contém JSON inválido. Nada foi alterado.'); }
-    if (!Array.isArray(events) || events.some(event => !event || typeof event !== 'object'
-      || !Array.isArray(event.fotos) || !event.metadados || typeof event.metadados !== 'object')) {
-      throw new ImportError('O cadastro da galeria precisa ser revisado antes da importação. Nada foi alterado.');
-    }
-    return { bytes, events, revision: hash(bytes) };
+    return { bytes, events: checkTimeline(events), revision: hash(bytes) };
   }
   function getPlan(id) {
     const plan = plans.get(id);
@@ -60,8 +44,8 @@ export async function createImporter(projectRoot) {
       let stage;
       try {
         const target = destination(category, year, date);
-        if (!Array.isArray(files) || !files.length || files.length > LIMITS.files) throw new ImportError('Selecione de 1 a 20 fotos por vez.');
-        if (files.reduce((sum, file) => sum + file.bytes.length, 0) > LIMITS.batchBytes) throw new ImportError('O lote deve ter até 60 MB.');
+        if (!Array.isArray(files)) throw new ImportError('Selecione de 1 a 20 fotos por vez.');
+        checkBatch(files.map(file => ({ name: path.basename(String(file.name).replaceAll('\\', '/')), size: file.bytes?.length || 0 })));
         // Bound temporary disk use when a tab repeatedly regenerates its preview.
         for (const [id, old] of plans) {
           if (!old.result) { await rm(old.stage, { recursive: true, force: true }); plans.delete(id); }
@@ -74,29 +58,22 @@ export async function createImporter(projectRoot) {
         const seen = new Set();
         for (const [index, file] of files.entries()) {
           const name = path.basename(String(file.name).replaceAll('\\', '/'));
-          if (!file.bytes.length || file.bytes.length > LIMITS.fileBytes) throw new ImportError(`${name}: o limite é 15 MB por foto.`);
           const digest = hash(file.bytes);
-          if (seen.has(digest) || manifest.events.some(event => event.categoria === category
-            && event.data === target.date && Object.values(event.metadados).some(meta => meta?.sha256 === digest))) {
-            throw new ImportError(`${name}: foto repetida neste lote ou já importada neste evento.`);
-          }
-          seen.add(digest);
+          checkDuplicate(manifest.events, target, digest, seen, name);
           let full, thumb, extension;
           try {
-            const image = sharp(file.bytes, { limitInputPixels: 40_000_000, failOn: 'warning' });
+            const image = sharp(file.bytes, { limitInputPixels: LIMITS.pixels, failOn: 'warning' });
             const meta = await image.metadata();
             extension = { jpeg: 'jpg', png: 'png', webp: 'webp' }[meta.format];
             if (!extension || (meta.pages || 1) > 1) throw new Error('Formato não suportado');
-            full = await image.rotate().resize({ width: 1600, height: 1600, fit: 'inside', withoutEnlargement: true })
-              .webp({ quality: 80 }).toBuffer({ resolveWithObject: true });
-            thumb = await sharp(full.data).resize({ width: 480, height: 480, fit: 'inside', withoutEnlargement: true })
-              .webp({ quality: 72 }).toBuffer();
+            full = await image.rotate().resize({ width: LIMITS.fullSize, height: LIMITS.fullSize, fit: 'inside', withoutEnlargement: true })
+              .webp({ quality: Math.round(LIMITS.fullQuality * 100) }).toBuffer({ resolveWithObject: true });
+            thumb = await sharp(full.data).resize({ width: LIMITS.thumbSize, height: LIMITS.thumbSize, fit: 'inside', withoutEnlargement: true })
+              .webp({ quality: Math.round(LIMITS.thumbQuality * 100) }).toBuffer();
           } catch {
             throw new ImportError(`${name}: não foi possível abrir a foto. Use JPG, PNG ou WebP estático com até 40 megapixels.`);
           }
-          const slug = path.parse(name).name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-            .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 55) || 'foto';
-          const stem = `${slug}-${digest.slice(0, 12)}-${id.slice(0, 8)}-${index + 1}`;
+          const stem = photoStem(name, digest, id, index);
           const output = `${stem}.webp`;
           await writeFile(path.join(stage, `${index}-original`), file.bytes);
           await writeFile(path.join(stage, `${index}-full`), full.data);
@@ -151,22 +128,11 @@ export async function createImporter(projectRoot) {
             try { await handle.writeFile(bytes); } finally { await handle.close(); }
           }
         }
-        const events = manifest.events;
-        let event = events.find(item => item.categoria === plan.category && item.data === plan.date);
-        if (event && event.caminho_relativo !== plan.folder) throw new ImportError('O evento existente usa outra pasta. Nada foi adicionado.');
-        if (!event) {
-          event = { categoria: plan.category, data: plan.date, caminho_relativo: plan.folder, fotos: [], metadados: {} };
-          events.unshift(event);
-        }
-        for (const photo of plan.photos) {
-          event.fotos.push(photo.output);
-          event.metadados[photo.output] = { largura: photo.width, altura: photo.height,
-            miniatura: `${plan.folder}/${photo.output}`, sha256: photo.sha256 };
-        }
+        const events = addPhotos(manifest.events, plan, plan.photos);
         // If another editor saved during image writes, preserve their version and abort.
         if (hash(await readFile(manifestPath)) !== plan.revision) throw new ImportError('O cadastro foi alterado durante a importação. Gere uma nova prévia.', 409);
         temporary = path.join(root, 'data', `.timeline-${id}.tmp`);
-        await writeFile(temporary, JSON.stringify(events, null, 2) + '\n', { flag: 'wx' });
+        await writeFile(temporary, serializeTimeline(events), { flag: 'wx' });
         await rename(temporary, manifestPath);
         temporary = null;
         plan.result = { count: plan.photos.length, backup: `.mnc-fotos-backups/${id}/timeline.json`, category: plan.category, date: plan.date };

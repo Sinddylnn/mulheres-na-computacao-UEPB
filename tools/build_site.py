@@ -17,6 +17,9 @@ PAGES = (
     Path("paginas/publicacoes.html"),
     Path("paginas/parcerias.html"),
     Path("paginas/quero-participar.html"),
+    Path("paginas/area-da-equipe/enviar-fotos.html"),
+    Path("paginas/area-da-equipe/cadastro-equipe.html"),
+    Path("paginas/area-da-equipe/index.html"),
 )
 PUBLIC_DIRECTORIES = ("css", "data", "imagens", "js", "pdfs")
 SHARED_HTML = (Path("header.html"), Path("footer.html"))

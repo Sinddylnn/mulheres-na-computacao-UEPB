@@ -17,7 +17,7 @@ Acesse <http://127.0.0.1:8000>. Para encerrar o servidor, use `Ctrl+C`. Sirva o 
 ## Páginas e arquivos
 
 - `index.html`: página inicial.
-- `paginas/`: Programa, Equipe, Galeria, Publicações, Parcerias e Quero participar.
+- `paginas/`: Programa, Equipe, Galeria, Publicações, Parcerias e Quero participar, além da subpasta `area-da-equipe/` com as ferramentas internas (Enviar fotos e Cadastro da equipe), fora do menu.
 - `header.html` e `footer.html`: menu e rodapé compartilhados por todas as páginas.
 - `css/base.css`, `css/components.css` e `css/layout.css`: temas, componentes e layout comuns.
 - `css/paginas/`: estilos específicos de cada página.
@@ -25,9 +25,9 @@ Acesse <http://127.0.0.1:8000>. Para encerrar o servidor, use `Ctrl+C`. Sirva o 
 - `data/timeline.json`, `imagens/galeria/` e `imagens/miniaturas/`: dados e fotos da galeria.
 - `imagens/logos/`: símbolo do MNC, borboleta e ícone das abas do navegador.
 - `pdfs/`: publicações para download.
-- `docs/`: documentação do projeto, diretrizes para agentes e padrões do frontend.
+- `docs/`: documentação do projeto, instruções para agentes e melhorias planejadas.
 
-Para alterar o menu ou o rodapé, edite apenas `header.html` ou `footer.html`. Para adicionar uma página, crie seu HTML em `paginas/`, use os pontos de montagem `data-include` como nas outras páginas e registre o arquivo em `tools/build_site.py`. Consulte [os padrões do frontend](docs/FRONTEND.md) para botões, formulários, temas e acessibilidade.
+Para alterar o menu ou o rodapé, edite apenas `header.html` ou `footer.html`. Para adicionar uma página, crie seu HTML em `paginas/`, use os pontos de montagem `data-include` como nas outras páginas e registre o arquivo em `tools/build_site.py`. Consulte [os padrões do frontend](.claude/skills/frontend/SKILL.md) para componentes, cores por tema, acessibilidade e responsividade.
 
 ## Testar
 
@@ -48,6 +48,19 @@ Remove-Item Env:SITE_URL
 Antes de publicar, confira também o tema claro e escuro, o menu, o formulário e a galeria em desktop e celular. Os testes automatizados não confirmam o envio real de e-mails.
 
 ## Atualizar fotos
+
+### Pela página da equipe (recomendado)
+
+Abra `paginas/area-da-equipe/` no site publicado e escolha **Enviar fotos**. A página não aparece no menu nem nos buscadores e só funciona para colaboradoras do repositório. O mesmo token serve para a [página de cadastro da equipe](#pela-página-de-cadastro-recomendado).
+
+1. Na primeira vez, peça para ser adicionada como colaboradora do repositório e crie um token do GitHub com a permissão `public_repo`. O passo a passo está na própria página, em **Como criar o seu token**.
+2. Cole o token e clique em **Entrar**.
+3. Escolha a categoria, o ano (e a data, nos encontros) e as fotos. Clique em **Preparar fotos** e confira a prévia.
+4. Clique em **Publicar no site**. O site é atualizado sozinho em alguns minutos.
+
+As fotos são convertidas para WebP no navegador, sem dados de localização. Os originais não saem do computador, e nada fica guardado depois do envio. Fotos já cadastradas no mesmo evento são recusadas. As mesmas regras de tamanho e organização do importador local valem aqui, porque as duas ferramentas usam o mesmo módulo (`js/pages/upload/model.js`).
+
+### Pelo importador local
 
 Use o importador local com prévia. Requer **Node.js 22 ou superior**. Na primeira utilização, na raiz do projeto:
 
@@ -76,11 +89,24 @@ git commit -m "Adiciona fotos à galeria"
 git push
 ```
 
-A importação atualiza o computador; a publicação continua pelo fluxo da branch `main`. Veja o [guia do importador](docs/FOTOS.md) para limites, cópias de segurança e recuperação de erros.
+A importação atualiza o computador; a publicação continua pelo fluxo da branch `main`. Se uma importação falhar, confira o terminal e `git diff`; o cadastro anterior fica guardado em `.mnc-fotos-backups/`.
 
 ## Atualizar a equipe
 
-As fotos dos perfis ficam em `imagens/equipe/` e os textos em [paginas/equipe.html](paginas/equipe.html). Essa parte é editada manualmente e não usa o conversor da galeria.
+As fotos dos perfis ficam em `imagens/equipe/` e os textos em [paginas/equipe.html](paginas/equipe.html).
+
+### Pela página de cadastro (recomendado)
+
+Abra `paginas/area-da-equipe/` no site publicado e escolha **Cadastrar na equipe**. Como a página de envio de fotos, ela fica fora do menu e dos buscadores e usa o mesmo token do GitHub.
+
+1. Cole o token e clique em **Entrar**.
+2. Em **Card**, mantenha **Nova integrante** ou escolha um nome para editar o card existente.
+3. Preencha nome, cargo (opcional), apresentação, redes sociais e foto. Na edição, deixe a foto em branco para manter a atual.
+4. Clique em **Ver prévia**, confira o card e clique em **Publicar no site**.
+
+A foto é convertida para WebP no navegador, com até 600 px, e ganha um nome novo, sem substituir arquivos. Os links das redes precisam ser `https://` do Instagram, LinkedIn ou GitHub. A página não exclui cards; para remover alguém, edite o HTML.
+
+### Manualmente
 
 Para cada integrante, localize seu bloco `<article class="team-member ...">`, atualize a foto e acrescente a apresentação em `<p class="member-bio">...</p>` abaixo do nome. Essa classe aplica texto justificado. Prefira uma foto com o rosto centralizado, pois o site usa um recorte circular.
 
@@ -98,12 +124,10 @@ A página [Quero participar](paginas/quero-participar.html) tem um formulário d
 
 ## Documentação e contato
 
-Toda a documentação de desenvolvimento e manutenção do projeto deve ficar em `docs/`, incluindo arquivos `.md`, guias, instruções para agentes e novos documentos. O único Markdown mantido na raiz é este `README.md`, que serve como apresentação e ponto de entrada para a documentação. Não crie cópias de `AGENTS.md` ou de outros documentos fora de `docs/`.
+Toda a documentação de desenvolvimento e manutenção do projeto deve ficar em `docs/`, incluindo arquivos `.md`, guias, instruções para agentes e novos documentos. O único Markdown mantido na raiz é este `README.md`, que serve como apresentação e ponto de entrada para a documentação. A pasta `.claude/` contém apenas o arquivo que carrega `docs/CLAUDE.md` no Claude Code e as skills do projeto.
 
-- [Diretrizes do projeto](docs/AGENTS.md): arquitetura, regras de implementação e verificações para agentes e colaboradores.
-- [Padrões do frontend](docs/FRONTEND.md): componentes, acessibilidade e requisitos de responsividade no celular, incluindo as larguras e os cenários que devem ser conferidos em alterações visuais.
-- [Revisão técnica e melhorias — 08/11/2026](docs/REVISAO-TECNICA-2026-11-08.md): diagnóstico de dependências, caminhos, acervo, importador, testes e publicação, com prioridades e critérios de aceite.
-
+- [Instruções do projeto](docs/CLAUDE.md): comandos, arquitetura, regras gerais e verificações para agentes e colaboradores.
+- [Padrões do frontend](.claude/skills/frontend/SKILL.md): componentes CSS, tokens de cor por tema, acessibilidade, responsividade e checklist de verificação de interface.
 Ao criar um novo documento, salve-o em `docs/` e acrescente seu link nesta seção.
 
 - E-mail: [mnc.uepb@gmail.com](mailto:mnc.uepb@gmail.com)

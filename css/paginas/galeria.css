@@ -6,8 +6,6 @@
   position:relative; overflow:hidden;
   display:flex; flex-direction:column; align-items:center; background:var(--bg-page);
 }
-.gallery-bg-shape-1 { position:absolute; top:5%; left:-15%; width:700px; height:700px; background:radial-gradient(circle, var(--teal-pale), transparent 70%); pointer-events:none; }
-.gallery-bg-shape-2 { position:absolute; bottom:-5%; right:-15%; width:700px; height:700px; background:radial-gradient(circle, var(--lilac-pale), transparent 70%); pointer-events:none; }
 
 .gallery-banner {
   border-radius:var(--radius-xl); padding:50px 30px; text-align:center;
@@ -24,7 +22,7 @@
 .gallery-banner h1 span { color:var(--teal); font-style:italic; }
 .gallery-banner p  { color:rgba(255,255,255,.68); font-size:.95rem; line-height:1.6; position:relative; z-index:1; }
 .gallery-overline { background:rgba(255,255,255,.1); color:#fff; border-color:rgba(255,255,255,.2); }
-.gallery-message { color:var(--teal); text-align:center; font-size:1.1rem; padding:2rem 0; }
+.gallery-message { color:var(--accent-text); text-align:center; font-size:1.1rem; padding:2rem 0; }
 .gallery-message--error { color:#f0a8a8; }
 [data-theme="light"] .gallery-message--error { color:#9d3030; }
 
@@ -98,6 +96,8 @@ body.has-modal-open { overflow:hidden; }
 }
 
 .lightbox-fechar {
+  min-width: var(--control-height);
+  min-height: var(--control-height);
   position: absolute;
   top: 25px;
   right: 35px;
@@ -141,25 +141,32 @@ body.has-modal-open { overflow:hidden; }
   z-index: 1;
 }
 
+/* Filtro é um controle especializado (aria-pressed), não uma variante de .btn. */
 .btn-filtro {
-  background: transparent;
-  color: var(--text-muted);
-  border: 1px solid var(--border);
+  min-height: var(--control-height);
   padding: 8px 24px;
-  border-radius: 30px;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
   cursor: pointer;
-  transition: all 0.3s ease;
   font-weight: 500;
-  font-size: 1.05rem;
+  font-size: 1rem;
+  transition: background .25s, color .25s, border-color .25s, box-shadow .25s;
 }
 
-.btn-filtro:hover,
+.btn-filtro:hover {
+  background: var(--accent-surface);
+  color: var(--accent-text);
+  border-color: var(--accent-border);
+}
+
 .btn-filtro.active {
-  background: var(--teal);
-  color: var(--bg-page); /* Fica escuro para dar contraste com o botão claro */
-  border-color: var(--teal);
-  font-weight: 700; 
-  box-shadow: 0 4px 15px rgba(171, 214, 205, 0.3); /* Sombra suave da sua cor teal */
+  background: var(--accent-strong);
+  color: var(--on-accent);
+  border-color: var(--accent-strong);
+  font-weight: 700;
+  box-shadow: var(--shadow-sm);
 }
 
 /* Estrutura da Linha do Tempo */
@@ -168,7 +175,7 @@ body.has-modal-open { overflow:hidden; }
   max-width: var(--content-max);
   position: relative;
   z-index: 1;
-  border-left: 2px dashed rgba(171, 214, 205, 0.2); /* Linha sutil usando o tom teal */
+  border-left: 2px dashed var(--accent-border);
   padding-left: 40px;
   margin-left: 20px;
 }
@@ -189,16 +196,15 @@ body.has-modal-open { overflow:hidden; }
   height: 16px;
   border-radius: 50%;
   border: 4px solid var(--bg-page);
-  /* Adicione as duas linhas abaixo para a cor única */
-  background-color: var(--teal); 
-  box-shadow: 0 0 10px rgba(171, 214, 205, 0.5); 
+  background-color: var(--accent-strong);
+  box-shadow: 0 0 10px var(--accent-border);
 }
 
 /* Textos da Timeline */
 .timeline-conteudo { width: 100%; }
 
 .evento-data {
-  color: var(--teal);
+  color: var(--accent-text);
   font-size: 0.85rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -206,12 +212,10 @@ body.has-modal-open { overflow:hidden; }
 }
 
 .evento-titulo {
-  color: #fff;
+  color: var(--text-primary);
   margin: 5px 0 20px 0;
   font-size: 1.5rem;
 }
-
-[data-theme="light"] .evento-titulo { color: #111; }
 
 /* Ajuste Responsivo da Timeline e do Grid dentro dela */
 .timeline-conteudo .gallery-grid {
@@ -285,7 +289,7 @@ body.has-modal-open { overflow:hidden; }
  */
 .acordeao-ano-btn {
   width: 100%;
-  background: rgba(171, 214, 205, 0.08);  /* Cor teal com opacidade bem baixa */
+  background: var(--accent-surface);
   color: var(--text-primary);
   border: none;
   padding: 18px 25px;
@@ -302,8 +306,9 @@ body.has-modal-open { overflow:hidden; }
   letter-spacing: 0.3px;
 }
 
-.acordeao-ano-btn:hover:not(.ativo) {
-  background: rgba(171, 214, 205, 0.12);
+.acordeao-ano-btn:hover:not(.ativo),
+.acordeao-ano-btn.ativo {
+  background: color-mix(in srgb, var(--accent-text) 16%, transparent);
 }
 
 /**
@@ -312,23 +317,7 @@ body.has-modal-open { overflow:hidden; }
  * - Cor teal mais evidente
  */
 .acordeao-ano-btn.ativo {
-  background: rgba(171, 214, 205, 0.18);
-  color: var(--text-primary);
   box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* Tema claro: ajusta cores para melhor legibilidade */
-[data-theme="light"] .acordeao-ano-btn {
-  background: rgba(74, 57, 104, 0.06);  /* Roxo bem suave */
-  color: #1a1a1a;
-}
-
-[data-theme="light"] .acordeao-ano-btn:hover:not(.ativo) {
-  background: rgba(74, 57, 104, 0.12);
-}
-
-[data-theme="light"] .acordeao-ano-btn.ativo {
-  background: rgba(74, 57, 104, 0.18);
 }
 
 /**
@@ -348,7 +337,7 @@ body.has-modal-open { overflow:hidden; }
  */
 .acordeao-icone {
   font-size: 1.4rem;
-  color: var(--teal);
+  color: var(--accent-text);
   font-weight: 700;
   line-height: 1;
   flex-shrink: 0;  /* Previne que o ícone encolha */
@@ -366,16 +355,10 @@ body.has-modal-open { overflow:hidden; }
  * - Herda grid masonry de .gallery-grid
  */
 .acordeao-ano-galeria {
-  background: rgba(171, 214, 205, 0.04);  /* Fundo muito sutil */
+  background: color-mix(in srgb, var(--accent-text) 4%, transparent);
   padding: 24px 20px 20px 20px;
   animation: acordeaoAbrir 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  border-top: 1px solid rgba(171, 214, 205, 0.1);
-}
-
-/* Tema claro: ajusta fundo */
-[data-theme="light"] .acordeao-ano-galeria {
-  background: rgba(74, 57, 104, 0.04);
-  border-top-color: rgba(74, 57, 104, 0.1);
+  border-top: 1px solid var(--border);
 }
 
 /**

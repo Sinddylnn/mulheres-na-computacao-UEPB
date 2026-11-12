@@ -48,6 +48,13 @@
   --control-height: 44px;
   --focus-color: var(--teal);
 
+  /* Destaque por tema: use estes tokens em vez de repetir regras [data-theme="light"]. */
+  --accent-text:    var(--teal);
+  --accent-surface: var(--teal-pale);
+  --accent-border:  var(--border-teal);
+  --accent-strong:  var(--teal);
+  --on-accent:      #0C1018;
+  --on-teal:        #0C1018;
 }
 
 [data-theme="light"] {
@@ -74,6 +81,12 @@
 
   --shadow-sm:  0 2px 12px rgba(74,57,104,.08);
   --shadow-md:  0 6px 28px rgba(74,57,104,.11);
+
+  --accent-text:    var(--purple-dark);
+  --accent-surface: var(--lilac-pale);
+  --accent-border:  var(--border-lilac);
+  --accent-strong:  var(--purple-dark);
+  --on-accent:      #FFFFFF;
 }
 
 /* RESET GLOBAL */

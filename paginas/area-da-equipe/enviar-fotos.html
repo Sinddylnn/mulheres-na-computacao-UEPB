@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Área da equipe do MNC para enviar fotos à galeria.">
+  <title>Enviar fotos | Mulheres na Computação MNC</title>
+  <link rel="icon" type="image/png" href="../../imagens/logos/favicon.png">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/paginas/enviar-fotos.css">
+  <script src="../../js/core/theme-preload.js"></script>
+  <script type="module" src="../../js/main.js"></script>
+</head>
+<body data-page="upload">
+  <div id="circuitOverlay" aria-hidden="true">
+    <canvas id="circuitCanvas"></canvas>
+  </div>
+  <div class="global-pattern" aria-hidden="true"></div>
+  <header id="main-header" data-include="header.html"></header>
+  <main id="conteudo" tabindex="-1">
+    <section class="page-hero admin-hero">
+      <div class="bg-glow bg-glow--start" aria-hidden="true"></div>
+      <div class="bg-glow bg-glow--end" aria-hidden="true"></div>
+      <div class="page-hero-inner">
+        <a class="admin-back" href="index.html"><span aria-hidden="true">←</span> Voltar para a área da equipe</a>
+        <span class="overline">Área da equipe</span>
+        <h1>Enviar fotos para a <em>galeria</em></h1>
+        <p>As fotos são convertidas no seu navegador e publicadas direto no site. Os originais não saem do seu computador e nada fica guardado depois do envio.</p>
+      </div>
+    </section>
+
+    <section class="admin-section" aria-label="Envio de fotos">
+      <div class="admin-inner">
+
+        <!-- 1. Acesso -->
+        <article class="card admin-panel" aria-labelledby="acesso-titulo">
+          <h2 id="acesso-titulo" class="card-eyebrow">1 · Acesso</h2>
+
+          <form id="login-form" novalidate>
+            <div class="form-field">
+              <label for="token">Token do GitHub</label>
+              <input class="form-control" type="password" id="token" name="token" autocomplete="off" spellcheck="false" required aria-describedby="token-help">
+            </div>
+            <p class="form-note" id="token-help">Só funciona para quem é colaboradora do repositório do site. O token é usado apenas nesta aba e enviado somente ao GitHub.</p>
+            <label class="admin-check">
+              <input type="checkbox" id="remember" name="remember">
+              Lembrar o token até fechar esta aba
+            </label>
+            <div class="admin-actions">
+              <button class="btn btn--primary" type="submit">Entrar</button>
+            </div>
+          </form>
+
+          <div id="session" class="admin-session" hidden>
+            <p>Conectada como <strong id="login-name"></strong>.</p>
+            <button class="btn btn--secondary btn--small" type="button" id="logout">Sair</button>
+          </div>
+
+          <p class="form-status" id="login-status" role="status" aria-live="polite"></p>
+
+          <details class="admin-help">
+            <summary>Como criar o seu token</summary>
+            <ol>
+              <li>Peça a uma mantenedora para adicionar a sua conta do GitHub como colaboradora do repositório e aceite o convite recebido por e-mail.</li>
+              <li>Abra a <a id="token-link" href="https://github.com/settings/tokens/new?scopes=public_repo&amp;description=MNC%20area%20da%20equipe" target="_blank" rel="noopener noreferrer">página de criação de token do GitHub</a>. O nome e a permissão <code>public_repo</code> já vêm preenchidos.</li>
+              <li>Escolha uma validade (por exemplo, 90 dias) e clique em <strong>Generate token</strong>.</li>
+              <li>Copie o token e cole no campo acima. Guarde-o num gerenciador de senhas; o GitHub não mostra o token de novo.</li>
+            </ol>
+            <p>Nunca compartilhe o token: ele dá acesso de escrita aos seus repositórios públicos. Se ele vazar, apague-o em <strong>Settings → Developer settings → Tokens</strong>.</p>
+          </details>
+        </article>
+
+        <!-- 2. Fotos -->
+        <article class="card admin-panel" aria-labelledby="fotos-titulo">
+          <h2 id="fotos-titulo" class="card-eyebrow">2 · Fotos</h2>
+          <form id="photos-form" novalidate>
+            <fieldset id="photos-fields" disabled>
+              <legend class="admin-legend">Destino e seleção das fotos</legend>
+              <div class="admin-fields">
+                <div class="form-field">
+                  <label for="category">Categoria</label>
+                  <select class="form-control" id="category" name="category">
+                    <option value="encontros">Encontros</option>
+                    <option value="escolas">Escolas</option>
+                  </select>
+                </div>
+                <div class="form-field">
+                  <label for="year">Ano</label>
+                  <input class="form-control" type="number" id="year" name="year" min="1900" max="2100" inputmode="numeric" required>
+                </div>
+                <div class="form-field" id="date-field">
+                  <label for="date">Data do encontro (opcional)</label>
+                  <input class="form-control" type="date" id="date" name="date" aria-describedby="date-help">
+                  <p class="form-note" id="date-help">Deixe em branco para organizar só pelo ano.</p>
+                </div>
+              </div>
+              <div class="form-field">
+                <label for="photos">Fotos</label>
+                <input class="form-control" type="file" id="photos" name="photos" accept="image/jpeg,image/png,image/webp" multiple required aria-describedby="photos-help">
+                <p class="form-note" id="photos-help">JPG, PNG ou WebP. Até 20 fotos por vez, 15 MB por foto e 60 MB no total. Fotos repetidas são recusadas.</p>
+              </div>
+              <div class="admin-actions">
+                <button class="btn btn--primary" type="submit">Preparar fotos</button>
+              </div>
+            </fieldset>
+          </form>
+          <p class="form-status" id="photos-status" role="status" aria-live="polite"></p>
+        </article>
+
+        <!-- 3. Conferir e publicar -->
+        <article class="card admin-panel" id="preview" aria-labelledby="preview-titulo" hidden>
+          <h2 id="preview-titulo" class="card-eyebrow">3 · Conferir e publicar</h2>
+          <p id="preview-summary"></p>
+          <ul class="upload-grid" id="preview-grid"></ul>
+          <div class="admin-actions">
+            <button class="btn btn--primary" type="button" id="publish">Publicar no site</button>
+            <button class="btn btn--secondary" type="button" id="cancel">Cancelar</button>
+          </div>
+          <p class="form-status" id="publish-status" role="status" aria-live="polite"></p>
+        </article>
+
+        <!-- Concluído -->
+        <article class="call-panel admin-done" id="done" tabindex="-1" aria-labelledby="done-titulo" hidden>
+          <h2 id="done-titulo">Fotos <em>publicadas!</em></h2>
+          <p id="done-message"></p>
+          <div class="admin-actions admin-actions--center">
+            <a class="btn btn--primary" href="../galeria.html">Ver a galeria</a>
+            <button class="btn btn--secondary" type="button" id="again">Enviar mais fotos</button>
+          </div>
+        </article>
+
+      </div>
+    </section>
+  </main>
+  <footer id="main-footer" class="site-footer" data-include="footer.html"></footer>
+</body>
+</html>
