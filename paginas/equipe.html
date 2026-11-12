@@ -162,6 +162,18 @@
           <article class="card team-member reveal reveal-delay-1">
             <div class="member-avatar" aria-hidden="true"><img src="../imagens/equipe/marcella.jpg" alt="" loading="lazy" decoding="async"></div>
             <h3>Marcella</h3>
+            <p class="member-bio">Sou Marcella Lins, mulher, esposa e estudante de Ciência da Computação. Sou comunicativa, curiosa e adoro conhecer pessoas, trocar experiências e participar de novos projetos. Faço parte do Mulheres na Computação desde 2024 e acredito que a computação vai muito além de códigos: também é sobre pessoas, colaboração e mulheres conquistando seu espaço. Gosto de aprender, compartilhar o que sei e crescer junto com as pessoas que encontro pelo caminho!</p>
+            <nav class="member-social-card" aria-label="Redes sociais de Marcella">
+              <a href="https://www.instagram.com/marcellavianada/" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Marcella" title="Instagram">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+              </a>
+              <a href="https://www.linkedin.com/in/marcella-viana-da-silva-lins-10a1bb285/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Marcella" title="LinkedIn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7.5 10v7M11 17v-7m0 3a3 3 0 0 1 6 0v4"/><circle cx="7.5" cy="7" r="1" fill="currentColor" stroke="none"/></svg>
+              </a>
+              <a href="https://github.com/MarcellaLins" target="_blank" rel="noopener noreferrer" aria-label="GitHub de Marcella" title="GitHub">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4 1-4-2-6-2m12 5v-4a3.5 3.5 0 0 0-1-2.7c3.3-.4 6.8-1.6 6.8-7A5.4 5.4 0 0 0 19.3 4a5 5 0 0 0-.1-4S18 0 15.2 1.5a13.4 13.4 0 0 0-7 0C5.4 0 4.2 0 4.2 0A5 5 0 0 0 4.1 4a5.4 5.4 0 0 0-1.5 3.8c0 5.4 3.5 6.6 6.8 7A3.5 3.5 0 0 0 8.5 18v4" transform="translate(1 2) scale(.9)"/></svg>
+              </a>
+            </nav>
           </article>
 
           <article class="card team-member reveal reveal-delay-2">
@@ -203,6 +215,64 @@
             </nav>
           </article>
         </div>
+      </div>
+    </section>
+
+    <section class="team-memories" aria-labelledby="lembrancas-titulo">
+      <div class="section-heading reveal">
+        <span class="overline">Lembranças</span>
+        <h2 id="lembrancas-titulo">Quem já fez parte da <em>nossa história</em></h2>
+        <p>Mulheres que ajudaram a construir o projeto e seguem inspirando quem chega.</p>
+      </div>
+
+      <!-- EXEMPLO PARA VISUALIZAÇÃO: pessoas fictícias. Substitua pelos dados reais antes de publicar. -->
+      <div class="memories-carousel">
+        <button class="carousel-btn" type="button" data-carousel="prev" aria-controls="memories-track" aria-label="Ver lembranças anteriores" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <div class="memories-viewport">
+          <ul class="memories-track" id="memories-track" tabindex="0" aria-label="Lembranças. Use as setas para ver todas.">
+            <li class="card memory-card reveal">
+              <div class="member-avatar memory-avatar" aria-hidden="true">AE</div>
+              <h3>Ana Exemplo</h3>
+              <p class="memory-role">Coordenadora</p>
+              <p class="memory-period">2020 – 2022</p>
+            </li>
+            <li class="card memory-card reveal reveal-delay-1">
+              <div class="member-avatar memory-avatar" aria-hidden="true">BE</div>
+              <h3>Bia Exemplo</h3>
+              <p class="memory-role">Vice-coordenadora</p>
+              <p class="memory-period">2021 – 2023</p>
+            </li>
+            <li class="card memory-card reveal reveal-delay-2">
+              <div class="member-avatar memory-avatar" aria-hidden="true">CE</div>
+              <h3>Carla Exemplo</h3>
+              <p class="memory-role">Comunicação</p>
+              <p class="memory-period">2022 – 2023</p>
+            </li>
+            <li class="card memory-card reveal reveal-delay-3">
+              <div class="member-avatar memory-avatar" aria-hidden="true">DE</div>
+              <h3>Duda Exemplo</h3>
+              <p class="memory-role">Extensionista</p>
+              <p class="memory-period">2022 – 2024</p>
+            </li>
+            <li class="card memory-card reveal">
+              <div class="member-avatar memory-avatar" aria-hidden="true">EE</div>
+              <h3>Eva Exemplo</h3>
+              <p class="memory-role">Monitora</p>
+              <p class="memory-period">2023 – 2024</p>
+            </li>
+            <li class="card memory-card reveal reveal-delay-1">
+              <div class="member-avatar memory-avatar" aria-hidden="true">FE</div>
+              <h3>Fernanda Exemplo</h3>
+              <p class="memory-role">Extensionista</p>
+              <p class="memory-period">2023 – 2025</p>
+            </li>
+          </ul>
+        </div>
+        <button class="carousel-btn" type="button" data-carousel="next" aria-controls="memories-track" aria-label="Ver mais lembranças" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
       </div>
     </section>
 

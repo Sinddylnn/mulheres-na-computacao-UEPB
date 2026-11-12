@@ -91,6 +91,47 @@
 .member-social-card a:hover,
 .member-social-card a:focus-visible { background:var(--bg-card); color:var(--text-primary); transform:translateY(-2px); }
 
+/* --- LEMBRANÇAS (quem já fez parte) --- */
+.team-memories {
+  padding:var(--section-gap) var(--page-gutter);
+  background:var(--bg-surface); border-top:1px solid var(--border);
+}
+/* Carrossel circular: centralizado quando os cards cabem; quando não cabem,
+   as setas (ou o arraste no celular) giram a fila e o primeiro card volta no fim. */
+.memories-carousel {
+  max-width:1140px; margin:0 auto;
+  display:flex; align-items:center; justify-content:center; gap:12px;
+}
+/* Janela do carrossel: recorta os cards que estão fora da vez. */
+.memories-viewport { flex:0 1 auto; min-width:0; overflow:hidden; touch-action:pan-y; }
+.memories-track {
+  list-style:none; display:flex; gap:18px; width:max-content;
+  /* espaço para o card subir no hover e para o contorno de foco */
+  padding:10px 4px 14px;
+}
+.memories-track:focus-visible { outline-offset:-2px; }
+.memory-card {
+  flex:0 0 190px; min-width:0;
+  padding:22px 16px; text-align:center; overflow-wrap:anywhere;
+  display:flex; flex-direction:column; align-items:center;
+}
+.carousel-btn {
+  flex:0 0 var(--control-height); width:var(--control-height); height:var(--control-height);
+  display:flex; align-items:center; justify-content:center;
+  border-radius:50%; border:1px solid var(--accent-border);
+  background:var(--accent-surface); color:var(--accent-text); cursor:pointer;
+  transition:background .25s, color .25s, opacity .25s;
+}
+.carousel-btn[hidden] { display:none; }
+.carousel-btn svg { width:20px; height:20px; }
+.carousel-btn:not(:disabled):hover { background:var(--accent-strong); color:var(--on-accent); }
+.carousel-btn:disabled { opacity:.35; cursor:default; }
+.memory-avatar { width:76px; height:76px; margin-bottom:12px; font-size:1.35rem; color:var(--accent-text); }
+.memory-card:is(:hover, :focus-within) .memory-avatar { border-color:var(--accent-text); }
+.memory-card h3 { font-family:var(--font-body); font-size:.9rem; font-weight:700; color:var(--text-primary); margin-bottom:4px; }
+.memory-role { font-size:.75rem; font-weight:600; color:var(--accent-text); }
+.memory-period { margin-top:2px; font-size:.72rem; color:var(--text-muted); font-family:var(--font-mono); }
+
 /* --- RESPONSIVO --- */
 @media (max-width:900px) {
   .team-container { flex-direction:column; gap:32px; }
@@ -103,4 +144,9 @@
 @media (max-width:600px) {
   .team-grid-scroll { grid-template-columns:1fr; grid-auto-rows:auto; }
   .team-member { padding:24px 20px; }
+  /* Um card inteiro por vez, ocupando a janela entre as setas. */
+  .memories-carousel { gap:6px; }
+  .memories-viewport { flex:1 1 0; container-type:inline-size; }
+  .memories-track { gap:12px; }
+  .memory-card { flex-basis:calc(100cqi - 8px); }
 }
