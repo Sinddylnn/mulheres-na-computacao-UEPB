@@ -4,37 +4,37 @@
     "data": "2026-05-11",
     "caminho_relativo": "encontros/2026-05-11",
     "fotos": [
-      "encontro(11-05-2026) (1).webp",
-      "encontro(11-05-2026) (2).webp",
-      "encontro(11-05-2026) (3).webp",
-      "encontro(11-05-2026) (5).webp",
-      "encontro(11-05-2026) (6).webp"
+      "2026-05-11-01.webp",
+      "2026-05-11-02.webp",
+      "2026-05-11-03.webp",
+      "2026-05-11-04.webp",
+      "2026-05-11-05.webp"
     ],
     "metadados": {
-      "encontro(11-05-2026) (1).webp": {
+      "2026-05-11-01.webp": {
         "largura": 720,
         "altura": 805,
-        "miniatura": "encontros/2026-05-11/encontro(11-05-2026) (1).webp"
+        "miniatura": "encontros/2026-05-11/2026-05-11-01.webp"
       },
-      "encontro(11-05-2026) (2).webp": {
+      "2026-05-11-02.webp": {
         "largura": 720,
         "altura": 831,
-        "miniatura": "encontros/2026-05-11/encontro(11-05-2026) (2).webp"
+        "miniatura": "encontros/2026-05-11/2026-05-11-02.webp"
       },
-      "encontro(11-05-2026) (3).webp": {
+      "2026-05-11-03.webp": {
         "largura": 1600,
         "altura": 900,
-        "miniatura": "encontros/2026-05-11/encontro(11-05-2026) (3).webp"
+        "miniatura": "encontros/2026-05-11/2026-05-11-03.webp"
       },
-      "encontro(11-05-2026) (5).webp": {
+      "2026-05-11-04.webp": {
         "largura": 1280,
         "altura": 720,
-        "miniatura": "encontros/2026-05-11/encontro(11-05-2026) (5).webp"
+        "miniatura": "encontros/2026-05-11/2026-05-11-04.webp"
       },
-      "encontro(11-05-2026) (6).webp": {
+      "2026-05-11-05.webp": {
         "largura": 1280,
         "altura": 720,
-        "miniatura": "encontros/2026-05-11/encontro(11-05-2026) (6).webp"
+        "miniatura": "encontros/2026-05-11/2026-05-11-05.webp"
       }
     }
   },
@@ -43,61 +43,61 @@
     "data": "2026-03-11",
     "caminho_relativo": "encontros/2026-03-11",
     "fotos": [
-      "encontro(11-03-2026) (1).webp",
-      "encontro(11-03-2026) (2).webp",
-      "encontro(11-03-2026) (3).webp",
-      "encontro(11-03-2026) (4).webp",
-      "encontro(11-03-2026) (5).webp",
-      "encontro(11-03-2026) (6).webp",
-      "encontro(11-03-2026) (7).webp",
-      "encontro(11-03-2026) (8).jpg",
-      "encontro(11-03-2026) (9).jpg"
+      "2026-03-11-01.webp",
+      "2026-03-11-02.webp",
+      "2026-03-11-03.webp",
+      "2026-03-11-04.webp",
+      "2026-03-11-05.webp",
+      "2026-03-11-06.webp",
+      "2026-03-11-07.webp",
+      "2026-03-11-08.webp",
+      "2026-03-11-09.webp"
     ],
     "metadados": {
-      "encontro(11-03-2026) (1).webp": {
+      "2026-03-11-01.webp": {
         "largura": 720,
         "altura": 1280,
-        "miniatura": "encontros/2026-03-11/encontro(11-03-2026) (1).webp"
+        "miniatura": "encontros/2026-03-11/2026-03-11-01.webp"
       },
-      "encontro(11-03-2026) (2).webp": {
-        "largura": 3024,
-        "altura": 4032,
-        "miniatura": "encontros/2026-03-11/encontro(11-03-2026) (2).webp"
+      "2026-03-11-02.webp": {
+        "largura": 1200,
+        "altura": 1600,
+        "miniatura": "encontros/2026-03-11/2026-03-11-02.webp"
       },
-      "encontro(11-03-2026) (3).webp": {
-        "largura": 3024,
-        "altura": 4032,
-        "miniatura": "encontros/2026-03-11/encontro(11-03-2026) (3).webp"
+      "2026-03-11-03.webp": {
+        "largura": 1200,
+        "altura": 1600,
+        "miniatura": "encontros/2026-03-11/2026-03-11-03.webp"
       },
-      "encontro(11-03-2026) (4).webp": {
-        "largura": 3024,
-        "altura": 4032,
-        "miniatura": "encontros/2026-03-11/encontro(11-03-2026) (4).webp"
+      "2026-03-11-04.webp": {
+        "largura": 1200,
+        "altura": 1600,
+        "miniatura": "encontros/2026-03-11/2026-03-11-04.webp"
       },
-      "encontro(11-03-2026) (5).webp": {
+      "2026-03-11-05.webp": {
         "largura": 720,
         "altura": 1280,
-        "miniatura": "encontros/2026-03-11/encontro(11-03-2026) (5).webp"
+        "miniatura": "encontros/2026-03-11/2026-03-11-05.webp"
       },
-      "encontro(11-03-2026) (6).webp": {
-        "largura": 3024,
-        "altura": 4032,
-        "miniatura": "encontros/2026-03-11/encontro(11-03-2026) (6).webp"
+      "2026-03-11-06.webp": {
+        "largura": 1200,
+        "altura": 1600,
+        "miniatura": "encontros/2026-03-11/2026-03-11-06.webp"
       },
-      "encontro(11-03-2026) (7).webp": {
-        "largura": 3024,
-        "altura": 4032,
-        "miniatura": "encontros/2026-03-11/encontro(11-03-2026) (7).webp"
+      "2026-03-11-07.webp": {
+        "largura": 1200,
+        "altura": 1600,
+        "miniatura": "encontros/2026-03-11/2026-03-11-07.webp"
       },
-      "encontro(11-03-2026) (8).jpg": {
-        "largura": 3000,
-        "altura": 4000,
-        "miniatura": "encontros/2026-03-11/encontro(11-03-2026) (8)-miniatura.jpg"
+      "2026-03-11-08.webp": {
+        "largura": 1200,
+        "altura": 1600,
+        "miniatura": "encontros/2026-03-11/2026-03-11-08.webp"
       },
-      "encontro(11-03-2026) (9).jpg": {
-        "largura": 3000,
-        "altura": 4000,
-        "miniatura": "encontros/2026-03-11/encontro(11-03-2026) (9)-miniatura.jpg"
+      "2026-03-11-09.webp": {
+        "largura": 1200,
+        "altura": 1600,
+        "miniatura": "encontros/2026-03-11/2026-03-11-09.webp"
       }
     }
   },
@@ -106,67 +106,67 @@
     "data": "2025",
     "caminho_relativo": "escolas/2025",
     "fotos": [
-      "escola(14-10-2025) (2).jpg",
-      "escola(14-10-2025) (3).jpg",
-      "escola(14-10-2025) (4).jpg",
-      "escola(14-10-2025) (5).jpg",
-      "escola(12-09-2025) (1).jpg",
-      "escola(12-09-2025) (2).jpg",
-      "escola(05-09-2025) (1).jpg",
-      "escola(29-08-2025) (1).jpg",
-      "escola(29-08-2025) (2).jpg",
-      "escola(08-08-2025) (1).jpg"
+      "2025-10-14-01.webp",
+      "2025-10-14-02.webp",
+      "2025-10-14-03.webp",
+      "2025-10-14-04.webp",
+      "2025-09-12-01.webp",
+      "2025-09-12-02.webp",
+      "2025-09-05-01.webp",
+      "2025-08-29-01.webp",
+      "2025-08-29-02.webp",
+      "2025-08-08-01.webp"
     ],
     "metadados": {
-      "escola(14-10-2025) (2).jpg": {
-        "largura": 3072,
-        "altura": 4096,
-        "miniatura": "escolas/2025/escola(14-10-2025) (2)-miniatura.jpg"
+      "2025-10-14-01.webp": {
+        "largura": 1200,
+        "altura": 1600,
+        "miniatura": "escolas/2025/2025-10-14-01.webp"
       },
-      "escola(14-10-2025) (3).jpg": {
-        "largura": 4096,
-        "altura": 3072,
-        "miniatura": "escolas/2025/escola(14-10-2025) (3)-miniatura.jpg"
+      "2025-10-14-02.webp": {
+        "largura": 1600,
+        "altura": 1200,
+        "miniatura": "escolas/2025/2025-10-14-02.webp"
       },
-      "escola(14-10-2025) (4).jpg": {
-        "largura": 3072,
-        "altura": 4096,
-        "miniatura": "escolas/2025/escola(14-10-2025) (4)-miniatura.jpg"
+      "2025-10-14-03.webp": {
+        "largura": 1200,
+        "altura": 1600,
+        "miniatura": "escolas/2025/2025-10-14-03.webp"
       },
-      "escola(14-10-2025) (5).jpg": {
-        "largura": 4096,
-        "altura": 3072,
-        "miniatura": "escolas/2025/escola(14-10-2025) (5)-miniatura.jpg"
+      "2025-10-14-04.webp": {
+        "largura": 1600,
+        "altura": 1200,
+        "miniatura": "escolas/2025/2025-10-14-04.webp"
       },
-      "escola(12-09-2025) (1).jpg": {
-        "largura": 3072,
-        "altura": 4096,
-        "miniatura": "escolas/2025/escola(12-09-2025) (1)-miniatura.jpg"
+      "2025-09-12-01.webp": {
+        "largura": 1200,
+        "altura": 1600,
+        "miniatura": "escolas/2025/2025-09-12-01.webp"
       },
-      "escola(12-09-2025) (2).jpg": {
-        "largura": 3072,
-        "altura": 4096,
-        "miniatura": "escolas/2025/escola(12-09-2025) (2)-miniatura.jpg"
+      "2025-09-12-02.webp": {
+        "largura": 1200,
+        "altura": 1600,
+        "miniatura": "escolas/2025/2025-09-12-02.webp"
       },
-      "escola(05-09-2025) (1).jpg": {
-        "largura": 3072,
-        "altura": 4096,
-        "miniatura": "escolas/2025/escola(05-09-2025) (1)-miniatura.jpg"
+      "2025-09-05-01.webp": {
+        "largura": 1200,
+        "altura": 1600,
+        "miniatura": "escolas/2025/2025-09-05-01.webp"
       },
-      "escola(29-08-2025) (1).jpg": {
-        "largura": 4096,
-        "altura": 3072,
-        "miniatura": "escolas/2025/escola(29-08-2025) (1)-miniatura.jpg"
+      "2025-08-29-01.webp": {
+        "largura": 1600,
+        "altura": 1200,
+        "miniatura": "escolas/2025/2025-08-29-01.webp"
       },
-      "escola(29-08-2025) (2).jpg": {
-        "largura": 3072,
-        "altura": 4096,
-        "miniatura": "escolas/2025/escola(29-08-2025) (2)-miniatura.jpg"
+      "2025-08-29-02.webp": {
+        "largura": 1200,
+        "altura": 1600,
+        "miniatura": "escolas/2025/2025-08-29-02.webp"
       },
-      "escola(08-08-2025) (1).jpg": {
-        "largura": 3072,
-        "altura": 4096,
-        "miniatura": "escolas/2025/escola(08-08-2025) (1)-miniatura.jpg"
+      "2025-08-08-01.webp": {
+        "largura": 1200,
+        "altura": 1600,
+        "miniatura": "escolas/2025/2025-08-08-01.webp"
       }
     }
   },
@@ -175,37 +175,37 @@
     "data": "2024",
     "caminho_relativo": "escolas/2024",
     "fotos": [
-      "escola(12-11-2024) (1).jpg",
-      "escola(12-11-2024) (2).jpg",
-      "escola(11-09-2024) (1).jpg",
-      "escola(27-08-2024) (1).jpg",
-      "escola(27-08-2024) (2).jpg"
+      "2024-11-12-01.webp",
+      "2024-11-12-02.webp",
+      "2024-09-11-01.webp",
+      "2024-08-27-01.webp",
+      "2024-08-27-02.webp"
     ],
     "metadados": {
-      "escola(12-11-2024) (1).jpg": {
-        "largura": 3072,
-        "altura": 4096,
-        "miniatura": "escolas/2024/escola(12-11-2024) (1)-miniatura.jpg"
+      "2024-11-12-01.webp": {
+        "largura": 1200,
+        "altura": 1600,
+        "miniatura": "escolas/2024/2024-11-12-01.webp"
       },
-      "escola(12-11-2024) (2).jpg": {
-        "largura": 3072,
-        "altura": 4096,
-        "miniatura": "escolas/2024/escola(12-11-2024) (2)-miniatura.jpg"
+      "2024-11-12-02.webp": {
+        "largura": 1200,
+        "altura": 1600,
+        "miniatura": "escolas/2024/2024-11-12-02.webp"
       },
-      "escola(11-09-2024) (1).jpg": {
-        "largura": 2268,
-        "altura": 4032,
-        "miniatura": "escolas/2024/escola(11-09-2024) (1)-miniatura.jpg"
+      "2024-09-11-01.webp": {
+        "largura": 900,
+        "altura": 1600,
+        "miniatura": "escolas/2024/2024-09-11-01.webp"
       },
-      "escola(27-08-2024) (1).jpg": {
-        "largura": 3072,
-        "altura": 4096,
-        "miniatura": "escolas/2024/escola(27-08-2024) (1)-miniatura.jpg"
+      "2024-08-27-01.webp": {
+        "largura": 1200,
+        "altura": 1600,
+        "miniatura": "escolas/2024/2024-08-27-01.webp"
       },
-      "escola(27-08-2024) (2).jpg": {
-        "largura": 3072,
-        "altura": 4096,
-        "miniatura": "escolas/2024/escola(27-08-2024) (2)-miniatura.jpg"
+      "2024-08-27-02.webp": {
+        "largura": 1200,
+        "altura": 1600,
+        "miniatura": "escolas/2024/2024-08-27-02.webp"
       }
     }
   }

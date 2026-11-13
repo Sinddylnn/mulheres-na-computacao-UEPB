@@ -23,7 +23,9 @@ Acesse <http://127.0.0.1:8000>. Para encerrar o servidor, use `Ctrl+C`. Sirva o 
 - `css/paginas/`: estilos específicos de cada página.
 - `js/main.js`, `js/core/`, `js/features/` e `js/pages/`: inicialização e comportamentos.
 - `data/timeline.json`, `imagens/galeria/` e `imagens/miniaturas/`: dados e fotos da galeria.
-- `imagens/logos/`: símbolo do MNC, borboleta e ícone das abas do navegador.
+- `imagens/marca/`: símbolo do MNC, borboleta e ícone das abas do navegador.
+- `imagens/parcerias/` e `imagens/equipe/`: logos das parceiras e fotos dos perfis, em WebP.
+- Fotos da galeria seguem o padrão `imagens/galeria/<categoria>/<data-ou-ano>/AAAA-MM-DD-NN.webp`, com miniatura de mesmo nome em `imagens/miniaturas/`.
 - `pdfs/`: publicações para download.
 - `docs/`: documentação do projeto, instruções para agentes e melhorias planejadas.
 
