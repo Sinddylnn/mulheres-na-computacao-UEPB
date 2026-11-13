@@ -47,10 +47,10 @@ class ImportacoesJavaScriptTest(unittest.TestCase):
 
 class TimelineTest(unittest.TestCase):
     def criar_acervo(self, root, eventos, arquivos):
-        (root / "data").mkdir(parents=True)
-        (root / "data" / "timeline.json").write_text(json.dumps(eventos), encoding="utf-8")
+        (root / "data" / "galeria").mkdir(parents=True)
+        (root / "data" / "galeria" / "timeline.json").write_text(json.dumps(eventos), encoding="utf-8")
         for arquivo in arquivos:
-            destino = root / "imagens" / arquivo
+            destino = root / "data" / "galeria" / arquivo
             destino.parent.mkdir(parents=True, exist_ok=True)
             destino.write_bytes(b"x")
 
@@ -73,7 +73,7 @@ class TimelineTest(unittest.TestCase):
     def test_jpg_legado_com_miniatura_de_outro_nome(self):
         errors = self.validar(
             self.evento("foto (1).jpg", "escolas/2024/foto (1)-miniatura.jpg"),
-            ["galeria/escolas/2024/foto (1).jpg", "miniaturas/escolas/2024/foto (1)-miniatura.jpg"],
+            ["fotos/escolas/2024/foto (1).jpg", "miniaturas/escolas/2024/foto (1)-miniatura.jpg"],
         )
         self.assertEqual(errors, [])
 
@@ -86,7 +86,7 @@ class TimelineTest(unittest.TestCase):
     def test_miniatura_fora_da_pasta_do_evento(self):
         errors = self.validar(
             self.evento("nova.webp", "../segredo.webp"),
-            ["galeria/escolas/2024/nova.webp"],
+            ["fotos/escolas/2024/nova.webp"],
         )
         self.assertEqual(len(errors), 1)
         self.assertIn("caminho de miniatura inválido", errors[0])

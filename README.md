@@ -4,7 +4,7 @@ Site institucional do projeto de extensão **Mulheres na Computação (MNC)** da
 
 ## Rodar o site
 
-O site usa HTML, CSS e JavaScript nativos. Não há framework, build nem pacotes npm para instalar. Abra a pasta no VS Code com **Live Server** ou, se tiver Node.js, execute:
+O site usa HTML, CSS e JavaScript nativos, sem framework nem build. Isso é uma escolha do projeto: mostrar quanto dá para fazer só com a plataforma web. Por isso, prefira recursos nativos do navegador a bibliotecas. O site não precisa de pacotes npm; eles só são usados pelo importador local de fotos. Abra a pasta no VS Code com **Live Server** ou, se tiver Node.js, execute:
 
 ```bash
 node tools/serve_site.js
@@ -22,12 +22,13 @@ Acesse <http://127.0.0.1:8000>. Para encerrar o servidor, use `Ctrl+C`. Sirva o 
 - `css/base.css`, `css/components.css` e `css/layout.css`: temas, componentes e layout comuns.
 - `css/paginas/`: estilos específicos de cada página.
 - `js/main.js`, `js/core/`, `js/features/` e `js/pages/`: inicialização e comportamentos.
-- `data/timeline.json`, `imagens/galeria/` e `imagens/miniaturas/`: dados e fotos da galeria.
+- `data/galeria/`: acervo da galeria — o cadastro `timeline.json`, as fotos em `fotos/` e as miniaturas em `miniaturas/`. Os caminhos ficam em `js/pages/gallery/paths.js`.
 - `imagens/marca/`: símbolo do MNC, borboleta e ícone das abas do navegador.
 - `imagens/parcerias/` e `imagens/equipe/`: logos das parceiras e fotos dos perfis, em WebP.
-- Fotos da galeria seguem o padrão `imagens/galeria/<categoria>/<data-ou-ano>/AAAA-MM-DD-NN.webp`, com miniatura de mesmo nome em `imagens/miniaturas/`.
+- Fotos da galeria seguem o padrão `data/galeria/fotos/<categoria>/<data-ou-ano>/AAAA-MM-DD-NN.webp`, com miniatura de mesmo nome em `data/galeria/miniaturas/`.
 - `pdfs/`: publicações para download.
-- `docs/`: documentação do projeto, instruções para agentes e melhorias planejadas.
+- `.claude/`: documentação do projeto, instruções para agentes e skills.
+- `node_modules/`: criada pelo `npm ci`. Contém só o sharp, usado pelo importador local de fotos. Fica fora do Git e da publicação e pode ser apagada e recriada com `npm ci`.
 
 Para alterar o menu ou o rodapé, edite apenas `header.html` ou `footer.html`. Para adicionar uma página, crie seu HTML em `paginas/`, use os pontos de montagem `data-include` como nas outras páginas e registre o arquivo em `tools/build_site.py`. Consulte [os padrões do frontend](.claude/skills/frontend/SKILL.md) para componentes, cores por tema, acessibilidade e responsividade.
 
@@ -77,7 +78,7 @@ Abra <http://127.0.0.1:8001>. Selecione a categoria, o ano e as fotos; clique em
 - Fotos em WebP com até 1600 px no lado maior, qualidade 80; miniaturas com até 480 px, qualidade 72. Não recorta nem amplia imagens pequenas e corrige a orientação.
 - Escolas são organizadas por ano; encontros podem usar somente o ano ou uma data opcional.
 - Acrescenta somente o lote confirmado ao cadastro existente. Não reconstrói o acervo, não apaga nem substitui fotos.
-- Originais ficam preservados localmente em `imagens/fotos_originais/`, fora do Git e da publicação.
+- Originais ficam preservados localmente em `data/galeria/originais/`, fora do Git e da publicação.
 - Cada lote guarda o cadastro anterior em `.mnc-fotos-backups/`, também fora do Git e da publicação.
 - A ferramenta não oferece exclusão ou substituição. Essas ações exigem revisão separada.
 
@@ -86,7 +87,7 @@ O conversor Python e o workflow antigo foram desativados. Arquivos soltos nas pa
 Após conferir, envie apenas os arquivos da galeria, as miniaturas e o cadastro:
 
 ```bash
-git add imagens/galeria imagens/miniaturas data/timeline.json
+git add data/galeria
 git commit -m "Adiciona fotos à galeria"
 git push
 ```
@@ -126,11 +127,12 @@ A página [Quero participar](paginas/quero-participar.html) tem um formulário d
 
 ## Documentação e contato
 
-Toda a documentação de desenvolvimento e manutenção do projeto deve ficar em `docs/`, incluindo arquivos `.md`, guias, instruções para agentes e novos documentos. O único Markdown mantido na raiz é este `README.md`, que serve como apresentação e ponto de entrada para a documentação. A pasta `.claude/` contém apenas o arquivo que carrega `docs/CLAUDE.md` no Claude Code e as skills do projeto.
+Toda a documentação de desenvolvimento e manutenção do projeto fica em `.claude/`, incluindo instruções para agentes, skills, guias e novos documentos. O único Markdown mantido na raiz é este `README.md`, que serve como apresentação e ponto de entrada para a documentação.
 
-- [Instruções do projeto](docs/CLAUDE.md): comandos, arquitetura, regras gerais e verificações para agentes e colaboradores.
+- [Instruções do projeto](.claude/CLAUDE.md): comandos, arquitetura, regras gerais e verificações para agentes e colaboradores.
 - [Padrões do frontend](.claude/skills/frontend/SKILL.md): componentes CSS, tokens de cor por tema, acessibilidade, responsividade e checklist de verificação de interface.
-Ao criar um novo documento, salve-o em `docs/` e acrescente seu link nesta seção.
+
+Ao criar um novo documento, salve-o em `.claude/` e acrescente seu link nesta seção.
 
 - E-mail: [mnc.uepb@gmail.com](mailto:mnc.uepb@gmail.com)
 - Instagram: [@mnc.uepb](https://www.instagram.com/mnc.uepb/)

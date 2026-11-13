@@ -74,20 +74,20 @@ test('publicação cria blobs, árvore e commit e avança o branch sem forçar',
   const { fetchImpl, calls } = fakeFetch({
     'GET /repos/dona/site/git/ref/heads/main': () => [200, { object: { sha: 'head' } }],
     'GET /repos/dona/site/git/commits/head': () => [200, { tree: { sha: 'tree' } }],
-    'GET /repos/dona/site/contents/data/timeline.json': () => [200, '[]'],
+    'GET /repos/dona/site/contents/data/galeria/timeline.json': () => [200, '[]'],
     'POST /repos/dona/site/git/blobs': () => [201, { sha: `blob${++blobs}` }],
     'POST /repos/dona/site/git/trees': () => [201, { sha: 'newtree' }],
     'POST /repos/dona/site/git/commits': () => [201, { sha: 'novo', html_url: 'https://github.com/c/novo' }],
     'PATCH /repos/dona/site/git/refs/heads/main': () => [200, {}]
   });
   const client = createClient('tok', repo, fetchImpl);
-  const snapshot = await client.snapshot('data/timeline.json');
+  const snapshot = await client.snapshot('data/galeria/timeline.json');
   assert.deepEqual(snapshot, { head: 'head', tree: 'tree', content: '[]' });
-  const commit = await client.commit(snapshot, [{ path: 'a.webp', base64: 'AA==' }, { path: 'data/timeline.json', text: '[]\n' }], 'msg');
+  const commit = await client.commit(snapshot, [{ path: 'a.webp', base64: 'AA==' }, { path: 'data/galeria/timeline.json', text: '[]\n' }], 'msg');
   assert.equal(commit.sha, 'novo');
   const tree = calls.find(call => call.url.endsWith('/git/trees')).body;
   assert.equal(tree.base_tree, 'tree');
-  assert.deepEqual(tree.tree.map(entry => entry.path), ['a.webp', 'data/timeline.json']);
+  assert.deepEqual(tree.tree.map(entry => entry.path), ['a.webp', 'data/galeria/timeline.json']);
   assert.deepEqual(calls.find(call => call.url.endsWith('/git/commits')).body.parents, ['head']);
   assert.deepEqual(calls.at(-1).body, { sha: 'novo', force: false });
 });

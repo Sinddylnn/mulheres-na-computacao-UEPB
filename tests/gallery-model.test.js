@@ -40,7 +40,7 @@ test('normaliza eventos e metadados de fotos sem acessar o DOM', () => {
   const events = normalizeTimeline(rawTimeline);
   assert.equal(events[0].categoryTitle, 'Encontros');
   assert.equal(events[0].photos[0].width, 1200);
-  assert.equal(events[0].photos[0].thumbnailPath, 'imagens/miniaturas/encontros/2025-03-15/foto.webp');
+  assert.equal(events[0].photos[0].thumbnailPath, 'data/galeria/miniaturas/encontros/2025-03-15/foto.webp');
 });
 
 test('remove fotos duplicadas da visão geral', () => {
@@ -58,7 +58,7 @@ test('agrupa escolas por ano em ordem decrescente', () => {
 
 
 test('a galeria registra ações nas escolas somente em 2024 e 2025', async () => {
-  const timeline = JSON.parse(await readFile(new URL('../data/timeline.json', import.meta.url), 'utf8'));
+  const timeline = JSON.parse(await readFile(new URL('../data/galeria/timeline.json', import.meta.url), 'utf8'));
   const schools = groupSchoolsByYear(normalizeTimeline(timeline));
   assert.deepEqual([...schools.keys()], ['2025', '2024']);
   assert.ok([...schools.values()].every(photos => photos.length > 0));

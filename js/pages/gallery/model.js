@@ -1,3 +1,5 @@
+import { PHOTOS_DIR, THUMBNAILS_DIR } from './paths.js';
+
 function titleCase(value) {
   return value
     .split('-')
@@ -25,10 +27,10 @@ function normalizePhoto(event, photo) {
   const relativePath = `${event.caminho_relativo}/${file}`;
 
   return {
-    fullPath: `imagens/galeria/${relativePath}`,
+    fullPath: `${PHOTOS_DIR}/${relativePath}`,
     thumbnailPath: metadata.miniatura
-      ? `imagens/miniaturas/${metadata.miniatura}`
-      : `imagens/galeria/${relativePath}`,
+      ? `${THUMBNAILS_DIR}/${metadata.miniatura}`
+      : `${PHOTOS_DIR}/${relativePath}`,
     width: Number(metadata.largura) || null,
     height: Number(metadata.altura) || null
   };

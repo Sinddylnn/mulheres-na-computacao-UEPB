@@ -245,7 +245,7 @@ def data_valida(valor: str) -> bool:
 
 
 def validar_timeline(erros: list[str]) -> tuple[int, int]:
-    arquivo = RAIZ / "data" / "timeline.json"
+    arquivo = RAIZ / "data" / "galeria" / "timeline.json"
     try:
         eventos = json.loads(arquivo.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as erro:
@@ -322,7 +322,7 @@ def validar_timeline(erros: list[str]) -> tuple[int, int]:
                 erros.append(f"{contexto}: altura inválida para '{foto}'")
 
             # A miniatura fica na mesma pasta do evento; o nome pode diferir no legado.
-            arquivos = [("galeria", f"{esperado_evento}/{foto}", "imagem")]
+            arquivos = [("fotos", f"{esperado_evento}/{foto}", "imagem")]
             if (
                 isinstance(miniatura, str)
                 and miniatura.startswith(f"{esperado_evento}/")
@@ -334,7 +334,7 @@ def validar_timeline(erros: list[str]) -> tuple[int, int]:
                 erros.append(f"{contexto}: caminho de miniatura inválido para '{foto}'")
 
             for pasta, caminho, tipo in arquivos:
-                destino = RAIZ / "imagens" / pasta / caminho
+                destino = RAIZ / "data" / "galeria" / pasta / caminho
                 if not destino.is_file():
                     erros.append(f"{contexto}: {tipo} não encontrada: {relativo(destino)}")
 

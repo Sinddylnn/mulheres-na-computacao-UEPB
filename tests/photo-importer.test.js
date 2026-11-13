@@ -9,14 +9,14 @@ import { createPhotoServer } from '../tools/fotos/server.js';
 
 async function fixture(t) {
   const root = await mkdtemp(path.join(tmpdir(), 'mnc-import-test-'));
-  await mkdir(path.join(root, 'data'));
+  await mkdir(path.join(root, 'data/galeria'), { recursive: true });
   const existing = [{ categoria: 'escolas', data: '2024', caminho_relativo: 'escolas/2024',
     fotos: ['antiga.jpg'], metadados: { 'antiga.jpg': { largura: 800, altura: 600, miniatura: 'escolas/2024/antiga.jpg' } }, observacao: 'preservar' }];
   const before = JSON.stringify(existing, null, 4) + '\n';
-  await writeFile(path.join(root, 'data/timeline.json'), before);
-  for (const kind of ['galeria', 'miniaturas', 'fotos_originais']) {
-    await mkdir(path.join(root, 'imagens', kind, 'escolas/2024'), { recursive: true });
-    await writeFile(path.join(root, 'imagens', kind, 'escolas/2024/antiga.jpg'), `arquivo-${kind}`);
+  await writeFile(path.join(root, 'data/galeria/timeline.json'), before);
+  for (const kind of ['fotos', 'miniaturas', 'originais']) {
+    await mkdir(path.join(root, 'data/galeria', kind, 'escolas/2024'), { recursive: true });
+    await writeFile(path.join(root, 'data/galeria', kind, 'escolas/2024/antiga.jpg'), `arquivo-${kind}`);
   }
   const importer = await createImporter(root);
   t.after(async () => { await importer.close(); await rm(root, { recursive: true, force: true }); });
@@ -24,10 +24,10 @@ async function fixture(t) {
   const selection = { category: 'escolas', year: '2024', files: [{ name: 'Visita à escola.png', bytes }] };
   return { root, importer, before, existing, selection, bytes };
 }
-const manifest = root => readFile(path.join(root, 'data/timeline.json'), 'utf8');
+const manifest = root => readFile(path.join(root, 'data/galeria/timeline.json'), 'utf8');
 async function preserved(root) {
-  for (const kind of ['galeria', 'miniaturas', 'fotos_originais']) {
-    assert.equal(await readFile(path.join(root, 'imagens', kind, 'escolas/2024/antiga.jpg'), 'utf8'), `arquivo-${kind}`);
+  for (const kind of ['fotos', 'miniaturas', 'originais']) {
+    assert.equal(await readFile(path.join(root, 'data/galeria', kind, 'escolas/2024/antiga.jpg'), 'utf8'), `arquivo-${kind}`);
   }
 }
 
@@ -35,7 +35,7 @@ test('a prévia não escreve no acervo; a confirmação acrescenta WebP, miniatu
   const { root, importer, before, existing, selection, bytes } = await fixture(t);
   const plan = await importer.preview(selection);
   assert.equal(await manifest(root), before);
-  assert.deepEqual(await readdir(path.join(root, 'imagens/galeria/escolas/2024')), ['antiga.jpg']);
+  assert.deepEqual(await readdir(path.join(root, 'data/galeria/fotos/escolas/2024')), ['antiga.jpg']);
   await assert.rejects(access(path.join(root, '.mnc-fotos-backups')));
   const thumb = await sharp(await importer.thumbnail(plan.id, 0)).metadata();
   assert.equal(thumb.format, 'webp');
@@ -48,8 +48,8 @@ test('a prévia não escreve no acervo; a confirmação acrescenta WebP, miniatu
   assert.equal(after[0].observacao, 'preservar');
   assert.equal(after.length, 1);
   assert.equal(await readFile(path.join(root, result.backup), 'utf8'), before);
-  assert.deepEqual(await readFile(path.join(root, 'imagens/fotos_originais/escolas/2024', photo.original)), bytes);
-  const full = await sharp(await readFile(path.join(root, 'imagens/galeria/escolas/2024', photo.output))).metadata();
+  assert.deepEqual(await readFile(path.join(root, 'data/galeria/originais/escolas/2024', photo.original)), bytes);
+  const full = await sharp(await readFile(path.join(root, 'data/galeria/fotos/escolas/2024', photo.output))).metadata();
   assert.equal(full.format, 'webp');
   assert.deepEqual([full.width, full.height], [1600, 800]);
   await preserved(root);
@@ -76,13 +76,13 @@ test('mudanças externas no cadastro e bloqueios de outra importação impedem a
   const { root, importer, before, selection } = await fixture(t);
   const plan = await importer.preview(selection);
   const edited = before + '\n';
-  await writeFile(path.join(root, 'data/timeline.json'), edited);
+  await writeFile(path.join(root, 'data/galeria/timeline.json'), edited);
   await assert.rejects(importer.commit(plan.id), /galeria mudou/);
   assert.equal(await manifest(root), edited);
-  await writeFile(path.join(root, 'data/timeline.json'), before);
-  await writeFile(path.join(root, 'data/.fotos-import.lock'), 'outra operação');
+  await writeFile(path.join(root, 'data/galeria/timeline.json'), before);
+  await writeFile(path.join(root, 'data/galeria/.fotos-import.lock'), 'outra operação');
   await assert.rejects(importer.commit(plan.id), /Outra importação/);
-  assert.equal(await readFile(path.join(root, 'data/.fotos-import.lock'), 'utf8'), 'outra operação');
+  assert.equal(await readFile(path.join(root, 'data/galeria/.fotos-import.lock'), 'utf8'), 'outra operação');
   await preserved(root);
 });
 
@@ -90,10 +90,10 @@ test('falha após gravar uma foto reverte somente os novos arquivos, sem apagar 
   const { root, importer, before, selection } = await fixture(t);
   const plan = await importer.preview(selection);
   const output = plan.photos[0].output;
-  await writeFile(path.join(root, 'imagens/miniaturas/escolas/2024', output), 'arquivo-existente');
+  await writeFile(path.join(root, 'data/galeria/miniaturas/escolas/2024', output), 'arquivo-existente');
   await assert.rejects(importer.commit(plan.id), { code: 'EEXIST' });
-  await assert.rejects(access(path.join(root, 'imagens/galeria/escolas/2024', output)));
-  assert.equal(await readFile(path.join(root, 'imagens/miniaturas/escolas/2024', output), 'utf8'), 'arquivo-existente');
+  await assert.rejects(access(path.join(root, 'data/galeria/fotos/escolas/2024', output)));
+  assert.equal(await readFile(path.join(root, 'data/galeria/miniaturas/escolas/2024', output), 'utf8'), 'arquivo-existente');
   assert.equal(await manifest(root), before);
   await preserved(root);
 });
@@ -135,11 +135,11 @@ test('o servidor exige sessão e origem local e permite prévia, confirmação e
   assert.equal((await fetch(base + plan.photos[0].previewUrl)).status, 200);
   const response = await fetch(base + '/api/commit', { method: 'POST', headers: { 'X-Import-Token': token }, body: JSON.stringify({ id: plan.id }) });
   assert.equal(response.status, 200);
-  const listing = await fetch(base + '/site/data/timeline.json');
+  const listing = await fetch(base + '/site/data/galeria/timeline.json');
   assert.equal(listing.headers.get('cache-control'), 'no-store');
   assert.equal((await listing.json())[0].data, '2025');
-  assert.equal((await fetch(base + `/site/imagens/galeria/escolas/2025/${plan.photos[0].output}`)).status, 200);
-  assert.equal((await fetch(base + `/site/imagens/fotos_originais/escolas/2025/${plan.photos[0].original}`)).status, 404);
+  assert.equal((await fetch(base + `/site/data/galeria/fotos/escolas/2025/${plan.photos[0].output}`)).status, 200);
+  assert.equal((await fetch(base + `/site/data/galeria/originais/escolas/2025/${plan.photos[0].original}`)).status, 404);
   assert.equal((await fetch(base + '/site/.mnc-fotos-backups/')).status, 404);
   assert.equal((await fetch(base + '/site/tools/fotos/server.js')).status, 404);
   await preserved(root);

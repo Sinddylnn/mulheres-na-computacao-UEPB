@@ -1,8 +1,8 @@
-imagens/fotos_originais/
+data/galeria/originais/
 .vscode/
 .venv/
 _site/
 node_modules/
 .mnc-fotos-backups/
-data/.fotos-import.lock
-data/.timeline-*.tmp
+data/galeria/.fotos-import.lock
+data/galeria/.timeline-*.tmp

@@ -5,6 +5,7 @@ import path from 'node:path';
 import sharp from 'sharp';
 import { LIMITS, ImportError, destination, checkBatch, checkTimeline, checkDuplicate, photoStem, addPhotos, serializeTimeline }
   from '../../js/pages/upload/model.js';
+import { GALLERY_ROOT, TIMELINE, PHOTOS_DIR, THUMBNAILS_DIR, ORIGINALS_DIR } from '../../js/pages/gallery/paths.js';
 
 export { LIMITS, ImportError };
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
@@ -12,7 +13,7 @@ const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 export async function createImporter(projectRoot) {
   const root = await realpath(projectRoot);
   const stageRoot = await mkdtemp(path.join(tmpdir(), 'mnc-fotos-'));
-  const manifestPath = path.join(root, 'data', 'timeline.json');
+  const manifestPath = path.join(root, TIMELINE);
   const plans = new Map();
   let busy = false;
   const within = target => {
@@ -101,9 +102,9 @@ export async function createImporter(projectRoot) {
       busy = true;
       let lock, temporary;
       const created = [];
-      const lockPath = path.join(root, 'data', '.fotos-import.lock');
+      const lockPath = path.join(root, GALLERY_ROOT, '.fotos-import.lock');
       try {
-        await directory('data');
+        await directory(GALLERY_ROOT);
         try { lock = await open(lockPath, 'wx'); }
         catch (error) {
           if (error.code === 'EEXIST') throw new ImportError('Outra importação está em andamento. Tente novamente ao terminar.', 409);
@@ -113,7 +114,7 @@ export async function createImporter(projectRoot) {
         if (manifest.revision !== plan.revision) throw new ImportError('A galeria mudou desde a prévia. Gere uma nova prévia antes de adicionar.', 409);
         const backup = await directory(`.mnc-fotos-backups/${id}`);
         await writeFile(path.join(backup, 'timeline.json'), manifest.bytes, { flag: 'wx' });
-        const destinations = await Promise.all(['galeria', 'miniaturas', 'fotos_originais'].map(kind => directory(`imagens/${kind}/${plan.folder}`)));
+        const destinations = await Promise.all([PHOTOS_DIR, THUMBNAILS_DIR, ORIGINALS_DIR].map(dir => directory(`${dir}/${plan.folder}`)));
         // Exclusive file creation: an import never overwrites an existing image or original.
         for (const [index, photo] of plan.photos.entries()) {
           for (const [folder, filename, source] of [
@@ -131,7 +132,7 @@ export async function createImporter(projectRoot) {
         const events = addPhotos(manifest.events, plan, plan.photos);
         // If another editor saved during image writes, preserve their version and abort.
         if (hash(await readFile(manifestPath)) !== plan.revision) throw new ImportError('O cadastro foi alterado durante a importação. Gere uma nova prévia.', 409);
-        temporary = path.join(root, 'data', `.timeline-${id}.tmp`);
+        temporary = path.join(root, GALLERY_ROOT, `.timeline-${id}.tmp`);
         await writeFile(temporary, serializeTimeline(events), { flag: 'wx' });
         await rename(temporary, manifestPath);
         temporary = null;
