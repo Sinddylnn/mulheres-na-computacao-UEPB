@@ -1,5 +1,5 @@
-// Cadastro da equipe. Funciona só no computador, com a ferramenta local
-// (npm run equipe, em tools/equipe/server.js), que grava direto na pasta do projeto.
+// Cadastro da equipe. Funciona só no computador, com o servidor local
+// (npm start ou npm run equipe, ambos com tools/equipe/server.js), que grava direto na pasta do projeto.
 import { TEAM_PAGE, LIMITS, TeamError, NETWORKS, parseMembers, parseMember, validateMember, photoPath, renderMember, upsertMember } from './model.js';
 import { ImportError } from '../upload/model.js';
 import { convertAvatar, sha256, toBase64 } from '../upload/image.js';
@@ -35,7 +35,7 @@ const local = {
         headers: { 'Content-Type': 'application/json', 'X-Equipe-Token': this.token }
       });
     } catch {
-      throw new LocalError('A ferramenta local foi fechada. Rode npm run equipe de novo e recarregue a página.');
+      throw new LocalError('O servidor local foi fechado. Rode npm.cmd start de novo e recarregue a página.');
     }
     const data = await response.json().catch(() => ({}));
     if (!response.ok) throw new LocalError(data.error || 'Não foi possível salvar. Consulte o terminal.');

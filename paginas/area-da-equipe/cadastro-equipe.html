@@ -45,8 +45,8 @@
             <summary>Como abrir o cadastro no computador</summary>
             <p>O cadastro não usa senha nem token: ele grava direto na pasta do projeto, no computador de quem tem o repositório. Depois, a alteração vai para o site com um commit.</p>
             <ol>
-              <li>No terminal, dentro da pasta do projeto, rode <code>node tools/equipe/server.js</code> (precisa do Node.js 22 ou superior). O atalho <code>npm run equipe</code> faz o mesmo, mas o PowerShell pode bloqueá-lo; nesse caso, use o comando com <code>node</code>.</li>
-              <li>Abra o endereço que aparece no terminal: <code>http://127.0.0.1:8002</code>.</li>
+              <li>No terminal, dentro da pasta do projeto, rode <code>npm.cmd start</code> ou <code>node tools/serve_site.js</code> (precisa do Node.js 22 ou superior).</li>
+              <li>Abra <code>http://127.0.0.1:8000</code> e clique em <strong>Área da equipe</strong>, ao lado do botão de tema. O cadastro também abre direto com <code>npm.cmd run equipe</code>, em <code>http://127.0.0.1:8002</code>.</li>
               <li>Inclua ou atualize o card e clique em <strong>Salvar no projeto</strong>.</li>
               <li>Confira com <code>git diff</code> e faça o commit para publicar no site.</li>
             </ol>

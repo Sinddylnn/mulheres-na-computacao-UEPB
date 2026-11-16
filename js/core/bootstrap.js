@@ -2,6 +2,7 @@ import { initNavigation } from '../features/navigation.js';
 import { observeReveals } from '../features/reveal.js';
 import { initTheme } from '../features/theme.js';
 import { initPageTransition } from '../features/page-transition.js';
+import { initTeamAreaLink } from '../features/team-area-link.js';
 import { loadIncludes } from './includes.js';
 
 const pageInitializers = {
@@ -16,6 +17,7 @@ const pageInitializers = {
 export async function bootstrap() {
   await loadIncludes();
   initTheme();
+  initTeamAreaLink();
   initNavigation();
   observeReveals();
   initPageTransition();
