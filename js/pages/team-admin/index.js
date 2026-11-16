@@ -1,12 +1,47 @@
+// Cadastro da equipe. Funciona só no computador, com a ferramenta local
+// (npm run equipe, em tools/equipe/server.js), que grava direto na pasta do projeto.
 import { TEAM_PAGE, LIMITS, TeamError, NETWORKS, parseMembers, parseMember, validateMember, photoPath, renderMember, upsertMember } from './model.js';
 import { ImportError } from '../upload/model.js';
 import { convertAvatar, sha256, toBase64 } from '../upload/image.js';
-import { publishWithRetry } from '../admin/github.js';
-import { initSession, friendly as baseFriendly, setBusy } from '../admin/session.js';
-import { projectHref } from '../../core/paths.js';
+import { setBusy } from '../admin/session.js';
+import { projectHref, projectUrl } from '../../core/paths.js';
 
 const NEW = '';
-const friendly = error => baseFriendly(error, TeamError, ImportError);
+const API = 'api/equipe';
+
+class LocalError extends Error {}
+const friendly = error => [TeamError, ImportError, LocalError].some(type => error instanceof type)
+  ? error.message : 'Algo deu errado. Nada foi salvo; tente novamente.';
+
+/** Conversa com tools/equipe/server.js, que só existe quando a ferramenta roda no computador. */
+const local = {
+  token: null,
+  async read() {
+    let response = null;
+    try { response = await fetch(projectUrl(API), { cache: 'no-store' }); } catch { /* sem servidor */ }
+    const type = response?.headers.get('Content-Type') ?? '';
+    if (!response?.ok || !type.includes('application/json')) {
+      throw new LocalError('Esta página só funciona no computador, com a ferramenta local aberta. Veja abaixo como abrir.');
+    }
+    const data = await response.json();
+    this.token = data.token;
+    return data.html;
+  },
+  async save(payload) {
+    let response;
+    try {
+      response = await fetch(projectUrl(API), {
+        method: 'POST', cache: 'no-store', body: JSON.stringify(payload),
+        headers: { 'Content-Type': 'application/json', 'X-Equipe-Token': this.token }
+      });
+    } catch {
+      throw new LocalError('A ferramenta local foi fechada. Rode npm run equipe de novo e recarregue a página.');
+    }
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new LocalError(data.error || 'Não foi possível salvar. Consulte o terminal.');
+    return data;
+  }
+};
 
 export function init() {
   const $ = id => document.getElementById(id);
@@ -16,12 +51,13 @@ export function init() {
     photo: $('member-photo'), photoHelp: $('member-photo-help'), status: $('member-status'),
     preview: $('preview'), previewCard: $('preview-card'), summary: $('preview-summary'),
     publish: $('publish'), cancel: $('cancel'), publishStatus: $('publish-status'),
+    localStatus: $('local-status'), localHelp: $('local-help'),
     done: $('done'), doneTitle: $('done-titulo'), doneMessage: $('done-message'), again: $('again')
   };
   if (!el.form) return;
   const socialInputs = Object.fromEntries(NETWORKS.map(network => [network.key, $(`member-${network.key}`)]));
 
-  let client = null;
+  let ready = false;
   let members = []; // nomes na ordem do arquivo
   let currentHtml = '';
   let draft = null; // { member, original, avatar, url }
@@ -35,7 +71,7 @@ export function init() {
 
   async function loadTeam() {
     el.status.textContent = 'Lendo a página da equipe…';
-    currentHtml = (await client.snapshot(TEAM_PAGE)).content;
+    currentHtml = await local.read();
     members = parseMembers(currentHtml).map(member => member.name);
     const selected = el.select.value;
     el.select.replaceChildren(new Option('Nova integrante', NEW), ...members.map(name => new Option(name, name)));
@@ -62,19 +98,20 @@ export function init() {
   }
   el.select.addEventListener('change', () => { discardDraft(); fillForm(); });
 
-  // ── Acesso ───────────────────────────────────────────────────────────
-  initSession({
-    async onLogin(candidate) {
-      client = candidate;
-      try {
-        await loadTeam();
-        el.fields.disabled = false;
-      } catch (error) {
-        el.status.textContent = friendly(error);
-      }
-    },
-    onLogout() { client = null; discardDraft(); el.fields.disabled = true; }
-  });
+  // ── Ferramenta local ─────────────────────────────────────────────────
+  (async () => {
+    el.localStatus.textContent = 'Procurando a ferramenta local…';
+    try {
+      await loadTeam();
+      ready = true;
+      el.fields.disabled = false;
+      el.localStatus.textContent = `Pronto: as alterações serão salvas em ${TEAM_PAGE} neste computador.`;
+    } catch (error) {
+      el.status.textContent = '';
+      el.localStatus.textContent = friendly(error);
+      el.localHelp.open = true;
+    }
+  })();
 
   // ── Prévia ───────────────────────────────────────────────────────────
   function discardDraft() {
@@ -87,7 +124,7 @@ export function init() {
 
   el.form.addEventListener('submit', async event => {
     event.preventDefault();
-    if (!client) return;
+    if (!ready) return;
     discardDraft();
     el.done.hidden = true;
     setBusy(el.form, true);
@@ -106,7 +143,7 @@ export function init() {
         avatar = { ...await convertAvatar(file), path: photoPath(member.name, digest) };
         member.photo = avatar.path;
       }
-      // Confere nome repetido antes de mostrar a prévia; a publicação confere de novo.
+      // Confere nome repetido antes de mostrar a prévia; o salvamento confere de novo.
       upsertMember(currentHtml, member, original);
 
       const current = original && parseMember(parseMembers(currentHtml).find(item => item.name === original).block);
@@ -124,7 +161,7 @@ export function init() {
         : `Um novo card de ${member.name} será incluído na página da equipe.`;
       el.preview.hidden = false;
       el.photo.value = ''; // libera o original selecionado
-      el.status.textContent = 'Confira a prévia abaixo antes de publicar.';
+      el.status.textContent = 'Confira a prévia abaixo antes de salvar.';
       el.publish.focus();
     } catch (error) {
       el.status.textContent = friendly(error);
@@ -135,29 +172,26 @@ export function init() {
 
   el.cancel.addEventListener('click', () => {
     discardDraft();
-    el.status.textContent = 'Cancelado. Nada foi publicado.';
+    el.status.textContent = 'Cancelado. Nada foi salvo.';
     el.name.focus();
   });
 
-  // ── Publicar ─────────────────────────────────────────────────────────
+  // ── Salvar ───────────────────────────────────────────────────────────
   el.publish.addEventListener('click', async () => {
-    if (!client || !draft) return;
+    if (!ready || !draft) return;
     setBusy(el.preview, true);
     try {
       const { member, original, avatar } = draft;
-      const photoFile = avatar ? [{ path: avatar.path, base64: await toBase64(avatar.blob) }] : [];
-      const message = original ? `atualizando o card de ${member.name} na equipe` : `cadastrando ${member.name} na equipe`;
-      await publishWithRetry(client, TEAM_PAGE, content => [...photoFile, { path: TEAM_PAGE, text: upsertMember(content, member, original) }],
-        message, { onAttempt: attempt => {
-          el.publishStatus.textContent = attempt === 1 ? 'Enviando para o GitHub…' : 'Outra pessoa publicou ao mesmo tempo. Tentando de novo…';
-        } });
+      el.publishStatus.textContent = 'Salvando no projeto…';
+      const saved = await local.save({ original, member, photo: avatar ? await toBase64(avatar.blob) : null });
 
       discardDraft();
-      el.select.value = member.name;
+      el.select.value = saved.name;
       await loadTeam().catch(() => {});
       el.status.textContent = '';
-      el.doneTitle.innerHTML = original ? 'Card <em>atualizado!</em>' : 'Card <em>publicado!</em>';
-      el.doneMessage.textContent = `${member.name} ${original ? 'foi atualizada' : 'foi incluída'} na página da equipe. O site é atualizado automaticamente em alguns minutos.`;
+      el.doneTitle.innerHTML = original ? 'Card <em>atualizado!</em>' : 'Card <em>salvo!</em>';
+      el.doneMessage.textContent = `${saved.name} ${original ? 'foi atualizada' : 'foi incluída'} em ${TEAM_PAGE}`
+        + `${saved.photo ? `, com a foto ${saved.photo}` : ''}. Confira com git diff e faça o commit para publicar no site.`;
       el.done.hidden = false;
       el.done.focus();
     } catch (error) {

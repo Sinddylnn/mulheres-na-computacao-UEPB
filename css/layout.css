@@ -160,6 +160,7 @@
 .contact-info a:hover { color:#fff; }
 
 .social-icons { display:flex; gap:7px; }
+.social-icons > a.social-icon { display:flex; flex:0 0 var(--control-height); }
 .social-icon {
   width:var(--control-height); height:var(--control-height);
   background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.09);
@@ -168,6 +169,7 @@
   color:rgba(255,255,255,.55); font-size:.7rem; font-weight:700; letter-spacing:.5px;
   transition:background .2s, color .2s, transform .25s, border-color .2s;
 }
+.social-icon svg { width:18px; height:18px; display:block; }
 .social-icon:hover { background:var(--teal-pale); color:var(--teal); transform:translateY(-4px) rotate(-5deg); border-color:var(--border-teal); }
 
 .footer-divider { height:1px; background:rgba(255,255,255,.05); margin:0 5%; }

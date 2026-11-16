@@ -14,6 +14,14 @@ Acesse <http://127.0.0.1:8000>. Para encerrar o servidor, use `Ctrl+C`. Sirva o 
 
 **Você não precisa instalar Python para criar páginas, editar estilos ou visualizar o site.**
 
+### Erro de política de execução no PowerShell
+
+Se `npm` responder com *"a execução de scripts foi desabilitada neste sistema"*, o Windows está bloqueando o atalho `npm.ps1`. Escolha uma das saídas:
+
+- Chame o Node direto, sem npm: `node tools/serve_site.js`, `node tools/equipe/server.js` ou `node tools/fotos/server.js`.
+- Use a versão `.cmd` do npm, que não passa pela política: `npm.cmd ci`, `npm.cmd run fotos`, `npm.cmd run equipe`.
+- Ou libere os scripts locais só para o seu usuário, uma vez: `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`. Scripts baixados da internet sem assinatura continuam bloqueados.
+
 ## Páginas e arquivos
 
 - `index.html`: página inicial.
@@ -54,7 +62,7 @@ Antes de publicar, confira também o tema claro e escuro, o menu, o formulário 
 
 ### Pela página da equipe (recomendado)
 
-Abra `paginas/area-da-equipe/` no site publicado e escolha **Enviar fotos**. A página não aparece no menu nem nos buscadores e só funciona para colaboradoras do repositório. O mesmo token serve para a [página de cadastro da equipe](#pela-página-de-cadastro-recomendado).
+Abra `paginas/area-da-equipe/` no site publicado e escolha **Enviar fotos**. A página não aparece no menu nem nos buscadores e só funciona para colaboradoras do repositório.
 
 1. Na primeira vez, peça para ser adicionada como colaboradora do repositório e crie um token do GitHub com a permissão `public_repo`. O passo a passo está na própria página, em **Como criar o seu token**.
 2. Cole o token e clique em **Entrar**.
@@ -71,6 +79,8 @@ Use o importador local com prévia. Requer **Node.js 22 ou superior**. Na primei
 npm ci
 npm run fotos
 ```
+
+Se o PowerShell recusar o `npm`, veja [Erro de política de execução no PowerShell](#erro-de-política-de-execução-no-powershell).
 
 Abra <http://127.0.0.1:8001>. Selecione a categoria, o ano e as fotos; clique em **Gerar prévia**. Confira as imagens e os tamanhos, depois clique em **Adicionar à galeria**. O botão **Conferir a galeria** abre o site local na própria ferramenta.
 
@@ -100,14 +110,21 @@ As fotos dos perfis ficam em `imagens/equipe/` e os textos em [paginas/equipe.ht
 
 ### Pela página de cadastro (recomendado)
 
-Abra `paginas/area-da-equipe/` no site publicado e escolha **Cadastrar na equipe**. Como a página de envio de fotos, ela fica fora do menu e dos buscadores e usa o mesmo token do GitHub.
+O cadastro roda no computador, sem token: ele grava direto na pasta do projeto. Não precisa de `npm ci`, só do Node.js 22 ou superior. Na raiz do projeto:
 
-1. Cole o token e clique em **Entrar**.
+```powershell
+node tools/equipe/server.js
+```
+
+O atalho `npm run equipe` faz o mesmo; se o PowerShell bloquear o npm, veja [Erro de política de execução no PowerShell](#erro-de-política-de-execução-no-powershell).
+
+1. Abra <http://127.0.0.1:8002>, que leva à página **Cadastro da equipe**.
 2. Em **Card**, mantenha **Nova integrante** ou escolha um nome para editar o card existente.
 3. Preencha nome, cargo (opcional), apresentação, redes sociais e foto. Na edição, deixe a foto em branco para manter a atual.
-4. Clique em **Ver prévia**, confira o card e clique em **Publicar no site**.
+4. Clique em **Ver prévia**, confira o card e clique em **Salvar no projeto**.
+5. Confira com `git diff` e faça o commit; o site é atualizado no push para a `main`.
 
-A foto é convertida para WebP no navegador, com até 600 px, e ganha um nome novo, sem substituir arquivos. Os links das redes precisam ser `https://` do Instagram, LinkedIn ou GitHub. A página não exclui cards; para remover alguém, edite o HTML.
+A foto é convertida para WebP no navegador, com até 600 px, e salva em `imagens/equipe/` com um nome novo, sem substituir arquivos. Os links das redes precisam ser `https://` do Instagram, LinkedIn ou GitHub. A página não exclui cards; para remover alguém, edite o HTML. Aberta no site publicado, a página só mostra estas instruções.
 
 ### Manualmente
 
