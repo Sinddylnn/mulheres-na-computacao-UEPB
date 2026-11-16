@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex, nofollow">
   <meta name="description" content="Área da equipe do MNC para cadastrar e atualizar os cards da página Equipe.">
   <title>Cadastro da equipe | Mulheres na Computação MNC</title>
-  <link rel="icon" type="image/png" href="../../imagens/logos/favicon.png">
+  <link rel="icon" type="image/png" href="../../imagens/marca/favicon.png">
   <link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../css/layout.css">
   <link rel="stylesheet" href="../../css/components.css">
@@ -29,48 +29,27 @@
         <a class="admin-back" href="index.html"><span aria-hidden="true">←</span> Voltar para a área da equipe</a>
         <span class="overline">Área da equipe</span>
         <h1>Cadastro da <em>equipe</em></h1>
-        <p>Inclua uma nova integrante ou atualize nome, cargo, apresentação, redes sociais e foto de um card existente. A mudança é publicada direto na página Equipe.</p>
+        <p>Inclua uma nova integrante ou atualize nome, cargo, apresentação, redes sociais e foto de um card existente. A mudança é salva na pasta do projeto, neste computador, e vai para o site no próximo commit.</p>
       </div>
     </section>
 
     <section class="admin-section" aria-label="Cadastro da equipe">
       <div class="admin-inner">
 
-        <!-- 1. Acesso -->
-        <article class="card admin-panel" aria-labelledby="acesso-titulo">
-          <h2 id="acesso-titulo" class="card-eyebrow">1 · Acesso</h2>
+        <!-- 1. Ferramenta local -->
+        <article class="card admin-panel" aria-labelledby="local-titulo">
+          <h2 id="local-titulo" class="card-eyebrow">1 · Ferramenta local</h2>
+          <p class="form-status" id="local-status" role="status" aria-live="polite"></p>
 
-          <form id="login-form" novalidate>
-            <div class="form-field">
-              <label for="token">Token do GitHub</label>
-              <input class="form-control" type="password" id="token" name="token" autocomplete="off" spellcheck="false" required aria-describedby="token-help">
-            </div>
-            <p class="form-note" id="token-help">Só funciona para quem é colaboradora do repositório do site. O token é usado apenas nesta aba e enviado somente ao GitHub. É o mesmo token da página de envio de fotos.</p>
-            <label class="admin-check">
-              <input type="checkbox" id="remember" name="remember">
-              Lembrar o token até fechar esta aba
-            </label>
-            <div class="admin-actions">
-              <button class="btn btn--primary" type="submit">Entrar</button>
-            </div>
-          </form>
-
-          <div id="session" class="admin-session" hidden>
-            <p>Conectada como <strong id="login-name"></strong>.</p>
-            <button class="btn btn--secondary btn--small" type="button" id="logout">Sair</button>
-          </div>
-
-          <p class="form-status" id="login-status" role="status" aria-live="polite"></p>
-
-          <details class="admin-help">
-            <summary>Como criar o seu token</summary>
+          <details class="admin-help" id="local-help">
+            <summary>Como abrir o cadastro no computador</summary>
+            <p>O cadastro não usa senha nem token: ele grava direto na pasta do projeto, no computador de quem tem o repositório. Depois, a alteração vai para o site com um commit.</p>
             <ol>
-              <li>Peça a uma mantenedora para adicionar a sua conta do GitHub como colaboradora do repositório e aceite o convite recebido por e-mail.</li>
-              <li>Abra a <a id="token-link" href="https://github.com/settings/tokens/new?scopes=public_repo&amp;description=MNC%20area%20da%20equipe" target="_blank" rel="noopener noreferrer">página de criação de token do GitHub</a>. O nome e a permissão <code>public_repo</code> já vêm preenchidos.</li>
-              <li>Escolha uma validade (por exemplo, 90 dias) e clique em <strong>Generate token</strong>.</li>
-              <li>Copie o token e cole no campo acima. Guarde-o num gerenciador de senhas; o GitHub não mostra o token de novo.</li>
+              <li>No terminal, dentro da pasta do projeto, rode <code>node tools/equipe/server.js</code> (precisa do Node.js 22 ou superior). O atalho <code>npm run equipe</code> faz o mesmo, mas o PowerShell pode bloqueá-lo; nesse caso, use o comando com <code>node</code>.</li>
+              <li>Abra o endereço que aparece no terminal: <code>http://127.0.0.1:8002</code>.</li>
+              <li>Inclua ou atualize o card e clique em <strong>Salvar no projeto</strong>.</li>
+              <li>Confira com <code>git diff</code> e faça o commit para publicar no site.</li>
             </ol>
-            <p>Nunca compartilhe o token: ele dá acesso de escrita aos seus repositórios públicos. Se ele vazar, apague-o em <strong>Settings → Developer settings → Tokens</strong>.</p>
           </details>
         </article>
 
@@ -132,11 +111,11 @@
 
         <!-- 3. Conferir e publicar -->
         <article class="card admin-panel" id="preview" aria-labelledby="preview-titulo" hidden>
-          <h2 id="preview-titulo" class="card-eyebrow">3 · Conferir e publicar</h2>
+          <h2 id="preview-titulo" class="card-eyebrow">3 · Conferir e salvar</h2>
           <p id="preview-summary"></p>
           <div class="team-preview" id="preview-card"></div>
           <div class="admin-actions">
-            <button class="btn btn--primary" type="button" id="publish">Publicar no site</button>
+            <button class="btn btn--primary" type="button" id="publish">Salvar no projeto</button>
             <button class="btn btn--secondary" type="button" id="cancel">Cancelar</button>
           </div>
           <p class="form-status" id="publish-status" role="status" aria-live="polite"></p>
@@ -144,7 +123,7 @@
 
         <!-- Concluído -->
         <article class="call-panel admin-done" id="done" tabindex="-1" aria-labelledby="done-titulo" hidden>
-          <h2 id="done-titulo">Card <em>publicado!</em></h2>
+          <h2 id="done-titulo">Card <em>salvo!</em></h2>
           <p id="done-message"></p>
           <div class="admin-actions admin-actions--center">
             <a class="btn btn--primary" href="../equipe.html">Ver a equipe</a>

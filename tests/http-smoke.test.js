@@ -24,7 +24,7 @@ test('todas as páginas publicadas referenciam o layout compartilhado', { skip: 
 });
 
 test('recursos compartilhados respondem por HTTP', { skip: !baseUrl }, async () => {
-  for (const path of ['/header.html', '/footer.html', '/js/core/includes.js', '/js/main.js', '/data/timeline.json', '/css/base.css']) {
+  for (const path of ['/header.html', '/footer.html', '/js/core/includes.js', '/js/main.js', '/data/galeria/timeline.json', '/css/base.css']) {
     const response = await fetch(new URL(path, baseUrl));
     assert.equal(response.status, 200, `${path} deve responder com HTTP 200`);
   }

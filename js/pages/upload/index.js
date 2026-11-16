@@ -2,8 +2,7 @@ import { ImportError, destination, checkBatch, checkTimeline, checkDuplicate, ph
 import { convertPhoto, sha256, toBase64 } from './image.js';
 import { publishWithRetry } from '../admin/github.js';
 import { initSession, friendly as baseFriendly, setBusy } from '../admin/session.js';
-
-const TIMELINE = 'data/timeline.json';
+import { TIMELINE, PHOTOS_DIR, THUMBNAILS_DIR } from '../gallery/paths.js';
 
 const formatSize = bytes => bytes < 1024 * 1024 ? `${Math.round(bytes / 1024)} KB` : `${(bytes / 1024 / 1024).toFixed(1)} MB`;
 const friendly = error => baseFriendly(error, ImportError);
@@ -116,8 +115,8 @@ export function init() {
       const { target, photos } = batch;
       const images = [];
       for (const photo of photos) {
-        images.push({ path: `imagens/galeria/${target.folder}/${photo.output}`, base64: await toBase64(photo.full.blob) });
-        images.push({ path: `imagens/miniaturas/${target.folder}/${photo.output}`, base64: await toBase64(photo.thumb.blob) });
+        images.push({ path: `${PHOTOS_DIR}/${target.folder}/${photo.output}`, base64: await toBase64(photo.full.blob) });
+        images.push({ path: `${THUMBNAILS_DIR}/${target.folder}/${photo.output}`, base64: await toBase64(photo.thumb.blob) });
       }
       const entries = photos.map(photo => ({ output: photo.output, width: photo.full.width, height: photo.full.height, sha256: photo.sha256 }));
       const message = `adicionando ${photos.length} foto(s) em ${target.folder}`;

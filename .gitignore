@@ -6,3 +6,4 @@ node_modules/
 .mnc-fotos-backups/
 data/.fotos-import.lock
 data/.timeline-*.tmp
+.claude/

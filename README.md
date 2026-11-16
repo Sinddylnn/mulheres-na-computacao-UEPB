@@ -4,7 +4,7 @@ Site institucional do projeto de extensão **Mulheres na Computação (MNC)** da
 
 ## Rodar o site
 
-O site usa HTML, CSS e JavaScript nativos. Não há framework, build nem pacotes npm para instalar. Abra a pasta no VS Code com **Live Server** ou, se tiver Node.js, execute:
+O site usa HTML, CSS e JavaScript nativos, sem framework nem build. Isso é uma escolha do projeto: mostrar quanto dá para fazer só com a plataforma web. Por isso, prefira recursos nativos do navegador a bibliotecas. O site não precisa de pacotes npm; eles só são usados pelo importador local de fotos. Abra a pasta no VS Code com **Live Server** ou, se tiver Node.js, execute:
 
 ```bash
 node tools/serve_site.js
@@ -14,6 +14,14 @@ Acesse <http://127.0.0.1:8000>. Para encerrar o servidor, use `Ctrl+C`. Sirva o 
 
 **Você não precisa instalar Python para criar páginas, editar estilos ou visualizar o site.**
 
+### Erro de política de execução no PowerShell
+
+Se `npm` responder com *"a execução de scripts foi desabilitada neste sistema"*, o Windows está bloqueando o atalho `npm.ps1`. Escolha uma das saídas:
+
+- Chame o Node direto, sem npm: `node tools/serve_site.js`, `node tools/equipe/server.js` ou `node tools/fotos/server.js`.
+- Use a versão `.cmd` do npm, que não passa pela política: `npm.cmd ci`, `npm.cmd run fotos`, `npm.cmd run equipe`.
+- Ou libere os scripts locais só para o seu usuário, uma vez: `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`. Scripts baixados da internet sem assinatura continuam bloqueados.
+
 ## Páginas e arquivos
 
 - `index.html`: página inicial.
@@ -22,10 +30,13 @@ Acesse <http://127.0.0.1:8000>. Para encerrar o servidor, use `Ctrl+C`. Sirva o 
 - `css/base.css`, `css/components.css` e `css/layout.css`: temas, componentes e layout comuns.
 - `css/paginas/`: estilos específicos de cada página.
 - `js/main.js`, `js/core/`, `js/features/` e `js/pages/`: inicialização e comportamentos.
-- `data/timeline.json`, `imagens/galeria/` e `imagens/miniaturas/`: dados e fotos da galeria.
-- `imagens/logos/`: símbolo do MNC, borboleta e ícone das abas do navegador.
+- `data/galeria/`: acervo da galeria — o cadastro `timeline.json`, as fotos em `fotos/` e as miniaturas em `miniaturas/`. Os caminhos ficam em `js/pages/gallery/paths.js`.
+- `imagens/marca/`: símbolo do MNC, borboleta e ícone das abas do navegador.
+- `imagens/parcerias/` e `imagens/equipe/`: logos das parceiras e fotos dos perfis, em WebP.
+- Fotos da galeria seguem o padrão `data/galeria/fotos/<categoria>/<data-ou-ano>/AAAA-MM-DD-NN.webp`, com miniatura de mesmo nome em `data/galeria/miniaturas/`.
 - `pdfs/`: publicações para download.
-- `docs/`: documentação do projeto, instruções para agentes e melhorias planejadas.
+- `.claude/`: documentação do projeto, instruções para agentes e skills.
+- `node_modules/`: criada pelo `npm ci`. Contém só o sharp, usado pelo importador local de fotos. Fica fora do Git e da publicação e pode ser apagada e recriada com `npm ci`.
 
 Para alterar o menu ou o rodapé, edite apenas `header.html` ou `footer.html`. Para adicionar uma página, crie seu HTML em `paginas/`, use os pontos de montagem `data-include` como nas outras páginas e registre o arquivo em `tools/build_site.py`. Consulte [os padrões do frontend](.claude/skills/frontend/SKILL.md) para componentes, cores por tema, acessibilidade e responsividade.
 
@@ -51,7 +62,7 @@ Antes de publicar, confira também o tema claro e escuro, o menu, o formulário 
 
 ### Pela página da equipe (recomendado)
 
-Abra `paginas/area-da-equipe/` no site publicado e escolha **Enviar fotos**. A página não aparece no menu nem nos buscadores e só funciona para colaboradoras do repositório. O mesmo token serve para a [página de cadastro da equipe](#pela-página-de-cadastro-recomendado).
+Abra `paginas/area-da-equipe/` no site publicado e escolha **Enviar fotos**. A página não aparece no menu nem nos buscadores e só funciona para colaboradoras do repositório.
 
 1. Na primeira vez, peça para ser adicionada como colaboradora do repositório e crie um token do GitHub com a permissão `public_repo`. O passo a passo está na própria página, em **Como criar o seu token**.
 2. Cole o token e clique em **Entrar**.
@@ -69,13 +80,15 @@ npm ci
 npm run fotos
 ```
 
+Se o PowerShell recusar o `npm`, veja [Erro de política de execução no PowerShell](#erro-de-política-de-execução-no-powershell).
+
 Abra <http://127.0.0.1:8001>. Selecione a categoria, o ano e as fotos; clique em **Gerar prévia**. Confira as imagens e os tamanhos, depois clique em **Adicionar à galeria**. O botão **Conferir a galeria** abre o site local na própria ferramenta.
 
 - Aceita JPG, PNG e WebP estático: até 20 fotos por lote, 15 MB por foto e 60 MB no total.
 - Fotos em WebP com até 1600 px no lado maior, qualidade 80; miniaturas com até 480 px, qualidade 72. Não recorta nem amplia imagens pequenas e corrige a orientação.
 - Escolas são organizadas por ano; encontros podem usar somente o ano ou uma data opcional.
 - Acrescenta somente o lote confirmado ao cadastro existente. Não reconstrói o acervo, não apaga nem substitui fotos.
-- Originais ficam preservados localmente em `imagens/fotos_originais/`, fora do Git e da publicação.
+- Originais ficam preservados localmente em `data/galeria/originais/`, fora do Git e da publicação.
 - Cada lote guarda o cadastro anterior em `.mnc-fotos-backups/`, também fora do Git e da publicação.
 - A ferramenta não oferece exclusão ou substituição. Essas ações exigem revisão separada.
 
@@ -84,7 +97,7 @@ O conversor Python e o workflow antigo foram desativados. Arquivos soltos nas pa
 Após conferir, envie apenas os arquivos da galeria, as miniaturas e o cadastro:
 
 ```bash
-git add imagens/galeria imagens/miniaturas data/timeline.json
+git add data/galeria
 git commit -m "Adiciona fotos à galeria"
 git push
 ```
@@ -97,14 +110,21 @@ As fotos dos perfis ficam em `imagens/equipe/` e os textos em [paginas/equipe.ht
 
 ### Pela página de cadastro (recomendado)
 
-Abra `paginas/area-da-equipe/` no site publicado e escolha **Cadastrar na equipe**. Como a página de envio de fotos, ela fica fora do menu e dos buscadores e usa o mesmo token do GitHub.
+O cadastro roda no computador, sem token: ele grava direto na pasta do projeto. Não precisa de `npm ci`, só do Node.js 22 ou superior. Na raiz do projeto:
 
-1. Cole o token e clique em **Entrar**.
+```powershell
+node tools/equipe/server.js
+```
+
+O atalho `npm run equipe` faz o mesmo; se o PowerShell bloquear o npm, veja [Erro de política de execução no PowerShell](#erro-de-política-de-execução-no-powershell).
+
+1. Abra <http://127.0.0.1:8002>, que leva à página **Cadastro da equipe**.
 2. Em **Card**, mantenha **Nova integrante** ou escolha um nome para editar o card existente.
 3. Preencha nome, cargo (opcional), apresentação, redes sociais e foto. Na edição, deixe a foto em branco para manter a atual.
-4. Clique em **Ver prévia**, confira o card e clique em **Publicar no site**.
+4. Clique em **Ver prévia**, confira o card e clique em **Salvar no projeto**.
+5. Confira com `git diff` e faça o commit; o site é atualizado no push para a `main`.
 
-A foto é convertida para WebP no navegador, com até 600 px, e ganha um nome novo, sem substituir arquivos. Os links das redes precisam ser `https://` do Instagram, LinkedIn ou GitHub. A página não exclui cards; para remover alguém, edite o HTML.
+A foto é convertida para WebP no navegador, com até 600 px, e salva em `imagens/equipe/` com um nome novo, sem substituir arquivos. Os links das redes precisam ser `https://` do Instagram, LinkedIn ou GitHub. A página não exclui cards; para remover alguém, edite o HTML. Aberta no site publicado, a página só mostra estas instruções.
 
 ### Manualmente
 
@@ -124,11 +144,12 @@ A página [Quero participar](paginas/quero-participar.html) tem um formulário d
 
 ## Documentação e contato
 
-Toda a documentação de desenvolvimento e manutenção do projeto deve ficar em `docs/`, incluindo arquivos `.md`, guias, instruções para agentes e novos documentos. O único Markdown mantido na raiz é este `README.md`, que serve como apresentação e ponto de entrada para a documentação. A pasta `.claude/` contém apenas o arquivo que carrega `docs/CLAUDE.md` no Claude Code e as skills do projeto.
+Toda a documentação de desenvolvimento e manutenção do projeto fica em `.claude/`, incluindo instruções para agentes, skills, guias e novos documentos. O único Markdown mantido na raiz é este `README.md`, que serve como apresentação e ponto de entrada para a documentação.
 
-- [Instruções do projeto](docs/CLAUDE.md): comandos, arquitetura, regras gerais e verificações para agentes e colaboradores.
+- [Instruções do projeto](.claude/CLAUDE.md): comandos, arquitetura, regras gerais e verificações para agentes e colaboradores.
 - [Padrões do frontend](.claude/skills/frontend/SKILL.md): componentes CSS, tokens de cor por tema, acessibilidade, responsividade e checklist de verificação de interface.
-Ao criar um novo documento, salve-o em `docs/` e acrescente seu link nesta seção.
+
+Ao criar um novo documento, salve-o em `.claude/` e acrescente seu link nesta seção.
 
 - E-mail: [mnc.uepb@gmail.com](mailto:mnc.uepb@gmail.com)
 - Instagram: [@mnc.uepb](https://www.instagram.com/mnc.uepb/)

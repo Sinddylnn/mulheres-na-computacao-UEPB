@@ -5,14 +5,14 @@ import { resolveFragmentPaths, loadIncludes } from '../js/core/includes.js';
 import { projectHref } from '../js/core/paths.js';
 
 test('fragmentos resolvem links e imagens pela raiz e preservam destinos externos', () => {
-  const values = ['./paginas/quero-participar.html', './imagens/logos/logo_completa.png', 'mailto:mnc.uepb@gmail.com', 'https://example.com', '#contato'];
+  const values = ['./paginas/quero-participar.html', './imagens/marca/logo-completa.webp', 'mailto:mnc.uepb@gmail.com', 'https://example.com', '#contato'];
   const elements = values.map((value, index) => {
     const attrs = { [index === 1 ? 'src' : 'href']: value };
     return { attrs, getAttribute: key => attrs[key], setAttribute: (key, next) => { attrs[key] = next; } };
   });
   resolveFragmentPaths({ querySelectorAll: () => elements });
   assert.equal(elements[0].attrs.href, projectHref('paginas/quero-participar.html'));
-  assert.equal(elements[1].attrs.src, projectHref('imagens/logos/logo_completa.png'));
+  assert.equal(elements[1].attrs.src, projectHref('imagens/marca/logo-completa.webp'));
   for (let i = 2; i < values.length; i++) assert.equal(elements[i].attrs.href, values[i]);
 });
 

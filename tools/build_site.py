@@ -45,7 +45,8 @@ def main() -> int:
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(ROOT / relative, destination)
     for directory in PUBLIC_DIRECTORIES:
-        ignore = shutil.ignore_patterns("fotos_originais") if directory == "imagens" else None
+        # Originais, trava e arquivos temporários do importador ficam só no computador.
+        ignore = shutil.ignore_patterns("originais", "fotos_originais", ".fotos-import.lock", ".timeline-*.tmp")
         shutil.copytree(ROOT / directory, OUTPUT / directory, ignore=ignore)
 
     print(f"Site empacotado em {OUTPUT} com {len(PAGES)} páginas, sem transformação.")
