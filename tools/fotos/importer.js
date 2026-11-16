@@ -4,8 +4,8 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import sharp from 'sharp';
 import { LIMITS, ImportError, destination, checkBatch, checkTimeline, checkDuplicate, photoStem, addPhotos, serializeTimeline }
-  from '../../js/pages/upload/model.js';
-import { GALLERY_ROOT, TIMELINE, PHOTOS_DIR, THUMBNAILS_DIR, ORIGINALS_DIR } from '../../js/pages/gallery/paths.js';
+  from '../../js/shared/upload-model.js';
+import { GALLERY_ROOT, TIMELINE, PHOTOS_DIR, THUMBNAILS_DIR, ORIGINALS_DIR } from '../../js/shared/gallery-paths.js';
 
 export { LIMITS, ImportError };
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { parseMembers, parseMember, renderMember, validateMember, upsertMember, photoPath, TeamError }
   from '../js/pages/team-admin/model.js';
-import { createClient, publishWithRetry } from '../js/pages/admin/github.js';
+import { createClient, publishWithRetry } from '../js/shared/admin/github.js';
 
 const page = await readFile(new URL('../paginas/equipe.html', import.meta.url), 'utf8');
 

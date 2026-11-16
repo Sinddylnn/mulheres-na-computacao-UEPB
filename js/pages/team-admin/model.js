@@ -12,11 +12,11 @@ const CARD = /^[ \t]*<article class="card team-member[^"]*"[^>]*>[\s\S]*?<\/arti
 
 export const NETWORKS = [
   { key: 'instagram', label: 'Instagram', hosts: ['instagram.com'],
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>' },
+    icon: '<svg aria-hidden="true"><use href="#icone-instagram"/></svg>' },
   { key: 'linkedin', label: 'LinkedIn', hosts: ['linkedin.com'],
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7.5 10v7M11 17v-7m0 3a3 3 0 0 1 6 0v4"/><circle cx="7.5" cy="7" r="1" fill="currentColor" stroke="none"/></svg>' },
+    icon: '<svg aria-hidden="true"><use href="#icone-linkedin"/></svg>' },
   { key: 'github', label: 'GitHub', hosts: ['github.com'],
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4 1-4-2-6-2m12 5v-4a3.5 3.5 0 0 0-1-2.7c3.3-.4 6.8-1.6 6.8-7A5.4 5.4 0 0 0 19.3 4a5 5 0 0 0-.1-4S18 0 15.2 1.5a13.4 13.4 0 0 0-7 0C5.4 0 4.2 0 4.2 0A5 5 0 0 0 4.1 4a5.4 5.4 0 0 0-1.5 3.8c0 5.4 3.5 6.6 6.8 7A3.5 3.5 0 0 0 8.5 18v4" transform="translate(1 2) scale(.9)"/></svg>' }
+    icon: '<svg aria-hidden="true"><use href="#icone-github"/></svg>' }
 ];
 
 const escape = text => String(text).replaceAll('&', '&amp;').replaceAll('<', '&lt;')
@@ -95,14 +95,24 @@ export function photoPath(name, digest) {
   return `imagens/equipe/${slug}-${digest.slice(0, 8)}.webp`;
 }
 
-/** HTML do card no mesmo formato dos cards escritos à mão. src permite usar outra imagem na prévia. */
+/** Inicial exibida no lugar da foto quando o card não tem imagem. */
+const initial = name => escape(Array.from(String(name).trim())[0] ?? '').toLocaleUpperCase('pt-BR');
+
+/**
+ * HTML do card no mesmo formato dos cards escritos à mão. src permite usar outra imagem na prévia.
+ * Sem foto (nem src), o avatar mostra a inicial do nome.
+ */
 export function renderMember(member, { open, pin = '', src } = {}) {
   const inner = INDENT + '  ';
   const name = escape(member.name);
+  const image = src ?? (member.photo ? '../' + member.photo : null);
+  const avatar = image
+    ? `<img src="${escape(image)}" alt="" loading="lazy" decoding="async">`
+    : initial(member.name);
   const lines = [
     INDENT + open,
     ...(pin ? [pin.replace(/\n$/, '')] : []),
-    `${inner}<div class="member-avatar" aria-hidden="true"><img src="${escape(src ?? '../' + member.photo)}" alt="" loading="lazy" decoding="async"></div>`,
+    `${inner}<div class="member-avatar" aria-hidden="true">${avatar}</div>`,
     `${inner}<h3>${name}</h3>`
   ];
   if (member.role) lines.push(`${inner}<p>${escape(member.role)}</p>`);

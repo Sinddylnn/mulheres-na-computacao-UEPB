@@ -9,7 +9,7 @@ const pageInitializers = {
   participation: () => import('../pages/participation.js'),
   publications: () => import('../pages/publications.js'),
   gallery: () => import('../pages/gallery/index.js'),
-  team: () => import('../pages/team.js'),
+  team: () => import('../pages/team/index.js'),
   upload: () => import('../pages/upload/index.js'),
   'team-admin': () => import('../pages/team-admin/index.js')
 };

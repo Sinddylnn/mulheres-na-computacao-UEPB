@@ -30,15 +30,15 @@ Se `npm` responder com *"a execução de scripts foi desabilitada neste sistema"
 - `css/base.css`, `css/components.css` e `css/layout.css`: temas, componentes e layout comuns.
 - `css/paginas/`: estilos específicos de cada página.
 - `js/main.js`, `js/core/`, `js/features/` e `js/pages/`: inicialização e comportamentos.
-- `data/galeria/`: acervo da galeria — o cadastro `timeline.json`, as fotos em `fotos/` e as miniaturas em `miniaturas/`. Os caminhos ficam em `js/pages/gallery/paths.js`.
+- `js/shared/`: regras e caminhos usados pelo site e também pelas ferramentas locais (`gallery-paths.js`, `upload-model.js`, `admin/`).
+- `data/galeria/`: acervo da galeria — o cadastro `timeline.json`, as fotos em `fotos/` e as miniaturas em `miniaturas/`. Os caminhos ficam em `js/shared/gallery-paths.js`.
+- `data/publicacoes/`: PDFs das publicações para download.
 - `imagens/marca/`: símbolo do MNC, borboleta e ícone das abas do navegador.
 - `imagens/parcerias/` e `imagens/equipe/`: logos das parceiras e fotos dos perfis, em WebP.
 - Fotos da galeria seguem o padrão `data/galeria/fotos/<categoria>/<data-ou-ano>/AAAA-MM-DD-NN.webp`, com miniatura de mesmo nome em `data/galeria/miniaturas/`.
-- `pdfs/`: publicações para download.
-- `.claude/`: documentação do projeto, instruções para agentes e skills.
 - `node_modules/`: criada pelo `npm ci`. Contém só o sharp, usado pelo importador local de fotos. Fica fora do Git e da publicação e pode ser apagada e recriada com `npm ci`.
 
-Para alterar o menu ou o rodapé, edite apenas `header.html` ou `footer.html`. Para adicionar uma página, crie seu HTML em `paginas/`, use os pontos de montagem `data-include` como nas outras páginas e registre o arquivo em `tools/build_site.py`. Consulte [os padrões do frontend](.claude/skills/frontend/SKILL.md) para componentes, cores por tema, acessibilidade e responsividade.
+Para alterar o menu ou o rodapé, edite apenas `header.html` ou `footer.html`. Para adicionar uma página, crie seu HTML em `paginas/` e use os pontos de montagem `data-include` como nas outras páginas; a publicação encontra as páginas sozinha. Reaproveite os componentes e os tokens de cor de `css/components.css` e `css/base.css` em vez de criar CSS novo.
 
 ## Testar
 
@@ -69,7 +69,7 @@ Abra `paginas/area-da-equipe/` no site publicado e escolha **Enviar fotos**. A p
 3. Escolha a categoria, o ano (e a data, nos encontros) e as fotos. Clique em **Preparar fotos** e confira a prévia.
 4. Clique em **Publicar no site**. O site é atualizado sozinho em alguns minutos.
 
-As fotos são convertidas para WebP no navegador, sem dados de localização. Os originais não saem do computador, e nada fica guardado depois do envio. Fotos já cadastradas no mesmo evento são recusadas. As mesmas regras de tamanho e organização do importador local valem aqui, porque as duas ferramentas usam o mesmo módulo (`js/pages/upload/model.js`).
+As fotos são convertidas para WebP no navegador, sem dados de localização. Os originais não saem do computador, e nada fica guardado depois do envio. Fotos já cadastradas no mesmo evento são recusadas. As mesmas regras de tamanho e organização do importador local valem aqui, porque as duas ferramentas usam o mesmo módulo (`js/shared/upload-model.js`).
 
 ### Pelo importador local
 
@@ -92,7 +92,7 @@ Abra <http://127.0.0.1:8001>. Selecione a categoria, o ano e as fotos; clique em
 - Cada lote guarda o cadastro anterior em `.mnc-fotos-backups/`, também fora do Git e da publicação.
 - A ferramenta não oferece exclusão ou substituição. Essas ações exigem revisão separada.
 
-O conversor Python e o workflow antigo foram desativados. Arquivos soltos nas pastas de originais não entram no site automaticamente. Você não precisa reunir o acervo completo para importar fotos novas.
+Não existe conversão automática: arquivos soltos nas pastas de originais não entram no site. Você não precisa reunir o acervo completo para importar fotos novas.
 
 Após conferir, envie apenas os arquivos da galeria, as miniaturas e o cadastro:
 
@@ -128,9 +128,9 @@ A foto é convertida para WebP no navegador, com até 600 px, e salva em `imagen
 
 ### Manualmente
 
-Para cada integrante, localize seu bloco `<article class="team-member ...">`, atualize a foto e acrescente a apresentação em `<p class="member-bio">...</p>` abaixo do nome. Essa classe aplica texto justificado. Prefira uma foto com o rosto centralizado, pois o site usa um recorte circular.
+Para cada integrante, localize seu bloco `<article class="team-member ...">`, atualize a foto e acrescente a apresentação em `<p class="member-bio">...</p>` abaixo do nome. Essa classe aplica texto justificado. Prefira uma foto com o rosto centralizado, pois o site usa um recorte circular. Enquanto a integrante não enviar foto, deixe só a inicial do nome dentro do `<div class="member-avatar">`, como no card de Lays.
 
-Para adicionar redes sociais, use o bloco de Sonally como referência: os três quadradinhos ficam abaixo da descrição. Troque os links e os rótulos `aria-label` para os perfis da integrante e inclua somente as redes que ela enviar.
+Para adicionar redes sociais, use o bloco de Sonally como referência: os três quadradinhos ficam abaixo da descrição. Troque os links e os rótulos `aria-label` para os perfis da integrante e inclua somente as redes que ela enviar. Os desenhos dos ícones ficam uma única vez em `header.html` (`<symbol id="icone-...">`); cada card só aponta para eles com `<use href="#icone-github"/>`.
 
 ## Publicação
 
@@ -142,14 +142,7 @@ Na primeira publicação, configure **GitHub Actions** como origem em **Settings
 
 A página [Quero participar](paginas/quero-participar.html) tem um formulário de contato com nome, telefone/WhatsApp e mensagem obrigatórios. Ele usa o FormSubmit para encaminhar mensagens a `mnc.uepb@gmail.com`. Após o primeiro envio pelo site publicado, a equipe precisa confirmar o e-mail de ativação do serviço. Veja as [instruções do FormSubmit](https://formsubmit.co/help). Para confirmar a entrega, faça um envio real e confira a caixa de entrada.
 
-## Documentação e contato
-
-Toda a documentação de desenvolvimento e manutenção do projeto fica em `.claude/`, incluindo instruções para agentes, skills, guias e novos documentos. O único Markdown mantido na raiz é este `README.md`, que serve como apresentação e ponto de entrada para a documentação.
-
-- [Instruções do projeto](.claude/CLAUDE.md): comandos, arquitetura, regras gerais e verificações para agentes e colaboradores.
-- [Padrões do frontend](.claude/skills/frontend/SKILL.md): componentes CSS, tokens de cor por tema, acessibilidade, responsividade e checklist de verificação de interface.
-
-Ao criar um novo documento, salve-o em `.claude/` e acrescente seu link nesta seção.
+## Contato
 
 - E-mail: [mnc.uepb@gmail.com](mailto:mnc.uepb@gmail.com)
 - Instagram: [@mnc.uepb](https://www.instagram.com/mnc.uepb/)

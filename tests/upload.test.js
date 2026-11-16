@@ -2,8 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { destination, checkBatch, checkTimeline, checkDuplicate, photoStem, addPhotos, fitInside, ImportError }
-  from '../js/pages/upload/model.js';
-import { createClient, GitHubError } from '../js/pages/admin/github.js';
+  from '../js/shared/upload-model.js';
+import { createClient, GitHubError } from '../js/shared/admin/github.js';
 
 const repo = { owner: 'dona', name: 'site', branch: 'main' };
 

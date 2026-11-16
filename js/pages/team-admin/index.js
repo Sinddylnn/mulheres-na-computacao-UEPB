@@ -1,9 +1,9 @@
 // Cadastro da equipe. Funciona só no computador, com o servidor local
 // (npm start ou npm run equipe, ambos com tools/equipe/server.js), que grava direto na pasta do projeto.
 import { TEAM_PAGE, LIMITS, TeamError, NETWORKS, parseMembers, parseMember, validateMember, photoPath, renderMember, upsertMember } from './model.js';
-import { ImportError } from '../upload/model.js';
+import { ImportError } from '../../shared/upload-model.js';
 import { convertAvatar, sha256, toBase64 } from '../upload/image.js';
-import { setBusy } from '../admin/session.js';
+import { setBusy } from '../../shared/admin/session.js';
 import { projectHref, projectUrl } from '../../core/paths.js';
 
 const NEW = '';
@@ -150,8 +150,10 @@ export function init() {
       const url = avatar && URL.createObjectURL(avatar.blob);
       draft = { member, original, avatar, url };
       const template = document.createElement('template');
-      template.innerHTML = renderMember({ ...member, photo: member.photo || current.photo },
-        { open: current?.open ?? '<article class="card team-member">', pin: current?.pin, src: url || projectHref(current.photo) }).trim();
+      // Sem foto nova nem atual, a prévia mostra a inicial, como na página.
+      const currentSrc = current?.photo ? projectHref(current.photo) : undefined;
+      template.innerHTML = renderMember({ ...member, photo: member.photo || current?.photo },
+        { open: current?.open ?? '<article class="card team-member">', pin: current?.pin, src: url || currentSrc }).trim();
       const card = template.content.firstElementChild;
       card.classList.remove('reveal', 'reveal-delay-1', 'reveal-delay-2', 'reveal-delay-3', 'reveal-delay-4');
       card.querySelectorAll('a').forEach(link => { link.tabIndex = -1; });

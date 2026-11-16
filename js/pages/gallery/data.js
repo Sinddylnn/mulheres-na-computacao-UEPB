@@ -1,5 +1,5 @@
 import { projectHref } from '../../core/paths.js';
-import { TIMELINE } from './paths.js';
+import { TIMELINE } from '../../shared/gallery-paths.js';
 
 export async function loadTimeline() {
   const response = await fetch(projectHref(TIMELINE), { cache: 'no-store' });

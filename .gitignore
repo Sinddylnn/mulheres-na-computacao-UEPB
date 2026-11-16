@@ -1,9 +1,10 @@
-imagens/fotos_originais/
 .vscode/
 .venv/
-_site/
+__pycache__/
 node_modules/
-.mnc-fotos-backups/
-data/.fotos-import.lock
-data/.timeline-*.tmp
+_site/
 .claude/
+data/galeria/originais/
+.mnc-fotos-backups/
+data/galeria/.fotos-import.lock
+data/galeria/.timeline-*.tmp

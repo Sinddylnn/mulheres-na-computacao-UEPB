@@ -1,8 +1,11 @@
 /* ========================================================================
-   ÁREA DA EQUIPE (página inicial das ferramentas internas)
-   Usa .admin-*, .card, .icon-box e .btn; aqui só a grade das ferramentas.
+   ÁREA DA EQUIPE (index, enviar fotos e cadastro da equipe)
+   Os painéis (.admin-*), .card, .icon-box e .btn ficam em components.css;
+   o card da prévia do cadastro vem de equipe.css. Aqui só o que é exclusivo
+   das três páginas: a grade das ferramentas e as prévias.
    ======================================================================== */
 
+/* --- Página inicial: grade das ferramentas --- */
 .admin-tools {
   display:grid; gap:24px;
   grid-template-columns:repeat(auto-fit, minmax(min(100%, 300px), 1fr));
@@ -13,3 +16,30 @@
   display:flex; flex-direction:column; align-items:flex-start; gap:14px;
 }
 .admin-tool p { color:var(--text-secondary); line-height:1.7; flex:1; }
+
+/* --- Prévias (resumo comum às duas ferramentas) --- */
+#preview-summary { color:var(--text-secondary); margin-bottom:18px; }
+
+/* --- Enviar fotos: grade das fotos escolhidas --- */
+.upload-grid {
+  list-style:none; display:grid; gap:14px; margin-bottom:22px;
+  grid-template-columns:repeat(auto-fill, minmax(min(100%, 160px), 1fr));
+}
+.upload-photo {
+  min-width:0; border:1px solid var(--border); border-radius:var(--radius-md);
+  background:var(--bg-surface); overflow:hidden;
+}
+.upload-photo img { width:100%; height:140px; object-fit:cover; }
+.upload-photo p {
+  padding:10px 12px; font-size:.75rem; color:var(--text-secondary);
+  line-height:1.5; overflow-wrap:anywhere;
+}
+
+/* --- Cadastro da equipe: moldura da prévia do card --- */
+.team-preview {
+  display:grid; justify-items:center; margin-bottom:22px;
+  padding:clamp(16px, 4vw, 28px); border-radius:var(--radius-md);
+  background:var(--bg-surface); border:1px dashed var(--border);
+}
+.team-preview .team-member { width:min(100%, 280px); }
+.team-preview .team-member:is(:hover, :focus-within) { transform:none; }

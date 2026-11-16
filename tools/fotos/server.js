@@ -30,7 +30,7 @@ export async function createPhotoServer(root = projectRoot) {
           const relative = decodeURIComponent(url.pathname.slice(6)) || 'index.html';
           const parts = relative.replaceAll('\\', '/').split('/');
           const publicFile = ['index.html', 'header.html', 'footer.html'].includes(relative)
-            || ['paginas', 'css', 'js', 'imagens', 'pdfs'].includes(parts[0])
+            || ['paginas', 'css', 'js', 'imagens'].includes(parts[0])
             || (parts[0] === 'data' && parts[1] === 'galeria' && !parts.includes('originais') && !parts.at(-1).startsWith('.'));
           if (!publicFile || parts.includes('..')) throw new ImportError('Arquivo não encontrado.', 404);
           let filename;
