@@ -31,6 +31,10 @@ export function groupMembers(members, columns, random = Math.random) {
 export function initMemories(root = document) {
   const track = root.getElementById?.('memories-track');
   if (!track) return;
+  // O total de ex-integrantes na descrição acompanha a quantidade de cards do carrossel.
+  root.querySelectorAll('[data-memories-count]').forEach(element => {
+    element.textContent = String(track.children.length);
+  });
   const viewport = track.parentElement;
   const [prev, next] = ['prev', 'next'].map(direction => root.querySelector(`[data-carousel="${direction}"]`));
   const view = root.defaultView;

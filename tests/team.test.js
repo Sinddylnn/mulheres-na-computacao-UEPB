@@ -1,6 +1,27 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { init, groupMembers } from '../js/pages/team.js';
+import { readFileSync } from 'node:fs';
+import { init, initMemories, groupMembers } from '../js/pages/team.js';
+
+test('a descrição das lembranças mostra a quantidade de cards do carrossel', () => {
+  const button = { hidden: false, addEventListener() {} };
+  const count = { textContent: '0' };
+  const viewport = { clientWidth: 1000, addEventListener() {} };
+  const track = { children: { length: 4 }, parentElement: viewport, scrollWidth: 800, addEventListener() {} };
+  initMemories({
+    getElementById: () => track,
+    querySelector: () => button,
+    querySelectorAll: selector => (selector === '[data-memories-count]' ? [count] : [])
+  });
+  assert.equal(count.textContent, '4');
+});
+
+test('o número escrito no HTML das lembranças corresponde aos cards da página', () => {
+  const html = readFileSync(new URL('../paginas/equipe.html', import.meta.url), 'utf8');
+  const written = Number(html.match(/data-memories-count>(\d+)</)?.[1]);
+  const cards = html.match(/class="card memory-card\b/g)?.length ?? 0;
+  assert.equal(written, cards);
+});
 
 test('a professora permanece primeiro e as demais integrantes podem aparecer em ordens diferentes', () => {
   const professor = { name: 'Luciana' };
