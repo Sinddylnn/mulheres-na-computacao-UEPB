@@ -10,7 +10,7 @@ O site usa HTML, CSS e JavaScript nativos, sem framework nem build. Isso é uma 
 node tools/serve_site.js
 ```
 
-Acesse <http://127.0.0.1:8000>. Para encerrar o servidor, use `Ctrl+C`. Sirva o projeto por HTTP: abrir `index.html` diretamente com `file://` impede o carregamento confiável dos módulos, do cabeçalho, do rodapé e da galeria.
+Acesse <http://127.0.0.1:8000>. Para encerrar o servidor, use `Ctrl+C`. Nesse servidor local aparece o botão **Área da equipe** ao lado do botão de tema, e o cadastro da equipe funciona; no site publicado o botão não existe. Sirva o projeto por HTTP: abrir `index.html` diretamente com `file://` impede o carregamento confiável dos módulos, do cabeçalho, do rodapé e da galeria.
 
 **Você não precisa instalar Python para criar páginas, editar estilos ou visualizar o site.**
 
@@ -113,12 +113,12 @@ As fotos dos perfis ficam em `imagens/equipe/` e os textos em [paginas/equipe.ht
 O cadastro roda no computador, sem token: ele grava direto na pasta do projeto. Não precisa de `npm ci`, só do Node.js 22 ou superior. Na raiz do projeto:
 
 ```powershell
-node tools/equipe/server.js
+npm.cmd start
 ```
 
-O atalho `npm run equipe` faz o mesmo; se o PowerShell bloquear o npm, veja [Erro de política de execução no PowerShell](#erro-de-política-de-execução-no-powershell).
+Equivale a `node tools/serve_site.js`. Para abrir só o cadastro, use `node tools/equipe/server.js` (ou `npm.cmd run equipe`), em <http://127.0.0.1:8002>. Se o PowerShell bloquear o npm, veja [Erro de política de execução no PowerShell](#erro-de-política-de-execução-no-powershell).
 
-1. Abra <http://127.0.0.1:8002>, que leva à página **Cadastro da equipe**.
+1. Abra <http://127.0.0.1:8000>, clique em **Área da equipe**, ao lado do botão de tema, e depois em **Cadastro da equipe**.
 2. Em **Card**, mantenha **Nova integrante** ou escolha um nome para editar o card existente.
 3. Preencha nome, cargo (opcional), apresentação, redes sociais e foto. Na edição, deixe a foto em branco para manter a atual.
 4. Clique em **Ver prévia**, confira o card e clique em **Salvar no projeto**.

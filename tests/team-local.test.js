@@ -83,3 +83,17 @@ test('o servidor exige o token da sessão e recusa outras origens', async t => {
   assert.equal(redirect.status, 302);
   assert.equal(redirect.headers.get('location'), '/paginas/area-da-equipe/cadastro-equipe.html');
 });
+
+test('no npm start a raiz serve o site e o cadastro continua disponível', async t => {
+  const root = await fixture(t);
+  await writeFile(path.join(root, 'index.html'), '<h1>Início</h1>');
+  const server = await createTeamServer(root, { home: null });
+  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+  t.after(() => new Promise(resolve => server.close(resolve)));
+  const base = `http://127.0.0.1:${server.address().port}`;
+
+  const home = await fetch(`${base}/`, { redirect: 'manual' });
+  assert.equal(home.status, 200);
+  assert.equal(await home.text(), '<h1>Início</h1>');
+  assert.equal((await (await fetch(`${base}/api/equipe`)).json()).html, PAGE);
+});

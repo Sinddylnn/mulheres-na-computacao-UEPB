@@ -5,7 +5,7 @@ import { readFile, writeFile, rename, rm, realpath } from 'node:fs/promises';
 import { createHash, randomBytes } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { serveStatic, projectRoot } from '../serve_site.js';
+import { serveStatic, projectRoot } from '../static_server.js';
 import { TEAM_PAGE, TeamError, validateMember, photoPath, upsertMember } from '../../js/pages/team-admin/model.js';
 
 export const PAGE = 'paginas/area-da-equipe/cadastro-equipe.html';
@@ -56,7 +56,11 @@ export async function saveMember(root, input) {
   return { name: member.name, photo: photo?.path ?? null };
 }
 
-export async function createTeamServer(root = projectRoot) {
+/**
+ * Servidor do site com a API do cadastro (/api/equipe).
+ * home: página para onde "/" redireciona; null serve o index.html normalmente (npm start).
+ */
+export async function createTeamServer(root = projectRoot, { home = PAGE } = {}) {
   root = await realpath(root);
   const token = randomBytes(32).toString('hex');
   let queue = Promise.resolve(); // um salvamento por vez
@@ -74,8 +78,8 @@ export async function createTeamServer(root = projectRoot) {
       if (request.headers.origin && request.headers.origin !== origin) throw new HttpError('Origem não permitida.', 403);
       const url = new URL(request.url, origin);
 
-      if (url.pathname === '/') {
-        response.writeHead(302, { Location: '/' + PAGE }).end();
+      if (home && url.pathname === '/') {
+        response.writeHead(302, { Location: '/' + home }).end();
         return;
       }
       if (url.pathname !== '/api/equipe') return serveStatic(root, request, response);
