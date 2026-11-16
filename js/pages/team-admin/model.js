@@ -95,14 +95,24 @@ export function photoPath(name, digest) {
   return `imagens/equipe/${slug}-${digest.slice(0, 8)}.webp`;
 }
 
-/** HTML do card no mesmo formato dos cards escritos à mão. src permite usar outra imagem na prévia. */
+/** Inicial exibida no lugar da foto quando o card não tem imagem. */
+const initial = name => escape(Array.from(String(name).trim())[0] ?? '').toLocaleUpperCase('pt-BR');
+
+/**
+ * HTML do card no mesmo formato dos cards escritos à mão. src permite usar outra imagem na prévia.
+ * Sem foto (nem src), o avatar mostra a inicial do nome.
+ */
 export function renderMember(member, { open, pin = '', src } = {}) {
   const inner = INDENT + '  ';
   const name = escape(member.name);
+  const image = src ?? (member.photo ? '../' + member.photo : null);
+  const avatar = image
+    ? `<img src="${escape(image)}" alt="" loading="lazy" decoding="async">`
+    : initial(member.name);
   const lines = [
     INDENT + open,
     ...(pin ? [pin.replace(/\n$/, '')] : []),
-    `${inner}<div class="member-avatar" aria-hidden="true"><img src="${escape(src ?? '../' + member.photo)}" alt="" loading="lazy" decoding="async"></div>`,
+    `${inner}<div class="member-avatar" aria-hidden="true">${avatar}</div>`,
     `${inner}<h3>${name}</h3>`
   ];
   if (member.role) lines.push(`${inner}<p>${escape(member.role)}</p>`);

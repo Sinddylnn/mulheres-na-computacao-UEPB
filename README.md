@@ -128,7 +128,7 @@ A foto é convertida para WebP no navegador, com até 600 px, e salva em `imagen
 
 ### Manualmente
 
-Para cada integrante, localize seu bloco `<article class="team-member ...">`, atualize a foto e acrescente a apresentação em `<p class="member-bio">...</p>` abaixo do nome. Essa classe aplica texto justificado. Prefira uma foto com o rosto centralizado, pois o site usa um recorte circular.
+Para cada integrante, localize seu bloco `<article class="team-member ...">`, atualize a foto e acrescente a apresentação em `<p class="member-bio">...</p>` abaixo do nome. Essa classe aplica texto justificado. Prefira uma foto com o rosto centralizado, pois o site usa um recorte circular. Enquanto a integrante não enviar foto, deixe só a inicial do nome dentro do `<div class="member-avatar">`, como no card de Lays.
 
 Para adicionar redes sociais, use o bloco de Sonally como referência: os três quadradinhos ficam abaixo da descrição. Troque os links e os rótulos `aria-label` para os perfis da integrante e inclua somente as redes que ela enviar. Os desenhos dos ícones ficam uma única vez em `header.html` (`<symbol id="icone-...">`); cada card só aponta para eles com `<use href="#icone-github"/>`.
 
