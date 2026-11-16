@@ -1,5 +1,5 @@
 /* ========================================================================
-   ANIMAÇÕES PCB - ES6 MODULE
+   TRANSIÇÃO DE PÁGINA: trilhas de circuito impresso desenhadas em Canvas
    ======================================================================== */
 
 /** Destino interno navegável, independentemente de o href ser relativo ou absoluto. */
@@ -13,178 +13,166 @@ export function navigationTarget(link, currentHref) {
   return target.href;
 }
 
+const COLORS = ['#ABD6CD', '#C088B8', '#8773A4']; // teal, lilás e roxo da marca
+const GRID = 40;            // as trilhas andam sobre esta grade, em px
+const DIRECTIONS = [[1, 0], [0, 1], [-1, 0], [0, -1]];
+const ENTER_DURATION = 700; // ms até a página nova ser carregada
+const EXIT_DURATION = 360;  // ms para o overlay sumir na página nova
+
+const randomBetween = (min, max) => min + Math.random() * (max - min);
+const pickOne = options => options[Math.floor(Math.random() * options.length)];
+const easeInOut = t => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t);
+const clamp01 = value => Math.max(0, Math.min(1, value));
+
 /**
- * Inicializa a transição de página em Canvas estilo circuito impresso.
- * Esta função configura interceptores de link e evento pageshow.
+ * Intercepta cliques em links internos, desenha o circuito sobre a página e só então navega.
+ * Na página seguinte, o evento pageshow faz o overlay desaparecer.
  */
 export function initPageTransition() {
-  const _ov = document.getElementById('circuitOverlay');
-  const _cv = document.getElementById('circuitCanvas');
+  const overlay = document.getElementById('circuitOverlay');
+  const canvas = document.getElementById('circuitCanvas');
+  if (!overlay || !canvas) return;
 
-  if (!_ov || !_cv) return;
-
-  _ov.setAttribute('aria-hidden', 'true');
+  overlay.setAttribute('aria-hidden', 'true');
 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    _ov.classList.remove('active');
-    _ov.style.opacity = '';
+    overlay.classList.remove('active');
+    overlay.style.opacity = '';
     return;
   }
 
-  const _cx = _cv.getContext('2d');
-  const _T = '#ABD6CD';
-  const _L = '#C088B8';
-  const _P = '#8773A4';
-  let _W, _H, _segs, _pads, _vias, _raf2;
+  const context = canvas.getContext('2d');
+  let canvasWidth = 0;
+  let canvasHeight = 0;
+  let segments = [];
+  let vias = [];
+  let frameRequest = null;
 
-  function _rnd(a, b) {
-    return a + Math.random() * (b - a);
-  }
+  /** Sorteia as trilhas (segmentos ortogonais) e as vias (pontos nas extremidades). */
+  function buildCircuit() {
+    canvasWidth = canvas.width = window.innerWidth;
+    canvasHeight = canvas.height = window.innerHeight;
+    segments = [];
+    vias = [];
 
-  function _pick(...a) {
-    return a[Math.floor(Math.random() * a.length)];
-  }
+    const snap = value => Math.round(value / GRID) * GRID;
+    const trackCount = Math.floor((canvasWidth * canvasHeight) / 40000) + 15;
 
-  function _eio(t) {
-    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-  }
+    for (let track = 0; track < trackCount; track += 1) {
+      const color = pickOne(COLORS);
+      const delay = randomBetween(0, 0.3);
+      let x = snap(randomBetween(GRID, canvasWidth - GRID));
+      let y = snap(randomBetween(GRID, canvasHeight - GRID));
+      let [dx, dy] = pickOne(DIRECTIONS);
+      const stepCount = Math.floor(randomBetween(2, 4));
+      const points = [{ x, y }];
 
-  function _build() {
-    _W = _cv.width = window.innerWidth;
-    _H = _cv.height = window.innerHeight;
-    _segs = [];
-    _pads = [];
-    _vias = [];
-
-    const GRID = 40;
-    const snap = v => Math.round(v / GRID) * GRID;
-    const DIRS = [[1, 0], [0, 1], [-1, 0], [0, -1]];
-    const nT = Math.floor((_W * _H) / 40000) + 15;
-
-    for (let t = 0; t < nT; t++) {
-      const color = _pick(_T, _L, _P);
-      const width = 2;
-      const delay = _rnd(0, 0.3);
-      let x = snap(_rnd(GRID, _W - GRID));
-      let y = snap(_rnd(GRID, _H - GRID));
-      let [dx, dy] = _pick(...DIRS);
-      const nS = Math.floor(_rnd(2, 4));
-      let pts = [{ x, y }];
-
-      for (let s = 0; s < nS; s++) {
-        if (s > 0) {
+      for (let step = 0; step < stepCount; step += 1) {
+        if (step > 0) {
           const turn = Math.random() < 0.5 ? 1 : -1;
           [dx, dy] = [-dy * turn, dx * turn];
         }
-        const len = snap(_rnd(100, 350));
-        x = snap(Math.max(GRID, Math.min(_W - GRID, x + dx * len)));
-        y = snap(Math.max(GRID, Math.min(_H - GRID, y + dy * len)));
-        pts.push({ x, y });
+        const length = snap(randomBetween(100, 350));
+        x = snap(Math.max(GRID, Math.min(canvasWidth - GRID, x + dx * length)));
+        y = snap(Math.max(GRID, Math.min(canvasHeight - GRID, y + dy * length)));
+        points.push({ x, y });
       }
 
-      for (let i = 0; i < pts.length - 1; i++) {
-        _segs.push({
-          x1: pts[i].x,
-          y1: pts[i].y,
-          x2: pts[i + 1].x,
-          y2: pts[i + 1].y,
-          color,
-          width,
-          delay: delay + i * 0.06,
-          len: Math.hypot(pts[i + 1].x - pts[i].x, pts[i + 1].y - pts[i].y)
-        });
+      for (let index = 0; index < points.length - 1; index += 1) {
+        const from = points[index];
+        const to = points[index + 1];
+        segments.push({ x1: from.x, y1: from.y, x2: to.x, y2: to.y, color, width: 2, delay: delay + index * 0.06 });
       }
 
-      _vias.push({ x: pts[0].x, y: pts[0].y, r: 4, color, delay });
-      _vias.push({ x: pts[pts.length - 1].x, y: pts[pts.length - 1].y, r: 4, color, delay: delay + nS * 0.06 });
+      vias.push({ x: points[0].x, y: points[0].y, radius: 4, color, delay });
+      vias.push({ x: points.at(-1).x, y: points.at(-1).y, radius: 4, color, delay: delay + stepCount * 0.06 });
     }
   }
 
-  function _drawFrame(p) {
-    _cx.clearRect(0, 0, _W, _H);
+  /** Desenha o circuito no instante `progress` (0 a 1). */
+  function drawFrame(progress) {
+    context.clearRect(0, 0, canvasWidth, canvasHeight);
 
-    for (const s of _segs) {
-      const sp = Math.max(0, Math.min(1, (p - s.delay) / 0.46));
-      if (sp <= 0) continue;
+    for (const segment of segments) {
+      const local = clamp01((progress - segment.delay) / 0.46);
+      if (local <= 0) continue;
 
-      const lx = s.x1 + (s.x2 - s.x1) * _eio(sp);
-      const ly = s.y1 + (s.y2 - s.y1) * _eio(sp);
-      _cx.beginPath();
-      _cx.moveTo(s.x1, s.y1);
-      _cx.lineTo(lx, ly);
-      _cx.strokeStyle = s.color;
-      _cx.lineWidth = s.width;
-      _cx.globalAlpha = 0.55 * _eio(Math.min(1, sp * 2));
-      _cx.stroke();
+      const headX = segment.x1 + (segment.x2 - segment.x1) * easeInOut(local);
+      const headY = segment.y1 + (segment.y2 - segment.y1) * easeInOut(local);
+      context.beginPath();
+      context.moveTo(segment.x1, segment.y1);
+      context.lineTo(headX, headY);
+      context.strokeStyle = segment.color;
+      context.lineWidth = segment.width;
+      context.globalAlpha = 0.55 * easeInOut(Math.min(1, local * 2));
+      context.stroke();
 
-      if (sp < 0.97) {
-        _cx.beginPath();
-        _cx.arc(lx, ly, s.width + 1.2, 0, Math.PI * 2);
-        _cx.fillStyle = s.color;
-        _cx.globalAlpha = 0.9;
-        _cx.fill();
+      if (local < 0.97) {
+        // Ponto brilhante na frente da trilha enquanto ela cresce.
+        context.beginPath();
+        context.arc(headX, headY, segment.width + 1.2, 0, Math.PI * 2);
+        context.fillStyle = segment.color;
+        context.globalAlpha = 0.9;
+        context.fill();
       }
     }
 
-    for (const vi of _vias) {
-      const vp = Math.max(0, Math.min(1, (p - vi.delay) / 0.2));
-      if (vp <= 0) continue;
+    for (const via of vias) {
+      const local = clamp01((progress - via.delay) / 0.2);
+      if (local <= 0) continue;
 
-      _cx.beginPath();
-      _cx.arc(vi.x, vi.y, vi.r + 3, 0, Math.PI * 2);
-      _cx.strokeStyle = vi.color;
-      _cx.lineWidth = 1.5;
-      _cx.globalAlpha = vp * 0.6;
-      _cx.stroke();
+      context.beginPath();
+      context.arc(via.x, via.y, via.radius + 3, 0, Math.PI * 2);
+      context.strokeStyle = via.color;
+      context.lineWidth = 1.5;
+      context.globalAlpha = local * 0.6;
+      context.stroke();
 
-      _cx.beginPath();
-      _cx.arc(vi.x, vi.y, vi.r, 0, Math.PI * 2);
-      _cx.strokeStyle = vi.color;
-      _cx.lineWidth = 0.8;
-      _cx.globalAlpha = vp * 0.9;
-      _cx.stroke();
+      context.beginPath();
+      context.arc(via.x, via.y, via.radius, 0, Math.PI * 2);
+      context.strokeStyle = via.color;
+      context.lineWidth = 0.8;
+      context.globalAlpha = local * 0.9;
+      context.stroke();
 
-      _cx.beginPath();
-      _cx.arc(vi.x, vi.y, vi.r * 0.42, 0, Math.PI * 2);
-      _cx.fillStyle = '#0C1018';
-      _cx.globalAlpha = 1;
-      _cx.fill();
+      context.beginPath();
+      context.arc(via.x, via.y, via.radius * 0.42, 0, Math.PI * 2);
+      context.fillStyle = '#0C1018';
+      context.globalAlpha = 1;
+      context.fill();
     }
 
-    _cx.globalAlpha = 1;
+    context.globalAlpha = 1;
   }
 
-  function _runPCB(cb) {
-    _build();
-    _ov.classList.add('active');
-    const dur = 700;
-    const t0 = performance.now();
+  /** Mostra o overlay e anima o circuito; chama `onDone` ao terminar. */
+  function playEntrance(onDone) {
+    buildCircuit();
+    overlay.classList.add('active');
+    const startedAt = performance.now();
 
     function tick(now) {
-      const p = Math.min(1, (now - t0) / dur);
-      _drawFrame(_eio(p));
-      if (p < 1) {
-        _raf2 = requestAnimationFrame(tick);
-      } else {
-        if (cb) cb();
-      }
+      const progress = Math.min(1, (now - startedAt) / ENTER_DURATION);
+      drawFrame(easeInOut(progress));
+      if (progress < 1) frameRequest = requestAnimationFrame(tick);
+      else onDone?.();
     }
 
     requestAnimationFrame(tick);
   }
 
-  function _exitPCB() {
-    const dur = 360;
-    const t0 = performance.now();
+  /** Esmaece o overlay da página recém-carregada. */
+  function fadeOut() {
+    const startedAt = performance.now();
 
     function tick(now) {
-      const p = Math.min(1, (now - t0) / dur);
-      _ov.style.opacity = 1 - _eio(p);
-      if (p < 1) {
+      const progress = Math.min(1, (now - startedAt) / EXIT_DURATION);
+      overlay.style.opacity = 1 - easeInOut(progress);
+      if (progress < 1) {
         requestAnimationFrame(tick);
       } else {
-        _ov.classList.remove('active');
-        _ov.style.opacity = '';
+        overlay.classList.remove('active');
+        overlay.style.opacity = '';
       }
     }
 
@@ -192,23 +180,23 @@ export function initPageTransition() {
   }
 
   function goTo(url) {
-    if (_raf2) cancelAnimationFrame(_raf2);
-    _runPCB(() => { window.location.href = url; });
+    if (frameRequest) cancelAnimationFrame(frameRequest);
+    playEntrance(() => { window.location.href = url; });
   }
 
-  document.addEventListener('click', e => {
-    if (e.defaultPrevented || e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
-    const a = e.target.closest('a[href]');
-    if (!a) return;
+  document.addEventListener('click', event => {
+    if (event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    const link = event.target.closest('a[href]');
+    if (!link) return;
 
-    const href = navigationTarget(a, window.location.href);
+    const href = navigationTarget(link, window.location.href);
     if (!href) return;
 
-    e.preventDefault();
+    event.preventDefault();
     goTo(href);
   });
 
   window.addEventListener('pageshow', () => {
-    setTimeout(_exitPCB, 80);
+    setTimeout(fadeOut, 80);
   });
 }

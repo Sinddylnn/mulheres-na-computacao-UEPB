@@ -1,8 +1,8 @@
-import { ImportError, destination, checkBatch, checkTimeline, checkDuplicate, photoStem, addPhotos, serializeTimeline } from './model.js';
+import { ImportError, destination, checkBatch, checkTimeline, checkDuplicate, photoStem, addPhotos, serializeTimeline } from '../../shared/upload-model.js';
 import { convertPhoto, sha256, toBase64 } from './image.js';
-import { publishWithRetry } from '../admin/github.js';
-import { initSession, friendly as baseFriendly, setBusy } from '../admin/session.js';
-import { TIMELINE, PHOTOS_DIR, THUMBNAILS_DIR } from '../gallery/paths.js';
+import { publishWithRetry } from '../../shared/admin/github.js';
+import { initSession, friendly as baseFriendly, setBusy } from '../../shared/admin/session.js';
+import { TIMELINE, PHOTOS_DIR, THUMBNAILS_DIR } from '../../shared/gallery-paths.js';
 
 const formatSize = bytes => bytes < 1024 * 1024 ? `${Math.round(bytes / 1024)} KB` : `${(bytes / 1024 / 1024).toFixed(1)} MB`;
 const friendly = error => baseFriendly(error, ImportError);

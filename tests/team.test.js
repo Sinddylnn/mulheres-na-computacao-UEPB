@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { init, initMemories, groupMembers } from '../js/pages/team.js';
+import { init, initMemories, groupMembers } from '../js/pages/team/index.js';
 
 test('a descrição das lembranças mostra a quantidade de cards do carrossel', () => {
   const button = { hidden: false, addEventListener() {} };

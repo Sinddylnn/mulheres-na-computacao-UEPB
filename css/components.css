@@ -147,6 +147,9 @@ textarea.form-control { resize:vertical; min-height:150px; }
   color:var(--accent-text); margin-bottom:12px;
 }
 
+/* Sprite de ícones (header.html): guarda os <symbol>; cada <use> desenha com o tamanho do seu <svg>. */
+.icon-sprite { position:absolute; width:0; height:0; overflow:hidden; }
+
 /* Caixa de ícone dos cards; gira levemente quando o card recebe hover. */
 .icon-box {
   width:48px; height:48px; flex-shrink:0;

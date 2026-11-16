@@ -1,9 +1,9 @@
 // Cadastro da equipe. Funciona só no computador, com o servidor local
 // (npm start ou npm run equipe, ambos com tools/equipe/server.js), que grava direto na pasta do projeto.
 import { TEAM_PAGE, LIMITS, TeamError, NETWORKS, parseMembers, parseMember, validateMember, photoPath, renderMember, upsertMember } from './model.js';
-import { ImportError } from '../upload/model.js';
+import { ImportError } from '../../shared/upload-model.js';
 import { convertAvatar, sha256, toBase64 } from '../upload/image.js';
-import { setBusy } from '../admin/session.js';
+import { setBusy } from '../../shared/admin/session.js';
 import { projectHref, projectUrl } from '../../core/paths.js';
 
 const NEW = '';

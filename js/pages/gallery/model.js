@@ -1,4 +1,4 @@
-import { PHOTOS_DIR, THUMBNAILS_DIR } from './paths.js';
+import { PHOTOS_DIR, THUMBNAILS_DIR } from '../../shared/gallery-paths.js';
 
 function titleCase(value) {
   return value

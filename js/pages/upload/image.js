@@ -1,6 +1,6 @@
 // Conversão das fotos no navegador: o original nunca sai do computador.
 // Gera WebP sem metadados (EXIF/localização), com as mesmas medidas do importador local.
-import { LIMITS, ImportError, fitInside } from './model.js';
+import { LIMITS, ImportError, fitInside } from '../../shared/upload-model.js';
 
 const ACCEPTED = ['image/jpeg', 'image/png', 'image/webp'];
 

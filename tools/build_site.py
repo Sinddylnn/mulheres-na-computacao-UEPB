@@ -9,24 +9,18 @@ import shutil
 
 ROOT = Path(__file__).resolve().parent.parent
 OUTPUT = ROOT / "_site"
-PAGES = (
-    Path("index.html"),
-    Path("paginas/programa.html"),
-    Path("paginas/equipe.html"),
-    Path("paginas/galeria.html"),
-    Path("paginas/publicacoes.html"),
-    Path("paginas/parcerias.html"),
-    Path("paginas/quero-participar.html"),
-    Path("paginas/area-da-equipe/enviar-fotos.html"),
-    Path("paginas/area-da-equipe/cadastro-equipe.html"),
-    Path("paginas/area-da-equipe/index.html"),
-)
-PUBLIC_DIRECTORIES = ("css", "data", "imagens", "js", "pdfs")
+# Toda página é index.html ou um HTML dentro de paginas/; não há lista para manter.
+PAGES = tuple(sorted(
+    path.relative_to(ROOT) for path in (ROOT / "index.html", *(ROOT / "paginas").rglob("*.html"))
+))
+PUBLIC_DIRECTORIES = ("css", "data", "imagens", "js")
 SHARED_HTML = (Path("header.html"), Path("footer.html"))
 
 
 def main() -> int:
     # Confira os arquivos antes de substituir o pacote anterior.
+    if len(PAGES) < 2:
+        raise FileNotFoundError("Nenhuma página encontrada em paginas/")
     for relative in (*PAGES, *SHARED_HTML, Path(".nojekyll")):
         if not (ROOT / relative).is_file():
             raise FileNotFoundError(f"Arquivo obrigatório não encontrado: {relative}")
@@ -46,7 +40,7 @@ def main() -> int:
         shutil.copy2(ROOT / relative, destination)
     for directory in PUBLIC_DIRECTORIES:
         # Originais, trava e arquivos temporários do importador ficam só no computador.
-        ignore = shutil.ignore_patterns("originais", "fotos_originais", ".fotos-import.lock", ".timeline-*.tmp")
+        ignore = shutil.ignore_patterns("originais", ".fotos-import.lock", ".timeline-*.tmp")
         shutil.copytree(ROOT / directory, OUTPUT / directory, ignore=ignore)
 
     print(f"Site empacotado em {OUTPUT} com {len(PAGES)} páginas, sem transformação.")
